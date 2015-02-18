@@ -1,0 +1,90 @@
+<?json version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+	<extension point="org.eclipse.wst.sse.core.modelHandler">
+		<modelHandler
+			default="true"
+			class="org.eclipse.wst.json.core.internal.modelhandler.ModelHandlerForJSON"
+			associatedContentTypeId="org.eclipse.wst.json.core.jsonsource"
+			id="org.eclipse.wst.json.core.internal.modelhandler">
+		</modelHandler>
+	</extension>
+
+	<extension
+		point="org.eclipse.core.filebuffers.documentCreation"
+		id="org.eclipse.wst.json.core.documentfactories"
+		name="%Structured_JSON_Document_Factory_Extension.name">
+		<factory
+			contentTypeId="org.eclipse.wst.json.core.jsonsource"
+			class="org.eclipse.wst.sse.core.internal.filebuffers.BasicStructuredDocumentFactory" />
+	</extension>
+	
+	<extension point="org.eclipse.wst.sse.core.formatProcessors">
+		<processor
+			class="org.eclipse.wst.json.core.internal.formatter.JSONFormatterFormatProcessor"
+			contentTypeId="org.eclipse.wst.json.core.jsonsource">
+		</processor>
+	</extension>
+
+	<extension point="org.eclipse.core.contenttype.contentTypes">
+
+		<content-type
+			file-extensions="json"
+			priority="high"
+			name="%JSON_Content_Type_Extension_Element.name"
+			id="org.eclipse.wst.json.core.jsonsource"
+			base-type="org.eclipse.core.runtime.text">
+			<describer class="org.eclipse.wst.json.core.internal.contenttype.ContentDescriberForJSON" />
+		</content-type>
+
+	</extension>
+
+
+	<!-- initialize json core preferences -->
+	<extension point="org.eclipse.core.runtime.preferences">
+		<initializer class="org.eclipse.wst.json.core.internal.preferences.JSONCorePreferenceInitializer" />
+	</extension>
+
+  <!-- ====================================================== -->
+	<!-- Register the JSON validator with the validation 		-->
+	<!-- framework. 										    -->
+	<!-- ====================================================== -->
+
+ <extension
+         id="validationMarker"
+         name="%_validationMarker.name"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.wst.validation.problemmarker"/>
+      <persistent value="true"/>
+ </extension>
+
+   <extension id="json" name="%JSON_Validator.name" point="org.eclipse.wst.validation.validatorV2">
+      <validator
+            build="true"
+            class="org.eclipse.wst.json.core.internal.validation.eclipse.Validator"
+            manual="true"
+            sourceid="org.eclipse.wst.json.ui.internal.validation.DelegatingSourceValidatorForJSON"
+            version="3"
+            markerId="org.eclipse.wst.json.core.validationMarker">
+         <include>
+            <rules>
+               <contentType id="org.eclipse.wst.json.core.jsonsource"></contentType>
+               <fileext
+                     caseSensitive="false"
+                     ext="json">
+               </fileext>
+            </rules>
+         </include>
+         <exclude>
+            <rules>
+				<projectNature id="org.eclipse.jst.j2ee.ejb.EJBNature"/>
+				<projectNature id="org.eclipse.jst.j2ee.EARNature"/>
+    			<file caseSensitive="true" name=".project" type="file"/>
+    			<file caseSensitive="true" name=".classpath" type="file"/>
+    			<file caseSensitive="true" name=".settings"  type="folder"/>
+            </rules>
+         </exclude>
+      </validator>
+   </extension>
+</plugin>
