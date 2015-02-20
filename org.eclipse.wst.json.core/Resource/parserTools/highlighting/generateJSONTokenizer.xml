@@ -19,11 +19,11 @@
 	</target>
 
 	<target name="generateScanner" depends="checkUpToDate" unless="upToDate">
-		<java jar="../JFlex-1.2.2/JFlex.jar" fork="true">
+		<java jar="../JFlex-1.4.2/JFlex.jar" fork="true">
 			<arg value="-d" />
 			<arg value="../../../src/org/eclipse/wst/json/core/internal/parser" />
-			<arg value="-skel" />
-			<arg value="skeleton.sse" />
+			<!--<arg value="-skel" />
+			<arg value="skeleton.sse" />-->
 			<arg value="JSONTokenizer.jflex" />
 		</java>
 		

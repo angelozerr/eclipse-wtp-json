@@ -1,23 +1,23 @@
-package org.eclipse.wst.json.ui;
+package org.eclipse.wst.json.ui.internal;
 
-import org.eclipse.core.runtime.Plugin;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends Plugin {
+public class JSONUIPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.wst.json.ui"; //$NON-NLS-1$
 
 	// The shared instance
-	private static Activator plugin;
+	private static JSONUIPlugin plugin;
 
 	/**
 	 * The constructor
 	 */
-	public Activator() {
+	public JSONUIPlugin() {
 	}
 
 	/*
@@ -46,10 +46,10 @@ public class Activator extends Plugin {
 
 	/**
 	 * Returns the shared instance
-	 *
+	 * 
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static JSONUIPlugin getDefault() {
 		return plugin;
 	}
 

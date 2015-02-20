@@ -236,15 +236,11 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 %}
 
 %state STRING
-%state ST_JSON_OBJECT
-%state ST_JSON_ARRAY
-%state ST_JSON_OBJECT_COLON
-%state ST_JSON_VALUE
+%state ST_JSON_OBJECT_KEY
+%state ST_JSON_COLON
 
 WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
 NUMBER_TEXT=-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?
-
-S = [\x20\x09\x0D\x0A]+
 
 h = [0-9a-f]
 nonascii = [\u0080-\uffff]
@@ -253,71 +249,18 @@ escape = {unicode}|\\[ -~\u0080-\uffff]
 
 nmstart = [_a-zA-Z]|{nonascii}|{escape}
 nmchar = [_a-zA-Z0-9-]|{nonascii}|{escape}
-string1 = \"([\t !#$%&(-~]|\\{nl}|\'|{nonascii}|{escape})*\"
-string2 = \'([\t !#$%&(-~]|\\{nl}|\"|{nonascii}|{escape})*\'
-
-ident = -?{nmstart}{nmchar}*
-value_ident = -?{nmstart}"."?({nmchar}+"."?)*
 
 name = {nmchar}+
-num = [+-]?([0-9]+|[0-9]*"."[0-9]*)
-string = {string1}|{string2}
-nl = \n|\r\n|\r|\f
 
 Key = \" {name} \"
-
-startObject = \{
-endObject = \}
-comma = ,
-
 %%
 
-/* white space within a tag */
-<ST_JSON_OBJECT, ST_JSON_OBJECT_COLON, ST_JSON_VALUE> {S}* {
- return WHITE_SPACE;
+<YYINITIAL, ST_JSON_OBJECT_KEY> {
+  "{" {  yybegin(ST_JSON_OBJECT_KEY); return JSON_OBJECT_OPEN; }
 }
 
-<YYINITIAL> {
- "{" {yybegin(ST_JSON_OBJECT); return JSON_OBJECT_OPEN;}
- "[" {yybegin(ST_JSON_ARRAY); return JSON_ARRAY_OPEN;}
-}
-
-//<YYINITIAL> {
-//  "{" {  yybegin(ST_JSON_OBJECT_KEY); return JSON_OBJECT_OPEN; }
-//  "}" {  yybegin(YYINITIAL); return JSON_OBJECT_CLOSE; }  
-//}
-
-<ST_JSON_OBJECT>  {
- "}" {yybegin(YYINITIAL); return JSON_OBJECT_CLOSE; }
- {Key} {yybegin(ST_JSON_OBJECT_COLON);	return JSON_OBJECT_KEY;}
-}
-
-<ST_JSON_OBJECT_COLON> {
- ":" {  yybegin(ST_JSON_VALUE); return JSON_COLON; }
-}
-
-<ST_JSON_VALUE> {
- "true" { yybegin(ST_JSON_VALUE); return JSON_VALUE_BOOLEAN; }
- "false" { yybegin(ST_JSON_VALUE); return JSON_VALUE_BOOLEAN; }
- "null" { yybegin(ST_JSON_VALUE); return JSON_VALUE_NULL; }
- {string} { yybegin(ST_JSON_VALUE); return JSON_VALUE_STRING; }
- {NUMBER_TEXT} { yybegin(ST_JSON_VALUE); return JSON_VALUE_NUMBER; }
- "{" {yybegin(ST_JSON_OBJECT); return JSON_OBJECT_OPEN;}
- "[" {yybegin(ST_JSON_ARRAY); return JSON_ARRAY_OPEN;}
-}
-
-<ST_JSON_VALUE> {endObject} {
- yybegin(YYINITIAL); 
- return JSON_OBJECT_CLOSE;
-}
-
-<ST_JSON_VALUE> {comma} {
- yybegin(YYINITIAL); 
- return JSON_OBJECT_CLOSE;
-}
-
-. {
-	return UNDEFINED;
+<ST_JSON_OBJECT_KEY>  {
+ {Key} {yybegin(ST_JSON_COLON);	return JSON_OBJECT_KEY;}
 }
 
 //<YYINITIAL> {
@@ -334,3 +277,8 @@ comma = ,
 //  {NUMBER_TEXT} { return (new JsonToken(JsonToken.NUMBER, yytext(), yyline, yychar, yychar+yylength()));} 
 //  {WHITE_SPACE_CHAR} {}
 //}
+
+<STRING> {
+ \"  { yybegin(YYINITIAL); 
+       return "0";}
+}

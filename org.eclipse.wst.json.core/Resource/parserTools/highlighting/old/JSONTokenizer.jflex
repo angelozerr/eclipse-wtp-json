@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.wst.json.core.internal.parser.regions.JSONTextRegionFactory;
-import org.eclipse.wst.json.core.internal.parserz.JSONRegionContexts;
-import org.eclipse.wst.json.core.internal.parserz.JSONTextToken;
+import org.eclipse.wst.json.core.internal.regions.JSONRegionContexts;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 
 %%
