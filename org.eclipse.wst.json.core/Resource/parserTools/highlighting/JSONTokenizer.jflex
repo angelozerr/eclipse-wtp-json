@@ -268,24 +268,21 @@ Key = \" {name} \"
 
 startObject = \{
 endObject = \}
-comma = ,
+startArray = \[
+endArray = \]
+comma = \,
 
 %%
 
 /* white space within a tag */
-<ST_JSON_OBJECT, ST_JSON_OBJECT_COLON, ST_JSON_VALUE> {S}* {
+<ST_JSON_OBJECT, ST_JSON_OBJECT_COLON, ST_JSON_ARRAY, ST_JSON_VALUE> {S}* {
  return WHITE_SPACE;
 }
 
 <YYINITIAL> {
  "{" {yybegin(ST_JSON_OBJECT); return JSON_OBJECT_OPEN;}
- "[" {yybegin(ST_JSON_ARRAY); return JSON_ARRAY_OPEN;}
+ {startArray} {yybegin(ST_JSON_ARRAY); return JSON_ARRAY_OPEN;}
 }
-
-//<YYINITIAL> {
-//  "{" {  yybegin(ST_JSON_OBJECT_KEY); return JSON_OBJECT_OPEN; }
-//  "}" {  yybegin(YYINITIAL); return JSON_OBJECT_CLOSE; }  
-//}
 
 <ST_JSON_OBJECT>  {
  "}" {yybegin(YYINITIAL); return JSON_OBJECT_CLOSE; }
@@ -296,24 +293,30 @@ comma = ,
  ":" {  yybegin(ST_JSON_VALUE); return JSON_COLON; }
 }
 
-<ST_JSON_VALUE> {
+<ST_JSON_ARRAY> {
+ "]" {yybegin(YYINITIAL); return JSON_ARRAY_CLOSE; }
+}
+
+<ST_JSON_VALUE, ST_JSON_ARRAY> {
+ "{" {yybegin(ST_JSON_OBJECT); return JSON_OBJECT_OPEN;}
+ "[" {yybegin(ST_JSON_ARRAY); return JSON_ARRAY_OPEN;}
  "true" { yybegin(ST_JSON_VALUE); return JSON_VALUE_BOOLEAN; }
  "false" { yybegin(ST_JSON_VALUE); return JSON_VALUE_BOOLEAN; }
  "null" { yybegin(ST_JSON_VALUE); return JSON_VALUE_NULL; }
  {string} { yybegin(ST_JSON_VALUE); return JSON_VALUE_STRING; }
  {NUMBER_TEXT} { yybegin(ST_JSON_VALUE); return JSON_VALUE_NUMBER; }
- "{" {yybegin(ST_JSON_OBJECT); return JSON_OBJECT_OPEN;}
- "[" {yybegin(ST_JSON_ARRAY); return JSON_ARRAY_OPEN;}
 }
 
 <ST_JSON_VALUE> {endObject} {
- yybegin(YYINITIAL); 
  return JSON_OBJECT_CLOSE;
 }
 
-<ST_JSON_VALUE> {comma} {
- yybegin(YYINITIAL); 
- return JSON_OBJECT_CLOSE;
+<ST_JSON_VALUE> {comma} { 
+ return JSON_COMMA;
+}
+
+<ST_JSON_VALUE> {endArray} {
+ return JSON_ARRAY_CLOSE;
 }
 
 . {
