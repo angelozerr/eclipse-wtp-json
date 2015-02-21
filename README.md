@@ -43,6 +43,6 @@ But there are some limitations :
 
 WTP JSON Editor It follows the same architecture than XML, CSS, DTD, WTP Editors (org.eclipse.wst.sse.ui.StructuredTextEditor) 
 
- * JSON Tokenizer uses JFlex lexer based on [JSONTokenizer.jflex](https://github.com/angelozerr/eclipse-wtp-json/blob/master/core/org.eclipse.wst.json.core/Resource/parserTools/highlighting/JSONTokenizer.jflex)
+ * JSON Tokenizer uses JFlex lexer based on [JSONTokenizer.jflex](https://github.com/angelozerr/eclipse-wtp-json/blob/master/core/org.eclipse.wst.json.core/Resource/parserTools/highlighting/JSONTokenizer.jflex). You can find test at [JSONTokenizerTest.java]( https://github.com/angelozerr/eclipse-wtp-json/blob/master/core/org.eclipse.wst.json.core.tests/src/org/eclipse/wst/json/core/internal/parser/JSONTokenizerTest.java)
  
  
