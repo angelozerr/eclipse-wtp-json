@@ -26,7 +26,6 @@ public class LineStyleProviderForJSON extends AbstractLineStyleProvider
 		super();
 	}
 
-	
 	@Override
 	protected TextAttribute getAttributeFor(ITextRegion region) {
 		if (region != null) {
@@ -58,6 +57,25 @@ public class LineStyleProviderForJSON extends AbstractLineStyleProvider
 				IStyleConstantsJSON.CURLY_BRACE);
 		fColorTypes.put(JSONRegionContexts.JSON_OBJECT_CLOSE,
 				IStyleConstantsJSON.CURLY_BRACE);
+		fColorTypes.put(JSONRegionContexts.JSON_ARRAY_OPEN,
+				IStyleConstantsJSON.CURLY_BRACE);
+		fColorTypes.put(JSONRegionContexts.JSON_ARRAY_CLOSE,
+				IStyleConstantsJSON.CURLY_BRACE);
+		fColorTypes.put(JSONRegionContexts.JSON_COLON,
+				IStyleConstantsJSON.COLON);
+		fColorTypes.put(JSONRegionContexts.JSON_COMMA,
+				IStyleConstantsJSON.COMMA);
+
+		fColorTypes.put(JSONRegionContexts.JSON_OBJECT_KEY,
+				IStyleConstantsJSON.OBJECT_KEY);
+		fColorTypes.put(JSONRegionContexts.JSON_VALUE_STRING,
+				IStyleConstantsJSON.VALUE_STRING);
+		fColorTypes.put(JSONRegionContexts.JSON_VALUE_NUMBER,
+				IStyleConstantsJSON.VALUE_NUMBER);
+		fColorTypes.put(JSONRegionContexts.JSON_VALUE_BOOLEAN,
+				IStyleConstantsJSON.VALUE_BOOLEAN);
+		fColorTypes.put(JSONRegionContexts.JSON_VALUE_NULL,
+				IStyleConstantsJSON.VALUE_NULL);
 		/*
 		 * fColorTypes.put(CSSRegionContexts.CSS_COMMENT,
 		 * IStyleConstantsCSS.COMMENT);
@@ -244,6 +262,16 @@ public class LineStyleProviderForJSON extends AbstractLineStyleProvider
 	public void loadColors() {
 		initAttributes();
 
+		addTextAttribute(IStyleConstantsJSON.NORMAL);
+		addTextAttribute(IStyleConstantsJSON.CURLY_BRACE);
+		addTextAttribute(IStyleConstantsJSON.COLON);
+		addTextAttribute(IStyleConstantsJSON.COMMA);
+
+		addTextAttribute(IStyleConstantsJSON.OBJECT_KEY);
+		addTextAttribute(IStyleConstantsJSON.VALUE_STRING);
+		addTextAttribute(IStyleConstantsJSON.VALUE_NUMBER);
+		addTextAttribute(IStyleConstantsJSON.VALUE_BOOLEAN);
+		addTextAttribute(IStyleConstantsJSON.VALUE_NULL);
 		/*
 		 * addTextAttribute(IStyleConstantsCSS.ATMARK_RULE);
 		 * addTextAttribute(IStyleConstantsCSS.COLON);

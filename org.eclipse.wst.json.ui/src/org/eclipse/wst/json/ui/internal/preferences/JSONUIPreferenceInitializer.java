@@ -27,13 +27,39 @@ public class JSONUIPreferenceInitializer extends AbstractPreferenceInitializer {
 		// JSON Style Preferences
 		String NOBACKGROUNDBOLD = " | null | false"; //$NON-NLS-1$
 		String JUSTITALIC = " | null | false | true"; //$NON-NLS-1$
-		String JUSTBOLD = " | null | true";
+		String JUSTBOLD = " | null | true"; //$NON-NLS-1$
 		String styleValue = "null" + NOBACKGROUNDBOLD; //$NON-NLS-1$
 		store.setDefault(IStyleConstantsJSON.NORMAL, styleValue);
 
-		styleValue = "null" + NOBACKGROUNDBOLD; //$NON-NLS-1$
+		styleValue = ColorHelper.findRGBString(registry,
+				IStyleConstantsJSON.COLON, 0, 0, 0) + NOBACKGROUNDBOLD;
 		store.setDefault(IStyleConstantsJSON.COLON, styleValue);
+		styleValue = ColorHelper.findRGBString(registry,
+				IStyleConstantsJSON.CURLY_BRACE, 0, 0, 0) + NOBACKGROUNDBOLD;
 		store.setDefault(IStyleConstantsJSON.CURLY_BRACE, styleValue);
+		styleValue = ColorHelper.findRGBString(registry,
+				IStyleConstantsJSON.COMMA, 0, 0, 0) + NOBACKGROUNDBOLD;
+		store.setDefault(IStyleConstantsJSON.COMMA, styleValue);
+		
+		// JSON Key
+		styleValue = ColorHelper.findRGBString(registry,
+				IStyleConstantsJSON.OBJECT_KEY, 127, 0, 127) + NOBACKGROUNDBOLD;
+		store.setDefault(IStyleConstantsJSON.OBJECT_KEY, styleValue);
+
+		// JSON Value
+		styleValue = ColorHelper.findRGBString(registry,
+				IStyleConstantsJSON.VALUE_STRING, 42, 0, 255) + JUSTITALIC;
+		store.setDefault(IStyleConstantsJSON.VALUE_STRING, styleValue);
+		styleValue = ColorHelper.findRGBString(registry,
+				IStyleConstantsJSON.VALUE_NUMBER, 255, 0, 0) + NOBACKGROUNDBOLD;
+		store.setDefault(IStyleConstantsJSON.VALUE_NUMBER, styleValue);
+		styleValue = ColorHelper.findRGBString(registry,
+				IStyleConstantsJSON.VALUE_BOOLEAN, 255, 140, 0)
+				+ NOBACKGROUNDBOLD;
+		store.setDefault(IStyleConstantsJSON.VALUE_BOOLEAN, styleValue);
+		styleValue = ColorHelper.findRGBString(registry,
+				IStyleConstantsJSON.VALUE_NULL, 150, 150, 150) + NOBACKGROUNDBOLD;
+		store.setDefault(IStyleConstantsJSON.VALUE_NULL, styleValue);
 
 	}
 
