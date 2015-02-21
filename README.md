@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/angelozerr/eclipse-wtp-json.png)](http://travis-ci.org/angelozerr/eclipse-wtp-json)
 
-Goal of Eclipse WTP JSON is to create an advanced JSON Editor based on WTP, which is extensible and contribute if WTP Team are interested. WTP JSON Editor will provide extension point to customize the editor with custom, compeltion, validatioon, hyperlink and text hover to provide same features than [JetBrains & PHP](http://blog.jetbrains.com/phpstorm/2015/01/working-with-composer-json-in-phpstorm/) for instance.
+Goal of Eclipse WTP JSON is to create an advanced JSON Editor based on WTP, which is extensible and contribute if WTP Team are interested. WTP JSON Editor will provide extension point to customize the editor with custom, compeltion, validatioon, hyperlink and text hover to provide same features than [Working with composer.json in PhpStorm](http://blog.jetbrains.com/phpstorm/2015/01/working-with-composer-json-in-phpstorm/) for instance.
 
 Eclipse WTP JSON provides a JSON Editor based on Eclipse WTP (SSE):
 
