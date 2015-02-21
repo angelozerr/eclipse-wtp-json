@@ -1,4 +1,4 @@
-package org.eclipse.wst.json.core.internal.regions;
+package org.eclipse.wst.json.core.regions;
 
 public interface JSONRegionContexts {
 

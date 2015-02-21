@@ -3,6 +3,7 @@ package org.eclipse.wst.json.ui;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.wst.json.core.text.IJSONPartitions;
 import org.eclipse.wst.json.ui.internal.style.LineStyleProviderForJSON;
+import org.eclipse.wst.sse.core.text.IStructuredPartitions;
 import org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration;
 import org.eclipse.wst.sse.ui.internal.provisional.style.LineStyleProvider;
 
@@ -18,6 +19,15 @@ import org.eclipse.wst.sse.ui.internal.provisional.style.LineStyleProvider;
 public class StructuredTextViewerConfigurationJSON extends
 		StructuredTextViewerConfiguration {
 
+	/*
+	 * One instance per configuration because not sourceviewer-specific and it's
+	 * a String array
+	 */
+	private String[] fConfiguredContentTypes;
+
+	/*
+	 * One instance per configuration
+	 */
 	private LineStyleProvider fLineStyleProviderForJSON;
 
 	public LineStyleProvider[] getLineStyleProviders(
@@ -36,5 +46,15 @@ public class StructuredTextViewerConfigurationJSON extends
 			fLineStyleProviderForJSON = new LineStyleProviderForJSON();
 		}
 		return fLineStyleProviderForJSON;
+	}
+
+	@Override
+	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
+		if (fConfiguredContentTypes == null) {
+			fConfiguredContentTypes = new String[] { IJSONPartitions.JSON,
+					IStructuredPartitions.DEFAULT_PARTITION,
+					IStructuredPartitions.UNKNOWN_PARTITION };
+		}
+		return fConfiguredContentTypes;
 	}
 }

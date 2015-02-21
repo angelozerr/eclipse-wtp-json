@@ -3,11 +3,10 @@ package org.eclipse.wst.json.core.internal.parser;
 
 import java.io.CharArrayReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Stack;
 
 import org.eclipse.wst.json.core.internal.parser.regions.JSONTextRegionFactory;
-import org.eclipse.wst.json.core.internal.regions.JSONRegionContexts;
+import  org.eclipse.wst.json.core.regions.JSONRegionContexts;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 
 %%
@@ -36,6 +35,8 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 	public final static int BUFFER_SIZE_SMALL = 256;
 	private int fInitialBufferSize = BUFFER_SIZE_NORMAL;
 
+	private final Stack<Boolean> jsonContextStack = new Stack<Boolean>();
+	 
 	public void setInitialState(int state) {
 		fInitialState = state;
 	}
@@ -219,6 +220,40 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 		//		fUndefined.delete(0, fUndefined.length());
 	}
 
+	private String startElement(boolean isArray) {
+		jsonContextStack.push(isArray);
+		if (isArray) {
+			yybegin(ST_JSON_ARRAY);
+			return JSON_ARRAY_OPEN;
+		}
+		yybegin(ST_JSON_OBJECT);
+		return JSON_OBJECT_OPEN;
+	}
+
+	private String endElement(boolean isArray) {
+		boolean arrayContent = isArrayParsing();
+		if (!jsonContextStack.isEmpty()) {
+			jsonContextStack.pop();
+		}
+		if (isArray) {
+			if (arrayContent) {
+				return JSON_ARRAY_CLOSE;
+			}
+			return UNDEFINED;
+		}
+		if (!arrayContent) {
+			return JSON_OBJECT_CLOSE;
+		}
+		return UNDEFINED;
+	}
+
+	public boolean isArrayParsing() {
+		if (jsonContextStack.isEmpty()) {
+			return false;
+		}
+		return jsonContextStack.peek();
+	}
+	
 	/* user method */
 	public JSONTokenizer() {
 		super();
@@ -235,7 +270,6 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 	}
 %}
 
-%state STRING
 %state ST_JSON_OBJECT
 %state ST_JSON_ARRAY
 %state ST_JSON_OBJECT_COLON
@@ -280,12 +314,12 @@ comma = \,
 }
 
 <YYINITIAL> {
- "{" {yybegin(ST_JSON_OBJECT); return JSON_OBJECT_OPEN;}
- {startArray} {yybegin(ST_JSON_ARRAY); return JSON_ARRAY_OPEN;}
+ {startObject} {return startElement(false);}
+ {startArray} {return startElement(true);}
 }
 
 <ST_JSON_OBJECT>  {
- "}" {yybegin(YYINITIAL); return JSON_OBJECT_CLOSE; }
+ {endObject} {return endElement(false); }
  {Key} {yybegin(ST_JSON_OBJECT_COLON);	return JSON_OBJECT_KEY;}
 }
 
@@ -294,12 +328,12 @@ comma = \,
 }
 
 <ST_JSON_ARRAY> {
- "]" {yybegin(YYINITIAL); return JSON_ARRAY_CLOSE; }
+ {endArray} {return endElement(true);}
 }
 
 <ST_JSON_VALUE, ST_JSON_ARRAY> {
- "{" {yybegin(ST_JSON_OBJECT); return JSON_OBJECT_OPEN;}
- "[" {yybegin(ST_JSON_ARRAY); return JSON_ARRAY_OPEN;}
+ {startObject} {return startElement(false);}
+ {startArray} {return startElement(true);}
  "true" { yybegin(ST_JSON_VALUE); return JSON_VALUE_BOOLEAN; }
  "false" { yybegin(ST_JSON_VALUE); return JSON_VALUE_BOOLEAN; }
  "null" { yybegin(ST_JSON_VALUE); return JSON_VALUE_NULL; }
@@ -308,32 +342,34 @@ comma = \,
 }
 
 <ST_JSON_VALUE> {endObject} {
- return JSON_OBJECT_CLOSE;
+ return endElement(false);
 }
 
-<ST_JSON_VALUE> {comma} { 
+<ST_JSON_VALUE> {comma} {
+ if (!isArrayParsing()) {
+   yybegin(ST_JSON_OBJECT);
+ }
  return JSON_COMMA;
 }
 
 <ST_JSON_VALUE> {endArray} {
- return JSON_ARRAY_CLOSE;
+ return endElement(true);
 }
 
 . {
 	return UNDEFINED;
 }
 
-//<YYINITIAL> {
-//  "," { return (new JsonToken(JsonToken.COMMA, yytext(), yyline, yychar, yychar+1)); }
-//  ":" { return (new JsonToken(JsonToken.COLON, yytext(), yyline, yychar, yychar+1)); }
-//  "[" { return (new JsonToken(JsonToken.START_ARRAY, yytext(), yyline, yychar, yychar+1)); }
-//  "]" { return (new JsonToken(JsonToken.END_ARRAY, yytext(), yyline, yychar, yychar+1)); }
-//  "{" { return (new JsonToken(JsonToken.START_OBJECT, yytext(), yyline, yychar, yychar+1)); }
-//  "}" { return (new JsonToken(JsonToken.END_OBJECT, yytext(), yyline, yychar, yychar+1)); }
-//  "true" { return (new JsonToken(JsonToken.TRUE, yytext(), yyline, yychar, yychar+yylength()));}
-//  "false" { return (new JsonToken(JsonToken.FALSE, yytext(), yyline, yychar, yychar+yylength()));}
-//  "null" { return (new JsonToken(JsonToken.NULL, yytext(), yyline, yychar, yychar+yylength()));}
-//  \"  { string.setLength(0); yybegin(STRING); }
-//  {NUMBER_TEXT} { return (new JsonToken(JsonToken.NUMBER, yytext(), yyline, yychar, yychar+yylength()));} 
-//  {WHITE_SPACE_CHAR} {}
-//}
+\040 {
+	return WHITE_SPACE;
+}
+\011 {
+	return WHITE_SPACE;
+}
+\015 
+{
+	return WHITE_SPACE;
+}
+\012 {
+	return WHITE_SPACE;
+}

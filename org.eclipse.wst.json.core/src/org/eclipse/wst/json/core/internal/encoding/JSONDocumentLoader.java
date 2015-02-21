@@ -4,7 +4,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.wst.json.core.contenttype.ContentTypeIdForJSON;
 import org.eclipse.wst.json.core.internal.parser.JSONSourceParser;
-import org.eclipse.wst.json.core.internal.parser.JSONStructuredDocumentReParser;
+import org.eclipse.wst.json.core.internal.text.JSONStructuredDocumentReParser;
 import org.eclipse.wst.json.core.internal.text.StructuredTextPartitionerForJSON;
 import org.eclipse.wst.sse.core.internal.document.AbstractDocumentLoader;
 import org.eclipse.wst.sse.core.internal.document.IDocumentCharsetDetector;

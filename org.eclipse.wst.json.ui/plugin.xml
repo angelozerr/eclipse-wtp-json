@@ -38,7 +38,7 @@
 			target="org.eclipse.wst.json.core.jsonsource" />
 		<documentationTextHover
         	class="org.eclipse.wst.json.ui.internal.text.hover.JSONColorHover"
-        	target="org.eclipse.wst.json.STYLE" />
+        	target="org.eclipse.wst.json.JSON" />
 		<provisionalConfiguration
 			type="characterpairmatcher"
 			class="org.eclipse.wst.json.ui.internal.text.JSONDocumentRegionEdgeMatcher"
@@ -50,7 +50,7 @@
 		<provisionalConfiguration
 			type="autoeditstrategy"
 			class="org.eclipse.wst.json.ui.internal.autoedit.StructuredAutoEditStrategyJSON"
-			target="org.eclipse.wst.json.STYLE" />
+			target="org.eclipse.wst.json.JSON" />
 		<provisionalDefinition
 			type="preferencepages"
 			value="org.eclipse.wst.json.ui.preferences.json org.eclipse.wst.sse.ui.preferences.json.source, org.eclipse.wst.json.ui.preferences.templates, org.eclipse.wst.sse.ui.preferences.json.styles, org.eclipse.wst.sse.ui.preferences.json.contentassist"
@@ -65,7 +65,7 @@
 			target="org.eclipse.wst.json.core.jsonsource" />
 		<doubleClickStrategy
         	class="org.eclipse.wst.json.ui.doubleclick.JSONDoubleClickStrategy"
-        	target="org.eclipse.wst.json.STYLE">
+        	target="org.eclipse.wst.json.JSON">
   		</doubleClickStrategy>
 	</extension>-->
 	
@@ -612,16 +612,10 @@
 	</extension>
 
 	<extension point="org.eclipse.wst.sse.ui.characterPairing">
-		<inserter class="org.eclipse.wst.json.ui.internal.text.JSONCharacterPairInserter" id="org.eclipse.wst.html.json.ui.inserter">
-			<contentTypeIdentifier
-				id="org.eclipse.wst.html.core.htmlsource"
-				partitions="org.eclipse.wst.json.STYLE">
-			</contentTypeIdentifier>
-		</inserter>
 		<inserter class="org.eclipse.wst.json.ui.internal.text.JSONCharacterPairInserter" id="org.eclipse.wst.json.ui.inserter">
 			<contentTypeIdentifier
 				id="org.eclipse.wst.json.core.jsonsource"
-				partitions="org.eclipse.wst.json.STYLE">
+				partitions="org.eclipse.wst.json.JSON">
 			</contentTypeIdentifier>
 		</inserter>
 	</extension>
@@ -631,33 +625,11 @@
           prefix="/*"
           suffix="*/">
        <contentType
-             id="org.eclipse.wst.html.core.htmlsource">
-          <allowablePartitionTypes
-                anyPartitionType="false">
-          </allowablePartitionTypes>
-          <requiredPartitionTypes>
-             <partitionType
-                   id="org.eclipse.wst.json.STYLE">
-             </partitionType>
-          </requiredPartitionTypes>
-       </contentType>
-       <contentType
              associatedCommentPartitionTypeID="org.eclipse.wst.json.COMMENT"
              id="org.eclipse.wst.json.core.jsonsource">
           <allowablePartitionTypes
                 anyPartitionType="true">
           </allowablePartitionTypes>
-       </contentType>
-       <contentType
-             id="org.eclipse.jst.jsp.core.jspsource">
-          <allowablePartitionTypes
-                anyPartitionType="false">
-          </allowablePartitionTypes>
-          <requiredPartitionTypes>
-             <partitionType
-                   id="org.eclipse.wst.json.STYLE">
-             </partitionType>
-          </requiredPartitionTypes>
        </contentType>
     </blockCommentingStrategy>
  </extension>
