@@ -2,6 +2,8 @@
 
 [![Build Status](https://secure.travis-ci.org/angelozerr/eclipse-wtp-json.png)](http://travis-ci.org/angelozerr/eclipse-wtp-json)
 
+Goal of Eclipse WTP JSON is to create an advanced JSON Editor based on WTP, which is extensible and contribute if WTP Team are interested.
+
 Eclipse WTP JSON provides a JSON Editor based on Eclipse WTP (SSE):
 
 ![JSON Editor](https://github.com/angelozerr/eclipse-wtp-json/wiki/images/JSONEditorOverview.png)  
