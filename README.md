@@ -19,9 +19,9 @@ Today this project is a POC, but her goal is to provide a WTP JSON Editor with t
 And provides advanced features like : 
  
  - Extends the editor with custom completion: **TODO!** (completion which follows a JSON Schema, whith files for bower.json, etc)
-  - Extends the editor with custom hyperlink (hyperlink to open a file from a JSON string value).
-  - Extends the editor with custom validation (validate the existing of declared file from a JSON string value).
-- Extends the editor with custom hover (text hover displays information about the JSON string value which decalred a file (file path, name, etc)).
+ - Extends the editor with custom hyperlink (hyperlink to open a file from a JSON string value).
+ - Extends the editor with custom validation (validate the existing of declared file from a JSON string value).
+ - Extends the editor with custom hover (text hover displays information about the JSON string value which decalred a file (file path, name, etc)).
 
 # Why another JSON Editor?
 
