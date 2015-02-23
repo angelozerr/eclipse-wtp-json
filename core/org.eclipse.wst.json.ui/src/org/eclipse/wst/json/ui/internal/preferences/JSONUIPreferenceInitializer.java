@@ -1,3 +1,14 @@
+/**
+ *  Copyright (c) 2015-present Angelo ZERR.
+ *  
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *
+ *  Contributors:
+ *  Angelo Zerr <angelo.zerr@gmail.com> - initial API and implementation
+ */
 package org.eclipse.wst.json.ui.internal.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -40,7 +51,7 @@ public class JSONUIPreferenceInitializer extends AbstractPreferenceInitializer {
 		styleValue = ColorHelper.findRGBString(registry,
 				IStyleConstantsJSON.COMMA, 0, 0, 0) + NOBACKGROUNDBOLD;
 		store.setDefault(IStyleConstantsJSON.COMMA, styleValue);
-		
+
 		// JSON Key
 		styleValue = ColorHelper.findRGBString(registry,
 				IStyleConstantsJSON.OBJECT_KEY, 127, 0, 127) + NOBACKGROUNDBOLD;
@@ -58,7 +69,8 @@ public class JSONUIPreferenceInitializer extends AbstractPreferenceInitializer {
 				+ NOBACKGROUNDBOLD;
 		store.setDefault(IStyleConstantsJSON.VALUE_BOOLEAN, styleValue);
 		styleValue = ColorHelper.findRGBString(registry,
-				IStyleConstantsJSON.VALUE_NULL, 150, 150, 150) + NOBACKGROUNDBOLD;
+				IStyleConstantsJSON.VALUE_NULL, 150, 150, 150)
+				+ NOBACKGROUNDBOLD;
 		store.setDefault(IStyleConstantsJSON.VALUE_NULL, styleValue);
 
 	}
