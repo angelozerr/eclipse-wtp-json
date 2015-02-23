@@ -218,6 +218,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 
 		/* user variables */
 		//		fUndefined.delete(0, fUndefined.length());
+		jsonContextStack.clear();
 	}
 
 	private String startElement(boolean isArray) {

@@ -11,6 +11,8 @@
  */
 package org.eclipse.wst.json.core.document;
 
+import org.eclipse.wst.json.core.internal.document.JSONObjectImpl;
+
 /**
  * JSON Document API.
  *
@@ -23,4 +25,6 @@ public interface IJSONDocument extends IJSONNode {
 	 * @return the SSE JSON model.
 	 */
 	IJSONModel getModel();
+
+	IJSONObject createJSONObject();
 }

@@ -3,9 +3,10 @@ package org.eclipse.wst.json.core.internal.document;
 import org.eclipse.wst.json.core.document.IJSONDocument;
 import org.eclipse.wst.json.core.document.IJSONModel;
 import org.eclipse.wst.json.core.document.IJSONNode;
+import org.eclipse.wst.json.core.document.IJSONObject;
+import org.eclipse.wst.json.core.document.JSONException;
 
-public class JSONDocumentImpl extends JSONStructuredDocumentRegionContainer
-		implements IJSONDocument {
+public class JSONDocumentImpl extends JSONNodeContainer implements IJSONDocument {
 
 	private JSONModelImpl fModel = null;
 
@@ -31,12 +32,33 @@ public class JSONDocumentImpl extends JSONStructuredDocumentRegionContainer
 	}
 
 	@Override
-	public IJSONNode cloneNode(boolean deep) {
-		JSONDocumentImpl cloned = new JSONDocumentImpl(this);
-
-		if (deep)
-			cloneChildNodes(cloned, deep);
-
-		return cloned;
+	public IJSONObject createJSONObject() {
+		JSONObjectImpl object = new JSONObjectImpl();
+		object.setOwnerDocument(this);
+		return object;
 	}
+
+	@Override
+	public short getNodeType() {
+		return DOCUMENT_NODE;
+	}
+
+	@Override
+	public String getNodeName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getNodeValue() throws JSONException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IJSONNode cloneNode(boolean deep) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

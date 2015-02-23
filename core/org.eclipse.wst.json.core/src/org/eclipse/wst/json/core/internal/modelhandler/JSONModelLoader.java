@@ -7,13 +7,13 @@ import org.eclipse.wst.sse.core.internal.model.AbstractModelLoader;
 import org.eclipse.wst.sse.core.internal.provisional.IModelLoader;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 
-
 /**
  * 
  */
 public class JSONModelLoader extends AbstractModelLoader {
+	
 	/**
-	 * CSSLoader constructor comment.
+	 * JSON Loader constructor comment.
 	 */
 	public JSONModelLoader() {
 		super();
@@ -23,11 +23,7 @@ public class JSONModelLoader extends AbstractModelLoader {
 	 * @see IModelLoader#newModel()
 	 */
 	public IStructuredModel newModel() {
-		IStructuredModel model = new JSONModelImpl();
-		// now done in create
-		// model.setStructuredDocument(createNewStructuredDocument());
-		// model.setFactoryRegistry(defaultFactoryRegistry());
-		return model;
+		return new JSONModelImpl();
 	}
 
 	public IModelLoader newInstance() {
