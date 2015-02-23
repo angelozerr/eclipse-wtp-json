@@ -34,7 +34,7 @@ See [tern.java issue 253](https://github.com/angelozerr/tern.java/issues/253).
 It exists several JSON Editor :
 
  - http://marketplace.eclipse.org/content/json-editor-plugin
- - http://marketplace.eclipse.org/content/json-tools (see sources at https://bitbucket.org/denmiroch/jsontools/src/d332043d57dbd0bb18ae26098fe576369740d521?at=default)
+ - http://marketplace.eclipse.org/content/json-tools (see sources at https://bitbucket.org/denmiroch/jsontools/src/)
  - https://github.com/skoptelov/jsonclipse
  - https://github.com/xcoulon/jbosstools-jsoneditor
 
