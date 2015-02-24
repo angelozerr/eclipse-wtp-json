@@ -192,7 +192,7 @@
 
 	<extension point="org.eclipse.core.runtime.adapters">
 		<factory
-			adaptableType="org.eclipse.wst.json.core.internal.provisional.document.IJSONModel"
+			adaptableType="org.eclipse.wst.json.core.document.IJSONModel"
 			class="org.eclipse.wst.json.ui.internal.editor.JSONSelectionConverterFactory">
 			<adapter
 				type="org.eclipse.wst.sse.ui.internal.editor.SelectionConvertor"/>
