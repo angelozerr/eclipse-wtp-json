@@ -77,8 +77,6 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 
 	IJSONNode getParentNode();
 
-	boolean isDocument();
-
 	short getNodeType();
 
 	IStructuredDocumentRegion getStartStructuredDocumentRegion();

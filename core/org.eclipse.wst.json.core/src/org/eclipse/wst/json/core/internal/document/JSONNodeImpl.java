@@ -1,22 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2012 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *     
- *     Jens Lukowski/Innoopract - initial renaming/restructuring
- *     
- *     Balazs Banfai: Bug 154737 getUserData/setUserData support for Node
- *     https://bugs.eclipse.org/bugs/show_bug.cgi?id=154737
- *     
- *     David Carver (STAR) - bug 295127 - implement isSameNode and compareDocumentPosition methods.
- *                                        Unit Tests covered in wst.xsl XPath 2.0 tests.
- *     David Carver (STAR) - bug 296999 - Inefficient use of new String()
- *******************************************************************************/
 package org.eclipse.wst.json.core.internal.document;
 
 import org.eclipse.core.runtime.IAdaptable;

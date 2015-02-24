@@ -14,7 +14,7 @@ package org.eclipse.wst.json.core.internal.document;
 
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.document.IJSONObject;
-
+import org.eclipse.wst.json.core.document.IJSONPair;
 
 /**
  * 
@@ -36,7 +36,7 @@ public interface JSONModelNotifier {
 	 * @param oldAttr
 	 *            org.w3c.dom.Attr
 	 */
-	//void attrReplaced(Element element, Attr newAttr, Attr oldAttr);
+	void pairReplaced(IJSONObject element, IJSONPair newAttr, IJSONPair oldAttr);
 
 	/**
 	 * Signal that changing is starting.
@@ -58,13 +58,14 @@ public interface JSONModelNotifier {
 	 */
 	void cancelPending();
 
-	void childReplaced(IJSONNode parentNode, IJSONNode newChild, IJSONNode oldChild);
+	void childReplaced(IJSONNode parentNode, IJSONNode newChild,
+			IJSONNode oldChild);
 
 	/**
 	 * Editable state changed for node.
 	 * 
 	 */
-	//void editableChanged(Node node);
+	// void editableChanged(Node node);
 
 	/**
 	 * Signal changing is finished.

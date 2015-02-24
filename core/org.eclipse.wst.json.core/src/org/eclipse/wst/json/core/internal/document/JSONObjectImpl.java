@@ -2,14 +2,11 @@ package org.eclipse.wst.json.core.internal.document;
 
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.document.IJSONObject;
+import org.eclipse.wst.json.core.document.IJSONPair;
 import org.eclipse.wst.json.core.document.JSONException;
-import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 
-public class JSONObjectImpl extends JSONNodeContainer
-		implements IJSONObject {
+public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 
-	private IStructuredDocumentRegion endStructuredDocumentRegion = null;
-	
 	public JSONObjectImpl() {
 	}
 
@@ -28,15 +25,10 @@ public class JSONObjectImpl extends JSONNodeContainer
 	}
 
 	@Override
-	public boolean isDocument() {
-		return false;
-	}
-
-	@Override
 	public short getNodeType() {
 		return IJSONNode.OBJECT_NODE;
 	}
-	
+
 	public boolean hasEndTag() {
 		return (getLastStructuredDocumentRegion() != null);
 	}
@@ -53,13 +45,6 @@ public class JSONObjectImpl extends JSONNodeContainer
 		return (getStructuredDocumentRegion() != null);
 	}
 
-	public int getStartEndOffset() {
-		IStructuredDocumentRegion flatNode = getStructuredDocumentRegion();
-		if (flatNode != null)
-			return flatNode.getEnd();
-		return super.getStartOffset();
-	}
-
 	@Override
 	public String getNodeName() {
 		return "object";
@@ -70,156 +55,180 @@ public class JSONObjectImpl extends JSONNodeContainer
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	void setStartStructuredDocumentRegion(IStructuredDocumentRegion flatNode) {
-		setStructuredDocumentRegion(flatNode);
+
+	public IJSONObject add(IJSONPair newAttr) {
+		if (newAttr == null)
+			return null;
+		JSONPairImpl attr = (JSONPairImpl) newAttr;
+		if (attr.getOwnerObject() != null)
+			return null;
+
+		//if (this.attrNodes == null)
+		//	this.attrNodes = new NodeListImpl();
+		//this.attrNodes.appendNode(attr);
+		attr.setOwnerObject(this);
+
+		notifyPairReplaced(attr, null);
+		return this;
 	}
 
-	void setEndStructuredDocumentRegion(IStructuredDocumentRegion flatNode) {
-		this.endStructuredDocumentRegion = flatNode;	
+	protected void notifyPairReplaced(IJSONPair newPair, IJSONPair oldPair) {
+		JSONDocumentImpl document = (JSONDocumentImpl) getContainerDocument();
+		if (document == null)
+			return;
+		JSONModelImpl model = (JSONModelImpl) document.getModel();
+		if (model == null)
+			return;
+		model.pairReplaced(this, newPair, oldPair);
 	}
 	
-//	@Override
-//	public boolean getBoolean(String paramString) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean getBoolean(String paramString, boolean paramBoolean) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public int getInt(String paramString) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-//
-//	@Override
-//	public int getInt(String paramString, int paramInt) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-//
-//	@Override
-//	public JsonArray getJsonArray(String paramString) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public JsonNumber getJsonNumber(String paramString) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public JsonObject getJsonObject(String paramString) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public JsonString getJsonString(String paramString) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public String getString(String paramString) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public String getString(String paramString1, String paramString2) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public boolean isNull(String paramString) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public ValueType getValueType() {
-//		return ValueType.OBJECT;
-//	}
-//
-//	@Override
-//	public void clear() {
-//		// TODO Auto-generated method stub
-//
-//	}
-//
-//	@Override
-//	public boolean containsKey(Object arg0) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean containsValue(Object arg0) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public Set<java.util.Map.Entry<String, JsonValue>> entrySet() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public JsonValue get(Object arg0) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public boolean isEmpty() {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public Set<String> keySet() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public JsonValue put(String key, JsonValue value) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public void putAll(Map<? extends String, ? extends JsonValue> arg0) {
-//		// TODO Auto-generated method stub
-//
-//	}
-//
-//	@Override
-//	public JsonValue remove(Object arg0) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public int size() {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-//
-//	@Override
-//	public Collection<JsonValue> values() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	@Override
+	public IJSONObject remove(IJSONPair pair) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	// @Override
+	// public boolean getBoolean(String paramString) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public boolean getBoolean(String paramString, boolean paramBoolean) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public int getInt(String paramString) {
+	// // TODO Auto-generated method stub
+	// return 0;
+	// }
+	//
+	// @Override
+	// public int getInt(String paramString, int paramInt) {
+	// // TODO Auto-generated method stub
+	// return 0;
+	// }
+	//
+	// @Override
+	// public JsonArray getJsonArray(String paramString) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public JsonNumber getJsonNumber(String paramString) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public JsonObject getJsonObject(String paramString) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public JsonString getJsonString(String paramString) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public String getString(String paramString) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public String getString(String paramString1, String paramString2) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public boolean isNull(String paramString) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public ValueType getValueType() {
+	// return ValueType.OBJECT;
+	// }
+	//
+	// @Override
+	// public void clear() {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public boolean containsKey(Object arg0) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public boolean containsValue(Object arg0) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public Set<java.util.Map.Entry<String, JsonValue>> entrySet() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public JsonValue get(Object arg0) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public boolean isEmpty() {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public Set<String> keySet() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public JsonValue put(String key, JsonValue value) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public void putAll(Map<? extends String, ? extends JsonValue> arg0) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public JsonValue remove(Object arg0) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public int size() {
+	// // TODO Auto-generated method stub
+	// return 0;
+	// }
+	//
+	// @Override
+	// public Collection<JsonValue> values() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
 
 }

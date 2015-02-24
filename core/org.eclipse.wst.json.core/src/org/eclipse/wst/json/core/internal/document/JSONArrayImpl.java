@@ -2,9 +2,10 @@ package org.eclipse.wst.json.core.internal.document;
 
 import org.eclipse.wst.json.core.document.IJSONArray;
 import org.eclipse.wst.json.core.document.IJSONNode;
+import org.eclipse.wst.json.core.document.IJSONValue;
 import org.eclipse.wst.json.core.document.JSONException;
 
-public class JSONArrayImpl extends JSONNodeContainer implements IJSONArray {
+public class JSONArrayImpl extends JSONStructureImpl implements IJSONArray {
 
 	public JSONArrayImpl() {
 	}
@@ -24,11 +25,6 @@ public class JSONArrayImpl extends JSONNodeContainer implements IJSONArray {
 	}
 
 	@Override
-	public boolean isDocument() {
-		return false;
-	}
-
-	@Override
 	public short getNodeType() {
 		return IJSONNode.ARRAY_NODE;
 	}
@@ -45,6 +41,18 @@ public class JSONArrayImpl extends JSONNodeContainer implements IJSONArray {
 		return null;
 	}
 
+	@Override
+	public IJSONArray add(IJSONValue value) {
+		// TODO Auto-generated method stub
+		return this;
+	}
+	
+	@Override
+	public IJSONArray remove(IJSONValue value) {
+		// TODO Auto-generated method stub
+		return this;
+	}
+	
 	// @Override
 	// public boolean getBoolean(int paramInt) {
 	// // TODO Auto-generated method stub

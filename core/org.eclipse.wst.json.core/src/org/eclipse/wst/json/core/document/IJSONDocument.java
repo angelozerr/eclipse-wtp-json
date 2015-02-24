@@ -26,5 +26,25 @@ public interface IJSONDocument extends IJSONNode {
 	 */
 	IJSONModel getModel();
 
+	/**
+	 * Create an instance of {@link IJSONObject}.
+	 * 
+	 * @return an instance of {@link IJSONObject}.
+	 */
 	IJSONObject createJSONObject();
+
+	/**
+	 * Create an instance of {@link IJSONArray}.
+	 * 
+	 * @return an instance of {@link IJSONArray}.
+	 */
+	IJSONArray createJSONArray();
+
+	/**
+	 * Create JSON pair name/value
+	 * 
+	 * @param name
+	 * @return an instance JSON pair name/value
+	 */
+	IJSONPair createJSONPair(String name);
 }

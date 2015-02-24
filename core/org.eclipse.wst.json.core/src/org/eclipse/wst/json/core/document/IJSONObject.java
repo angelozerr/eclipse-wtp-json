@@ -1,6 +1,8 @@
 package org.eclipse.wst.json.core.document;
 
+public interface IJSONObject extends IJSONStructure {
 
-public interface IJSONObject extends IJSONNode {
+	IJSONObject add(IJSONPair pair);
 
+	IJSONObject remove(IJSONPair pair);
 }

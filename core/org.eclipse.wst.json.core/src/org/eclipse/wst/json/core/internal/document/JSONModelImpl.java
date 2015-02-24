@@ -6,6 +6,7 @@ import org.eclipse.wst.json.core.document.IJSONDocument;
 import org.eclipse.wst.json.core.document.IJSONModel;
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.document.IJSONObject;
+import org.eclipse.wst.json.core.document.IJSONPair;
 import org.eclipse.wst.json.core.internal.Logger;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.model.AbstractStructuredModel;
@@ -79,29 +80,19 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 		super.aboutToReinitializeModel();
 	}
 
-	/**
-	 * attrReplaced method
-	 * 
-	 * @param element
-	 *            org.w3c.dom.Element
-	 * @param newAttr
-	 *            org.w3c.dom.Attr
-	 * @param oldAttr
-	 *            org.w3c.dom.Attr
-	 */
-	// protected void attrReplaced(IJSONObject element, IJSONNode newAttr,
-	// IJSONNode oldAttr) {
-	// if (element == null)
-	// return;
-	// if (getActiveParser() == null) {
-	// JSONModelUpdater updater = getModelUpdater();
-	// setActive(updater);
-	// updater.initialize();
-	// updater.replaceAttr(element, newAttr, oldAttr);
-	// setActive(null);
-	// }
-	// getModelNotifier().attrReplaced(element, newAttr, oldAttr);
-	// }
+	protected void pairReplaced(IJSONObject element, IJSONPair newAttr,
+			IJSONPair oldAttr) {
+		if (element == null)
+			return;
+		if (getActiveParser() == null) {
+			JSONModelUpdater updater = getModelUpdater();
+			setActive(updater);
+			updater.initialize();
+			updater.replaceAttr(element, newAttr, oldAttr);
+			setActive(null);
+		}
+		getModelNotifier().pairReplaced(element, newAttr, oldAttr);
+	}
 
 	/**
 	 * This API allows a client controlled way of notifying all ModelEvent
@@ -196,18 +187,18 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 
 	/**
 	 */
-	protected void documentTypeChanged() {
-		if (this.refresh)
-			return;
-		// unlike 'resfresh', 'reinitialize' finishes loop
-		// and flushes remaining notification que before
-		// actually reinitializing.
-		// ISSUE: should reinit be used instead of handlerefresh?
-		// this.setReinitializeNeeded(true);
-		if (this.active != null || getModelNotifier().isChanging())
-			return; // defer
-		handleRefresh();
-	}
+	// protected void documentTypeChanged() {
+	// if (this.refresh)
+	// return;
+	// // unlike 'resfresh', 'reinitialize' finishes loop
+	// // and flushes remaining notification que before
+	// // actually reinitializing.
+	// // ISSUE: should reinit be used instead of handlerefresh?
+	// // this.setReinitializeNeeded(true);
+	// if (this.active != null || getModelNotifier().isChanging())
+	// return; // defer
+	// handleRefresh();
+	// }
 
 	// protected void editableChanged(Node node) {
 	// if (node != null) {
@@ -217,18 +208,18 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 
 	/**
 	 */
-	protected void endTagChanged(IJSONObject element) {
-		if (element == null)
-			return;
-		if (getActiveParser() == null) {
-			JSONModelUpdater updater = getModelUpdater();
-			setActive(updater);
-			updater.initialize();
-			// updater.changeEndTag(element);
-			setActive(null);
-		}
-		getModelNotifier().endTagChanged(element);
-	}
+	// protected void endTagChanged(IJSONObject element) {
+	// if (element == null)
+	// return;
+	// if (getActiveParser() == null) {
+	// JSONModelUpdater updater = getModelUpdater();
+	// setActive(updater);
+	// updater.initialize();
+	// // updater.changeEndTag(element);
+	// setActive(null);
+	// }
+	// getModelNotifier().endTagChanged(element);
+	// }
 
 	/**
 	 */
@@ -509,10 +500,7 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 		}
 	}
 
-	/**
-	 * nodesReplaced method
-	 * 
-	 */
+	@Override
 	public void nodesReplaced(StructuredDocumentRegionsReplacedEvent event) {
 		if (event == null)
 			return;
@@ -559,11 +547,7 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 
 	}
 
-	/**
-	 * regionChanged method
-	 * 
-	 * @param structuredDocumentEvent
-	 */
+	@Override
 	public void regionChanged(RegionChangedEvent event) {
 		if (event == null)
 			return;

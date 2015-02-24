@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.wst.json.core.document,
+Export-Package: org.eclipse.wst.json.core.contenttype,
+ org.eclipse.wst.json.core.document,
  org.eclipse.wst.json.core.internal.parser;x-friends:="org.eclipse.wst.json.core.tests",
  org.eclipse.wst.json.core.modelhandler,
  org.eclipse.wst.json.core.regions,

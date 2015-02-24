@@ -1,3 +1,14 @@
+/**
+ *  Copyright (c) 2015-present Angelo ZERR.
+ *  
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *
+ *  Contributors:
+ *  Angelo Zerr <angelo.zerr@gmail.com> - initial API and implementation
+ */
 package org.eclipse.wst.json.core.internal.parser;
 
 import java.io.Reader;
@@ -13,6 +24,10 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegionList;
 import org.eclipse.wst.sse.core.internal.util.Debug;
 
+/**
+ * JSON source parser.
+ *
+ */
 public class JSONSourceParser implements RegionParser {
 
 	private long fStartTime;
@@ -55,43 +70,42 @@ public class JSONSourceParser implements RegionParser {
 		String currentRegionType = null;
 
 		try {
-		while ((region = getNextRegion()) != null) {
-			type = region.getType();
-			if (mustBeStart(type, currentRegionType) && currentNode != null) {
-				currentNode.setEnded(true);
-			}
-
-			if ((currentNode != null && currentNode.isEnded())
-					|| currentNode == null) {
-				if (currentNode != null && !currentNode.isEnded()) {
+			while ((region = getNextRegion()) != null) {
+				type = region.getType();
+				if (mustBeStart(type, currentRegionType) && currentNode != null) {
 					currentNode.setEnded(true);
 				}
-				lastNode = currentNode;
-				currentNode = createStructuredDocumentRegion(type);
-				currentRegionType = type;
-				if (lastNode != null) {
-					lastNode.setNext(currentNode);
+
+				if ((currentNode != null && currentNode.isEnded())
+						|| currentNode == null) {
+					if (currentNode != null && !currentNode.isEnded()) {
+						currentNode.setEnded(true);
+					}
+					lastNode = currentNode;
+					currentNode = createStructuredDocumentRegion(type);
+					currentRegionType = type;
+					if (lastNode != null) {
+						lastNode.setNext(currentNode);
+					}
+					currentNode.setPrevious(lastNode);
+					currentNode.setStart(region.getStart());
 				}
-				currentNode.setPrevious(lastNode);
-				currentNode.setStart(region.getStart());
+
+				currentNode.addRegion(region);
+				currentNode.setLength(region.getStart() + region.getLength()
+						- currentNode.getStart());
+				region.adjustStart(-currentNode.getStart());
+
+				if (mustBeEnd(type)) {
+					currentNode.setEnded(true);
+				}
+
+				if (headNode == null && currentNode != null) {
+					headNode = currentNode;
+				}
 			}
 
-			currentNode.addRegion(region);
-			currentNode.setLength(region.getStart() + region.getLength()
-					- currentNode.getStart());
-			region.adjustStart(-currentNode.getStart());
-
-			if (mustBeEnd(type)) {
-				currentNode.setEnded(true);
-			}
-
-			if (headNode == null && currentNode != null) {
-				headNode = currentNode;
-			}
-		}
-
-		}
-		catch(Throwable e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 		if (currentNode != null && !currentNode.isEnded()) {
@@ -177,7 +191,12 @@ public class JSONSourceParser implements RegionParser {
 	 */
 	protected boolean mustBeStart(String type, String docRegionType) {
 		return type == JSONRegionContexts.JSON_OBJECT_OPEN
-				|| type == JSONRegionContexts.JSON_ARRAY_OPEN;
+				|| type == JSONRegionContexts.JSON_OBJECT_CLOSE
+				|| type == JSONRegionContexts.JSON_OBJECT_KEY
+				|| type == JSONRegionContexts.JSON_ARRAY_OPEN
+				|| type == JSONRegionContexts.JSON_ARRAY_CLOSE
+				|| type == JSONRegionContexts.JSON_COLON
+				|| type == JSONRegionContexts.JSON_COMMA;
 		/*
 		 * ((type == JSONRegionContexts.JSON_DELIMITER || type ==
 		 * JSONRegionContexts.JSON_LBRACE || type ==

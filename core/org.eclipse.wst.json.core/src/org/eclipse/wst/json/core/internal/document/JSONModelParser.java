@@ -2,6 +2,7 @@ package org.eclipse.wst.json.core.internal.document;
 
 import java.util.Iterator;
 
+import org.eclipse.wst.json.core.document.IJSONArray;
 import org.eclipse.wst.json.core.document.IJSONModel;
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.document.IJSONObject;
@@ -1039,7 +1040,7 @@ public class JSONModelParser {
 	 * insertEndTag method
 	 * 
 	 */
-	private void insertEndTag(IStructuredDocumentRegion flatNode) {
+	private void updateEndObject(IStructuredDocumentRegion flatNode) {
 //		ITextRegionList regions = flatNode.getRegions();
 //		if (regions == null)
 //			return;
@@ -1066,6 +1067,15 @@ public class JSONModelParser {
 		if (start != null) { // start tag found
 //			insertEndTag(start);
 			start.setEndStructuredDocumentRegion(flatNode);
+			
+			// update context
+			this.context.setParentNode(start.getParentNode());
+//			// re-check the next sibling
+			//newNext = start.getNextSibling();
+//			if (newNext != null)
+//				this.context.setNextNode(newNext);
+//			else
+//				this.context.setParentNode(newParent);
 //			return;
 		}
 //
@@ -1290,8 +1300,8 @@ public class JSONModelParser {
 							.getType();
 					if (((JSONObjectImpl) parent).isContainer()
 							/*&& type == JSONRegionContexts.JSON_EMPTY_TAG_CLOSE*/) {
-						next = parent.getNextSibling();
-						parent = parent.getParentNode();
+						//next = parent.getNextSibling();
+						//parent = parent.getParentNode();
 					} else {
 //						ModelParserAdapter adapter = getParserAdapter();
 //						if (adapter != null) {
@@ -1364,51 +1374,9 @@ public class JSONModelParser {
 //		insertNode(pi);
 //	}
 
-	/**
-	 * insertStartTag method can be used by subclasses, but not overridden.
-	 * 
-	 * @param element
-	 *            org.w3c.dom.Element
-	 */
-	protected void insertStartObject(IJSONObject element) {
-		if (element == null)
-			return;
-		if (this.context == null)
-			return;
+	// ---------------------------- JSON Object 
 
-		insertNode(element);
-
-		JSONObjectImpl newElement = (JSONObjectImpl) element;
-		if (newElement.isEmptyTag() || !newElement.isContainer())
-			return;
-
-		// Ignore container tags that have been closed
-		String type = newElement.getStartStructuredDocumentRegion()
-				.getLastRegion().getType();
-//		if (newElement.isContainer()
-//				&& type == JSONRegionContexts.JSON_EMPTY_TAG_CLOSE)
-//			return;
-
-		// demote siblings
-		IJSONNode parent = this.context.getParentNode();
-		if (parent == null)
-			return; // error
-		IJSONNode next = this.context.getNextNode();
-		demoteNodes(element, element, parent, next);
-
-		// update context
-		IJSONNode firstChild = element.getFirstChild();
-		if (firstChild != null)
-			this.context.setNextNode(firstChild);
-		else
-			this.context.setParentNode(element);
-	}
-
-	/**
-	 * insertStartTag method
-	 * 
-	 */
-	private void insertStartObject(IStructuredDocumentRegion flatNode) {
+	private void insertObject(IStructuredDocumentRegion flatNode) {
 		ITextRegionList regions = flatNode.getRegions();
 		if (regions == null)
 			return;
@@ -1468,9 +1436,96 @@ public class JSONModelParser {
 		//if (isEmptyTag)
 		//	element.setEmptyTag(true);
 		element.setStartStructuredDocumentRegion(flatNode);
-		insertStartObject(element);
+		insertStartObjectOLD(element);
+	}
+	
+	protected void insertStartObjectOLD(IJSONObject element) {
+		if (element == null)
+			return;
+		if (this.context == null)
+			return;
+
+		insertNode(element);
+
+		JSONObjectImpl newElement = (JSONObjectImpl) element;
+		if (newElement.isEmptyTag() || !newElement.isContainer())
+			return;
+
+		// Ignore container tags that have been closed
+		String type = newElement.getStartStructuredDocumentRegion()
+				.getLastRegion().getType();
+//		if (newElement.isContainer()
+//				&& type == JSONRegionContexts.JSON_EMPTY_TAG_CLOSE)
+//			return;
+
+		// demote siblings
+		IJSONNode parent = this.context.getParentNode();
+		if (parent == null)
+			return; // error
+		IJSONNode next = this.context.getNextNode();
+		demoteNodes(element, element, parent, next);
+
+		// update context
+		IJSONNode firstChild = element.getFirstChild();
+		if (firstChild != null)
+			this.context.setNextNode(firstChild);
+		else
+			this.context.setParentNode(element);
 	}
 
+
+
+	// ---------------------------- JSON Array 
+	
+	protected void insertStartArray(IJSONArray element) {
+		if (element == null)
+			return;
+		if (this.context == null)
+			return;
+
+		insertNode(element);
+
+		JSONArrayImpl newElement = (JSONArrayImpl) element;
+		String type = newElement.getStartStructuredDocumentRegion()
+				.getLastRegion().getType();
+		// demote siblings
+		IJSONNode parent = this.context.getParentNode();
+		if (parent == null)
+			return; // error
+		IJSONNode next = this.context.getNextNode();
+		demoteNodes(element, element, parent, next);
+		// update context
+		IJSONNode firstChild = element.getFirstChild();
+		if (firstChild != null)
+			this.context.setNextNode(firstChild);
+		else
+			this.context.setParentNode(element);
+	}
+
+	/**
+	 * insertStartTag method
+	 * 
+	 */
+	private void insertStartArray(IStructuredDocumentRegion flatNode) {
+		ITextRegionList regions = flatNode.getRegions();
+		if (regions == null)
+			return;
+		JSONArrayImpl element = (JSONArrayImpl) this.model.getDocument().createJSONArray();
+		element.setStartStructuredDocumentRegion(flatNode);
+		insertStartArray(element);
+	}
+	
+	private void insertEndArray(IStructuredDocumentRegion flatNode) {
+		JSONArrayImpl start = (JSONArrayImpl) this.context.findPreviousArray();
+		if (start != null) { // start tag found
+			start.setEndStructuredDocumentRegion(flatNode);
+			// update context
+			this.context.setParentNode(start.getParentNode());
+		}
+
+	}
+	// ---------------- Commons insert
+	
 	/**
 	 * insertStructuredDocumentRegion method
 	 * 
@@ -1479,11 +1534,16 @@ public class JSONModelParser {
 			IStructuredDocumentRegion flatNode) {
 		String regionType = StructuredDocumentRegionUtil
 				.getFirstRegionType(flatNode);
-		boolean isTextNode = false;
 		if (regionType == JSONRegionContexts.JSON_OBJECT_OPEN) {
-			insertStartObject(flatNode);
+			insertObject(flatNode);
 		} else if (regionType == JSONRegionContexts.JSON_OBJECT_CLOSE) {
-			insertEndTag(flatNode);
+			updateEndObject(flatNode);
+		} else if (regionType == JSONRegionContexts.JSON_ARRAY_OPEN) {
+			insertStartArray(flatNode);
+		} else if (regionType == JSONRegionContexts.JSON_ARRAY_CLOSE) {
+			insertEndArray(flatNode);
+		} else if (regionType == JSONRegionContexts.JSON_OBJECT_KEY) {
+			insertObjectKey(flatNode);
 		} 
 //		else if (regionType == JSONRegionContexts.JSON_END_TAG_OPEN) {
 //			insertEndTag(flatNode);
@@ -1514,6 +1574,20 @@ public class JSONModelParser {
 //			lastTextNode.notifyValueChanged();
 //			lastTextNode = null;
 //		}
+	}
+
+	private void insertObjectKey(IStructuredDocumentRegion flatNode) {
+		ITextRegionList regions = flatNode.getRegions();
+		if (regions == null)
+			return;
+		
+		ITextRegion nameRegion = StructuredDocumentRegionUtil.getFirstRegion(flatNode);
+		JSONObjectImpl object = (JSONObjectImpl) this.context.findPreviousObject();
+		if (object != null) {
+			String name = flatNode.getText(nameRegion);
+			JSONPairImpl pair = (JSONPairImpl)this.model.getDocument().createJSONPair(name);
+			object.add(pair);
+		}
 	}
 
 	protected boolean isNestedTag(String regionType) {

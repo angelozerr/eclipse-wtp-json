@@ -46,7 +46,12 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter {
 			case IJSONNode.OBJECT_NODE : {
 				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_OBJECT);
 				break;
-//			}
+			}
+			case IJSONNode.ARRAY_NODE : {
+				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_ARRAY);
+				break;
+			}
+
 //			case Node.ATTRIBUTE_NODE : {
 //				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_ATTRIBUTE);
 //				break;
@@ -84,7 +89,7 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter {
 //			default : {
 //				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_TXTEXT);
 //				break;
-			}
+//			}
 		}
 		return image;
 	}

@@ -12,22 +12,24 @@
  *******************************************************************************/
 package org.eclipse.wst.json.core.internal.document;
 
-
-
 import org.eclipse.wst.json.core.document.IJSONDocument;
+import org.eclipse.wst.json.core.document.IJSONStructure;
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.document.JSONException;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 
-
 /**
- * NodeContainer class
+ * Base class for JSON structure (Object and Array).
+ *
  */
-public abstract class JSONNodeContainer extends JSONNodeImpl {
+public abstract class JSONStructureImpl extends JSONValueImpl implements
+		IJSONStructure {
+
+	private IStructuredDocumentRegion endStructuredDocumentRegion = null;
 
 	/**
 	 */
-	private class ChildNodesCache  {
+	private class ChildNodesCache {
 		private IJSONNode curChild = null;
 		private int curIndex = -1;
 		private int length = 0;
@@ -45,7 +47,8 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 			// note we use the outter objects lockobject
 			// (since we are using their "children".
 			synchronized (lockObject) {
-				for (IJSONNode child = firstChild; child != null; child = child.getNextSibling()) {
+				for (IJSONNode child = firstChild; child != null; child = child
+						.getNextSibling()) {
 					this.length++;
 				}
 			}
@@ -101,7 +104,7 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 	/**
 	 * NodeContainer constructor
 	 */
-	protected JSONNodeContainer() {
+	protected JSONStructureImpl() {
 		super();
 	}
 
@@ -111,7 +114,7 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 	 * @param that
 	 *            NodeContainer
 	 */
-	protected JSONNodeContainer(JSONNodeContainer that) {
+	protected JSONStructureImpl(JSONStructureImpl that) {
 		super(that);
 	}
 
@@ -137,13 +140,14 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 	protected void cloneChildNodes(IJSONNode newParent, boolean deep) {
 		if (newParent == null || newParent == this)
 			return;
-		if (!(newParent instanceof JSONNodeContainer))
+		if (!(newParent instanceof JSONStructureImpl))
 			return;
 
-		JSONNodeContainer container = (JSONNodeContainer) newParent;
+		JSONStructureImpl container = (JSONStructureImpl) newParent;
 		container.removeChildNodes();
 
-		for (IJSONNode child = getFirstChild(); child != null; child = child.getNextSibling()) {
+		for (IJSONNode child = getFirstChild(); child != null; child = child
+				.getNextSibling()) {
 			IJSONNode cloned = child.cloneNode(deep);
 			if (cloned != null)
 				container.appendChild(cloned);
@@ -155,9 +159,9 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 	 * 
 	 * @return org.w3c.dom.NodeList
 	 */
-//	public NodeList getChildNodes() {
-//		return this;
-//	}
+	// public NodeList getChildNodes() {
+	// return this;
+	// }
 
 	/**
 	 * getFirstChild method
@@ -204,7 +208,8 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 				buffer.append(source);
 		}
 
-		for (JSONNodeImpl child = firstChild; child != null; child = (JSONNodeImpl) child.getNextSibling()) {
+		for (JSONNodeImpl child = firstChild; child != null; child = (JSONNodeImpl) child
+				.getNextSibling()) {
 			String source = child.getSource();
 			if (source != null)
 				buffer.append(source);
@@ -238,30 +243,36 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 	 * @param refChild
 	 *            org.w3c.dom.Node
 	 */
-	public IJSONNode insertBefore(IJSONNode newChild, IJSONNode refChild) throws JSONException {
+	public IJSONNode insertBefore(IJSONNode newChild, IJSONNode refChild)
+			throws JSONException {
 		if (newChild == null)
 			return null; // nothing to do
 		if (refChild != null && refChild.getParentNode() != this) {
-			//throw new JSONException(JSONException.NOT_FOUND_ERR, JSONMessages.NOT_FOUND_ERR);
+			// throw new JSONException(JSONException.NOT_FOUND_ERR,
+			// JSONMessages.NOT_FOUND_ERR);
 		}
 		if (!isChildEditable()) {
-			//throw new JSONException(JSONException.NO_MODIFICATION_ALLOWED_ERR, JSONMessages.NO_MODIFICATION_ALLOWED_ERR);
+			// throw new
+			// JSONException(JSONException.NO_MODIFICATION_ALLOWED_ERR,
+			// JSONMessages.NO_MODIFICATION_ALLOWED_ERR);
 		}
 		if (newChild == refChild)
 			return newChild; // nothing to do
-		//new child can not be a parent of this, would cause cycle
-		if(isParent(newChild)) {
-			//throw new JSONException(JSONException.HIERARCHY_REQUEST_ERR, JSONMessages.HIERARCHY_REQUEST_ERR);
+		// new child can not be a parent of this, would cause cycle
+		if (isParent(newChild)) {
+			// throw new JSONException(JSONException.HIERARCHY_REQUEST_ERR,
+			// JSONMessages.HIERARCHY_REQUEST_ERR);
 		}
 
-//		if (newChild.getNodeType() == DOCUMENT_FRAGMENT_NODE) {
-//			// insert child nodes instead
-//			for (IJSONNode child = newChild.getFirstChild(); child != null; child = newChild.getFirstChild()) {
-//				newChild.removeChild(child);
-//				insertBefore(child, refChild);
-//			}
-//			return newChild;
-//		}
+		// if (newChild.getNodeType() == DOCUMENT_FRAGMENT_NODE) {
+		// // insert child nodes instead
+		// for (IJSONNode child = newChild.getFirstChild(); child != null; child
+		// = newChild.getFirstChild()) {
+		// newChild.removeChild(child);
+		// insertBefore(child, refChild);
+		// }
+		// return newChild;
+		// }
 		// synchronized in case another thread is getting item, or length
 		synchronized (lockObject) {
 			this.childNodesCache = null; // invalidate child nodes cache
@@ -350,7 +361,7 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 		if (document == null)
 			return;
 
-		//syncChildEditableState(newChild);
+		// syncChildEditableState(newChild);
 
 		JSONModelImpl model = (JSONModelImpl) document.getModel();
 		if (model == null)
@@ -369,12 +380,15 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 		if (oldChild == null)
 			return null;
 		if (oldChild.getParentNode() != this) {
-			//throw new JSONException(JSONException.NOT_FOUND_ERR, JSONMessages.NOT_FOUND_ERR);
+			// throw new JSONException(JSONException.NOT_FOUND_ERR,
+			// JSONMessages.NOT_FOUND_ERR);
 			throw new JSONException();
 		}
 
 		if (!isChildEditable()) {
-			//throw new JSONException(JSONException.NO_MODIFICATION_ALLOWED_ERR, JSONMessages.NO_MODIFICATION_ALLOWED_ERR);
+			// throw new
+			// JSONException(JSONException.NO_MODIFICATION_ALLOWED_ERR,
+			// JSONMessages.NO_MODIFICATION_ALLOWED_ERR);
 			throw new JSONException();
 		}
 
@@ -387,7 +401,7 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 		JSONNodeImpl prev = (JSONNodeImpl) child.getPreviousSibling();
 		JSONNodeImpl next = (JSONNodeImpl) child.getNextSibling();
 
-		//child.setEditable(true, true); // clear ReadOnly flags
+		// child.setEditable(true, true); // clear ReadOnly flags
 
 		if (prev == null)
 			this.firstChild = next;
@@ -411,7 +425,9 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 	 */
 	public void removeChildNodes() {
 		if (!isChildEditable()) {
-			//throw new JSONException(JSONException.NO_MODIFICATION_ALLOWED_ERR, JSONMessages.NO_MODIFICATION_ALLOWED_ERR);
+			// throw new
+			// JSONException(JSONException.NO_MODIFICATION_ALLOWED_ERR,
+			// JSONMessages.NO_MODIFICATION_ALLOWED_ERR);
 			throw new JSONException();
 		}
 
@@ -422,7 +438,6 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 		}
 	}
 
-	
 	/**
 	 * replaceChild method
 	 * 
@@ -432,9 +447,12 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 	 * @param oldChild
 	 *            org.w3c.dom.Node
 	 */
-	public IJSONNode replaceChild(IJSONNode newChild, IJSONNode oldChild) throws JSONException {
+	public IJSONNode replaceChild(IJSONNode newChild, IJSONNode oldChild)
+			throws JSONException {
 		if (!isChildEditable()) {
-			//throw new JSONException(JSONException.NO_MODIFICATION_ALLOWED_ERR, JSONMessages.NO_MODIFICATION_ALLOWED_ERR);
+			// throw new
+			// JSONException(JSONException.NO_MODIFICATION_ALLOWED_ERR,
+			// JSONMessages.NO_MODIFICATION_ALLOWED_ERR);
 			throw new JSONException();
 		}
 
@@ -445,49 +463,82 @@ public abstract class JSONNodeContainer extends JSONNodeImpl {
 		return removeChild(oldChild);
 	}
 
-//	public void setChildEditable(boolean editable) {
-//		if (fChildEditable == editable) {
-//			return;
-//		}
-//
-//		ReadOnlyController roc = ReadOnlyController.getInstance();
-//		IJSONNode node;
-//		if (editable) {
-//			for (node = getFirstChild(); node != null; node = node.getNextSibling()) {
-//				roc.unlockNode(node);
-//			}
-//		} else {
-//			for (node = getFirstChild(); node != null; node = node.getNextSibling()) {
-//				roc.lockNode( node);
-//			}
-//		}
-//
-//		fChildEditable = editable;
-//		notifyEditableChanged();
-//	}
-//
-//	protected void syncChildEditableState(IJSONNode child) {
-//		ReadOnlyController roc = ReadOnlyController.getInstance();
-//		if (fChildEditable) {
-//			roc.unlockNode((JSONNodeImpl) child);
-//		} else {
-//			roc.lockNode((JSONNodeImpl) child);
-//		}
-//	}
+	// public void setChildEditable(boolean editable) {
+	// if (fChildEditable == editable) {
+	// return;
+	// }
+	//
+	// ReadOnlyController roc = ReadOnlyController.getInstance();
+	// IJSONNode node;
+	// if (editable) {
+	// for (node = getFirstChild(); node != null; node = node.getNextSibling())
+	// {
+	// roc.unlockNode(node);
+	// }
+	// } else {
+	// for (node = getFirstChild(); node != null; node = node.getNextSibling())
+	// {
+	// roc.lockNode( node);
+	// }
+	// }
+	//
+	// fChildEditable = editable;
+	// notifyEditableChanged();
+	// }
+	//
+	// protected void syncChildEditableState(IJSONNode child) {
+	// ReadOnlyController roc = ReadOnlyController.getInstance();
+	// if (fChildEditable) {
+	// roc.unlockNode((JSONNodeImpl) child);
+	// } else {
+	// roc.lockNode((JSONNodeImpl) child);
+	// }
+	// }
 
 	/**
-	 * <p>Checks to see if the given <code>Node</code> is a parent of <code>this</code> node</p>
+	 * <p>
+	 * Checks to see if the given <code>Node</code> is a parent of
+	 * <code>this</code> node
+	 * </p>
 	 * 
-	 * @param possibleParent the possible parent <code>Node</code> of <code>this</code> node
-	 * @return <code>true</code> if <code>possibleParent</code> is the parent of <code>this</code>,
-	 * <code>false</code> otherwise.
+	 * @param possibleParent
+	 *            the possible parent <code>Node</code> of <code>this</code>
+	 *            node
+	 * @return <code>true</code> if <code>possibleParent</code> is the parent of
+	 *         <code>this</code>, <code>false</code> otherwise.
 	 */
 	private boolean isParent(IJSONNode possibleParent) {
 		IJSONNode parent = this.getParentNode();
-		while(parent != null && parent != possibleParent) {
+		while (parent != null && parent != possibleParent) {
 			parent = parent.getParentNode();
 		}
 
 		return parent == possibleParent;
+	}
+
+	void setStartStructuredDocumentRegion(IStructuredDocumentRegion flatNode) {
+		setStructuredDocumentRegion(flatNode);
+	}
+
+	void setEndStructuredDocumentRegion(IStructuredDocumentRegion flatNode) {
+		this.endStructuredDocumentRegion = flatNode;
+	}
+
+	@Override
+	public int getEndOffset() {
+		if (this.endStructuredDocumentRegion != null)
+			return this.endStructuredDocumentRegion.getEnd();
+		return super.getEndOffset();
+	}
+
+	public IStructuredDocumentRegion getEndStructuredDocumentRegion() {
+		return this.endStructuredDocumentRegion;
+	}
+
+	public int getStartEndOffset() {
+		IStructuredDocumentRegion flatNode = getStructuredDocumentRegion();
+		if (flatNode != null)
+			return flatNode.getEnd();
+		return super.getStartOffset();
 	}
 }
