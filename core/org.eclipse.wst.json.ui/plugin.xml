@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?json version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
 
@@ -94,43 +94,69 @@
 	</extension>
 
 	<extension point="org.eclipse.ui.preferencePages">
+		<!-- The "top-level" JSON category -->
+		<page
+			name="%JSON.name"
+			class="org.eclipse.wst.json.ui.internal.preferences.EmptyFilePreferencePage"
+			id="org.eclipse.wst.json.ui.preferences.json">
+		</page>
+		<!-- The "lower level" JSON Files category/page -->
 		<page
 			name="%JSON_Files.name"
-			category="org.eclipse.wst.html.ui.preferences.web"
-			class="org.eclipse.wst.json.ui.internal.preferences.ui.JSONFilesPreferencePage"
-			id="org.eclipse.wst.json.ui.preferences.json">
-			<keywordReference id="org.eclipse.wst.json.ui.files"/>
-		</page>
+			category="org.eclipse.wst.json.ui.preferences.json"
+			class="org.eclipse.wst.json.ui.internal.preferences.JSONFilesPreferencePage"
+			id="org.eclipse.wst.json.ui.preferences.json.json">
+         	<keywordReference id="org.eclipse.wst.json.ui.files"/>
+        </page>
+		<!-- JSON PREFERENCE PAGES -->
 		<page
 			name="%JSON_Source.name"
-			category="org.eclipse.wst.json.ui.preferences.json"
-			class="org.eclipse.wst.json.ui.internal.preferences.ui.JSONSourcePreferencePage"
+			category="org.eclipse.wst.json.ui.preferences.json.json"
+			class="org.eclipse.wst.json.ui.internal.preferences.JSONSourcePreferencePage"
 			id="org.eclipse.wst.sse.ui.preferences.json.source">
-			<keywordReference id="org.eclipse.wst.json.ui.source"/>
+         	<keywordReference id="org.eclipse.wst.json.ui.source"/>
 		</page>
-  <page
-        category="org.eclipse.wst.sse.ui.preferences.json.source"
-        class="org.eclipse.wst.json.ui.internal.preferences.ui.JSONContentAssistPreferencePage"
-        id="org.eclipse.wst.sse.ui.preferences.json.contentassist"
-        name="%JSON_Content_Assist.name">
-     <keywordReference
-           id="org.eclipse.wst.json.ui.contentassist">
-     </keywordReference>
-  </page>
+		<page
+			name="%JSON_Content_Assist.name"
+			category="org.eclipse.wst.sse.ui.preferences.json.source"
+			class="org.eclipse.wst.json.ui.internal.preferences.JSONContentAssistPreferencePage"
+			id="org.eclipse.wst.sse.ui.preferences.json.contentassist">
+         	<keywordReference id="org.eclipse.wst.json.ui.contentassist"/>
+		</page>
 		<page
 			name="%JSON_Templates.name"
 			category="org.eclipse.wst.sse.ui.preferences.json.source"
-			class="org.eclipse.wst.json.ui.internal.preferences.ui.JSONTemplatePreferencePage"
-			id="org.eclipse.wst.json.ui.preferences.templates">
-			<keywordReference id="org.eclipse.wst.json.ui.templates"/>
+			class="org.eclipse.wst.json.ui.internal.preferences.JSONTemplatePreferencePage"
+			id="org.eclipse.wst.sse.ui.preferences.json.templates">
+         	<keywordReference id="org.eclipse.wst.json.ui.templates"/>
 		</page>
 		<page
 			name="%JSON_Syntax_Coloring"
 			category="org.eclipse.wst.sse.ui.preferences.json.source"
-			class="org.eclipse.wst.json.ui.internal.preferences.ui.JSONSyntaxColoringPage"
-			id="org.eclipse.wst.sse.ui.preferences.json.styles">
+			class="org.eclipse.wst.json.ui.internal.preferences.JSONSyntaxColoringPage"
+			id="org.eclipse.wst.sse.ui.preferences.json.colors">
          	<keywordReference id="org.eclipse.wst.json.ui.styles"/>
 		</page>
+		<!--<page
+			name="%_UI_PREF_JSON_CATALOG"
+			category="org.eclipse.wst.json.ui.preferences.json"
+			class="org.eclipse.wst.json.ui.internal.catalog.JSONCatalogPreferencePage"
+			id="org.eclipse.wst.json.core.ui.JSONCatalogPreferencePage">
+         	<keywordReference id="org.eclipse.wst.json.ui.jsoncatalog"/>
+		</page>-->
+		<page
+			name="%JSON_Typing"
+			category="org.eclipse.wst.sse.ui.preferences.json.source"
+			class="org.eclipse.wst.json.ui.internal.preferences.JSONTypingPreferencePage"
+			id="org.eclipse.wst.sse.ui.preferences.json.typing">
+		</page>
+    	<page
+            name="%JSON_Validator.name"
+            category="org.eclipse.wst.json.ui.preferences.json.json"
+            class="org.eclipse.wst.json.ui.internal.preferences.JSONValidatorPreferencePage"
+            id="org.eclipse.wst.sse.ui.preferences.json.validation">
+       	    <keywordReference id="org.eclipse.wst.json.ui.severities"/>
+    	</page>
 	</extension>
 
 	<!-- JSON Content Settings Property Page -->
@@ -255,7 +281,7 @@
 			id="json_new">
 		</contextType>
 		<include
-			file="templates/jsondefault-templates.xml"
+			file="templates/jsondefault-templates.json"
 			translations="$nl$/templates/jsondefault-templates.properties">
 		</include>
 	</extension>
@@ -307,7 +333,7 @@
 				<reference definitionId="org.eclipse.wst.json.ui.jsonSourceContributions.definition"/>
 			</activeWhen>
 		</handler>
-		<!-- TODO Use the handler from SSE or XML's declaration -->
+		<!-- TODO Use the handler from SSE or JSON's declaration -->
 		<handler
 			class="org.eclipse.wst.sse.ui.internal.handlers.StructuredSelectHistoryHandler"
 			commandId="org.eclipse.wst.sse.ui.structure.select.last">
