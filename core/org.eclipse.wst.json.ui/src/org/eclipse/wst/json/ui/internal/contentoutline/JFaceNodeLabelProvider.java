@@ -13,6 +13,8 @@
 package org.eclipse.wst.json.ui.internal.contentoutline;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
+import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.sse.core.internal.provisional.INodeAdapter;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
@@ -21,7 +23,8 @@ import org.eclipse.wst.sse.ui.internal.contentoutline.IJFaceNodeAdapter;
 /**
  * A (column) label provider backed by JFaceNodeAdapters.
  */
-public class JFaceNodeLabelProvider extends ColumnLabelProvider {
+public class JFaceNodeLabelProvider extends ColumnLabelProvider implements
+		IStyledLabelProvider {
 	/**
 	 * JFaceNodeLabelProvider constructor comment.
 	 */
@@ -37,7 +40,8 @@ public class JFaceNodeLabelProvider extends ColumnLabelProvider {
 	 */
 	protected IJFaceNodeAdapter getAdapter(Object adaptable) {
 		if (adaptable instanceof INodeNotifier) {
-			INodeAdapter adapter = ((INodeNotifier) adaptable).getAdapterFor(IJFaceNodeAdapter.class);
+			INodeAdapter adapter = ((INodeNotifier) adaptable)
+					.getAdapterFor(IJFaceNodeAdapter.class);
 			if (adapter instanceof IJFaceNodeAdapter) {
 				return (IJFaceNodeAdapter) adapter;
 			}
@@ -72,10 +76,25 @@ public class JFaceNodeLabelProvider extends ColumnLabelProvider {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang.Object,
-	 *      java.lang.String)
+	 * @see
+	 * org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang
+	 * .Object, java.lang.String)
 	 */
 	public boolean isLabelProperty(Object element, String property) {
 		return false;
+	}
+
+	@Override
+	public StyledString getStyledText(Object element) {
+		IJFaceNodeAdapter adapter = getAdapter(element);
+		if (adapter != null && (adapter instanceof IStyledJFaceNodeAdapter)) {
+			return ((IStyledJFaceNodeAdapter) adapter).getStyledLabelText(element);
+		}
+		return null;
+	}
+	
+	@Override
+	public void dispose() {		
+		super.dispose();
 	}
 }

@@ -21,10 +21,9 @@ import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredTextReParse
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 import org.eclipse.wst.sse.core.internal.text.StructuredDocumentReParser;
 
-
 /**
- * This class provides a centralized place to put "reparsing" logic. This is
- * the logic that reparses the text incrementally, as a user types in new
+ * This class provides a centralized place to put "reparsing" logic. This is the
+ * logic that reparses the text incrementally, as a user types in new
  * characters, or DOM nodes are inserted or deleted. Note: it is not a thread
  * safe class.
  */
@@ -106,15 +105,18 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 	protected StructuredDocumentEvent checkForCrossStructuredDocumentRegionSyntax() {
 		int checkStart = fStart;
 		int checkEnd = fStart + fLengthToReplace - 1;
-		IStructuredDocumentRegion endRegion = fStructuredDocument.getRegionAtCharacterOffset(checkEnd);
+		IStructuredDocumentRegion endRegion = fStructuredDocument
+				.getRegionAtCharacterOffset(checkEnd);
 		if (endRegion != null) {
 			checkEnd = endRegion.getEndOffset();
 		}
 
 		ReparseRange range = new ReparseRange(checkStart, checkEnd);
 
-		range.expand(getUpdateRangeForDelimiter(range.getStart(), range.getEnd()));
-		range.expand(getUpdateRangeForUnknownRegion(range.getStart(), range.getEnd()));
+		range.expand(getUpdateRangeForDelimiter(range.getStart(),
+				range.getEnd()));
+		range.expand(getUpdateRangeForUnknownRegion(range.getStart(),
+				range.getEnd()));
 
 		range.expand(getUpdateRangeForQuotes(range.getStart(), range.getEnd()));
 		range.expand(getUpdateRangeForComments(range.getStart(), range.getEnd()));
@@ -133,16 +135,18 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 
 	private ReparseRange getUpdateRangeForUnknownRegion(int start, int end) {
 		int newStart = start;
-		RegionIterator iterator = new RegionIterator(fStructuredDocument, start - 1);
+		RegionIterator iterator = new RegionIterator(fStructuredDocument,
+				start - 1);
 		if (iterator.hasPrev()) {
 			iterator.prev(); // skip myself
 		}
 		while (iterator.hasPrev()) {
 			ITextRegion region = iterator.prev();
-			if (region != null && region.getType() == JSONRegionContexts.JSON_UNKNOWN) {
-				newStart = iterator.getStructuredDocumentRegion().getStartOffset(region);
-			}
-			else {
+			if (region != null
+					&& region.getType() == JSONRegionContexts.JSON_UNKNOWN) {
+				newStart = iterator.getStructuredDocumentRegion()
+						.getStartOffset(region);
+			} else {
 				break;
 			}
 		}
@@ -158,16 +162,17 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 		if (dirtyStart != null && dirtyStart.getStart() < start) {
 			start = dirtyStart.getStart();
 		}
-		IStructuredDocumentRegion docRegion = fStructuredDocument.getRegionAtCharacterOffset(start);
+		IStructuredDocumentRegion docRegion = fStructuredDocument
+				.getRegionAtCharacterOffset(start);
 		if (docRegion == null) {
 			return null;
 		}
-//		if (docRegion.getType() == JSONRegionContexts.JSON_DELIMITER) {
-//			IStructuredDocumentRegion prevRegion = docRegion.getPrevious();
-//			if (prevRegion != null) {
-//				return new ReparseRange(prevRegion.getStart(), end);
-//			}
-//		}
+		// if (docRegion.getType() == JSONRegionContexts.JSON_DELIMITER) {
+		// IStructuredDocumentRegion prevRegion = docRegion.getPrevious();
+		// if (prevRegion != null) {
+		// return new ReparseRange(prevRegion.getStart(), end);
+		// }
+		// }
 
 		return null;
 	}
@@ -202,38 +207,46 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 
 	private StructuredDocumentEvent checkInsideBrace(int start, int end) {
 		StructuredDocumentEvent result = null;
-		IStructuredDocumentRegion region = fStructuredDocument.getRegionAtCharacterOffset(start);
+		IStructuredDocumentRegion region = fStructuredDocument
+				.getRegionAtCharacterOffset(start);
 		if (region == null) {
 			return null;
 		}
 		boolean bDeclaration = false;
 		String type = region.getType();
-//		if (JSONRegionUtil.isDeclarationType(type) || type == JSONRegionContexts.JSON_LBRACE || type == JSONRegionContexts.JSON_RBRACE) {
-//			bDeclaration = true;
-//		}
-//		if (!bDeclaration) {
-//			IStructuredDocumentRegion prevRegion = JSONUtil.findPreviousSignificantNode(region);
-//			if (prevRegion != null) {
-//				type = prevRegion.getType();
-//				if (JSONRegionUtil.isDeclarationType(type) || type == JSONRegionContexts.JSON_LBRACE) {
-//					bDeclaration = true;
-//				}
-//			}
-//		}
-//		if (!bDeclaration) {
-//			IStructuredDocumentRegion nextRegion = JSONUtil.findNextSignificantNode(region);
-//			if (nextRegion != null) {
-//				type = nextRegion.getType();
-//				if (JSONRegionUtil.isDeclarationType(type) || type == JSONRegionContexts.JSON_RBRACE) {
-//					bDeclaration = true;
-//				}
-//			}
-//		}
+		// if (JSONRegionUtil.isDeclarationType(type) || type ==
+		// JSONRegionContexts.JSON_LBRACE || type ==
+		// JSONRegionContexts.JSON_RBRACE) {
+		// bDeclaration = true;
+		// }
+		// if (!bDeclaration) {
+		// IStructuredDocumentRegion prevRegion =
+		// JSONUtil.findPreviousSignificantNode(region);
+		// if (prevRegion != null) {
+		// type = prevRegion.getType();
+		// if (JSONRegionUtil.isDeclarationType(type) || type ==
+		// JSONRegionContexts.JSON_LBRACE) {
+		// bDeclaration = true;
+		// }
+		// }
+		// }
+		// if (!bDeclaration) {
+		// IStructuredDocumentRegion nextRegion =
+		// JSONUtil.findNextSignificantNode(region);
+		// if (nextRegion != null) {
+		// type = nextRegion.getType();
+		// if (JSONRegionUtil.isDeclarationType(type) || type ==
+		// JSONRegionContexts.JSON_RBRACE) {
+		// bDeclaration = true;
+		// }
+		// }
+		// }
 		bDeclaration = true;
 		if (bDeclaration) {
 			IStructuredDocumentRegion startRegion = findRuleStart(region);
 			if (startRegion != null) {
-				IStructuredDocumentRegion endRegion = fStructuredDocument.getRegionAtCharacterOffset(end);
+				IStructuredDocumentRegion endRegion = fStructuredDocument
+						.getRegionAtCharacterOffset(end);
 				if (endRegion != null) {
 					result = reparse(startRegion, endRegion);
 				}
@@ -242,27 +255,32 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 		return result;
 	}
 
-	private IStructuredDocumentRegion findRuleStart(IStructuredDocumentRegion startRegion) {
+	private IStructuredDocumentRegion findRuleStart(
+			IStructuredDocumentRegion startRegion) {
 		IStructuredDocumentRegion region = startRegion;
 		// find '{'
-//		while (region != null && region.getType() != JSONRegionContexts.JSON_LBRACE) {
-//			region = region.getPrevious();
-//		}
-		// if (region == startRegion) {
-		// return null;
-		// }
-		// else
-//		if (region != null) { // '{' is found
+		while (region != null
+				&& (region.getType() != JSONRegionContexts.JSON_OBJECT_OPEN && region
+						.getType() != JSONRegionContexts.JSON_ARRAY_OPEN)) {
+			region = region.getPrevious();
+		}
+//		if (region == startRegion) {
+//			return null;
+//		} else 
+		if (region != null) { // '{' is found
 //			region = region.getPrevious();
 //			if (isLeadingDeclarationType(region.getType())) {
 //				return region;
 //			}
-//		}
+			return region;
+		}
 		return null;
 	}
 
 	private boolean isLeadingDeclarationType(String type) {
-		return false; //(type == JSONRegionContexts.JSON_PAGE || type == JSONRegionContexts.JSON_FONT_FACE || JSONRegionUtil.isSelectorType(type));
+		return false; // (type == JSONRegionContexts.JSON_PAGE || type ==
+						// JSONRegionContexts.JSON_FONT_FACE ||
+						// JSONRegionUtil.isSelectorType(type));
 	}
 
 	// public StructuredDocumentEvent
@@ -272,7 +290,8 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 	/**
 	 * 
 	 */
-	private ReparseRange getUpdateRangeForPair(int start, int end, String opener, String closer) {
+	private ReparseRange getUpdateRangeForPair(int start, int end,
+			String opener, String closer) {
 		StringBuffer deletionBuf = new StringBuffer();
 		StringBuffer insertionBuf = new StringBuffer();
 		int quoteLen = Math.max(opener.length(), closer.length());
@@ -294,8 +313,7 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 				deletionBuf.append(addStr);
 				insertionBuf.append(addStr);
 			}
-		}
-		else {
+		} else {
 			deletionBuf.append(fDeletedText);
 			insertionBuf.append(fChanges);
 		}
@@ -305,35 +323,34 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 		int rangeStart = start;
 		int rangeEnd = end;
 
-		if (0 <= deletion.indexOf(opener) || 0 <= deletion.indexOf(closer) || 0 <= insertion.indexOf(opener) || 0 <= insertion.indexOf(closer)) {
+		if (0 <= deletion.indexOf(opener) || 0 <= deletion.indexOf(closer)
+				|| 0 <= insertion.indexOf(opener)
+				|| 0 <= insertion.indexOf(closer)) {
 			int s, e;
 			try {
 				if (start <= fStructuredDocument.getLength()) {
-					IRegion startRegion = getFindReplaceDocumentAdapter().find(start - 1, opener, false, false, false, false);
+					IRegion startRegion = getFindReplaceDocumentAdapter().find(
+							start - 1, opener, false, false, false, false);
 					if (startRegion != null) {
 						s = startRegion.getOffset();
-					}
-					else {
+					} else {
 						s = -1;
 					}
-				}
-				else {
+				} else {
 					s = -1;
 				}
 				if (end < fStructuredDocument.getLength() - 1) {
-					IRegion endRegion = getFindReplaceDocumentAdapter().find(end + 1, closer, true, false, false, false);
+					IRegion endRegion = getFindReplaceDocumentAdapter().find(
+							end + 1, closer, true, false, false, false);
 					if (endRegion != null) {
 						e = endRegion.getOffset();
-					}
-					else {
+					} else {
 						e = -1;
 					}
-				}
-				else {
+				} else {
 					e = -1;
 				}
-			}
-			catch (BadLocationException ex) {
+			} catch (BadLocationException ex) {
 				Logger.logException(ex);
 				return null;
 			}
@@ -347,21 +364,20 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 
 		if (rangeStart < start || end < rangeEnd) {
 			return new ReparseRange(rangeStart, rangeEnd);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
 
-	private int findChar(char c, int start, boolean forward) throws BadLocationException {
+	private int findChar(char c, int start, boolean forward)
+			throws BadLocationException {
 		int stop = forward ? fStructuredDocument.getLength() : 0;
 		if (forward) {
 			for (; start < stop; start++) {
 				if (fStructuredDocument.getChar(start) == c)
 					return start;
 			}
-		}
-		else {
+		} else {
 			for (; start >= stop; start--) {
 				if (fStructuredDocument.getChar(start) == c)
 					return start;
@@ -370,7 +386,8 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 		return -1;
 	}
 
-	ReparseRange getUpdateRangeForPair(int start, int end, char opener, char closer) {
+	ReparseRange getUpdateRangeForPair(int start, int end, char opener,
+			char closer) {
 		StringBuffer deletionBuf = new StringBuffer();
 		StringBuffer insertionBuf = new StringBuffer();
 		deletionBuf.append(fDeletedText);
@@ -381,7 +398,9 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 		int rangeStart = start;
 		int rangeEnd = end;
 
-		if (0 <= deletion.indexOf(opener) || 0 <= deletion.indexOf(closer) || 0 <= insertion.indexOf(opener) || 0 <= insertion.indexOf(closer)) {
+		if (0 <= deletion.indexOf(opener) || 0 <= deletion.indexOf(closer)
+				|| 0 <= insertion.indexOf(opener)
+				|| 0 <= insertion.indexOf(closer)) {
 			int s = -1, e = -1;
 			try {
 				if (start <= fStructuredDocument.getLength()) {
@@ -390,8 +409,7 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 				if (end < fStructuredDocument.getLength() - 1) {
 					e = findChar(closer, end + 1, true);
 				}
-			}
-			catch (BadLocationException ex) {
+			} catch (BadLocationException ex) {
 				Logger.logException(ex);
 				return null;
 			}
@@ -405,8 +423,7 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 
 		if (rangeStart < start || end < rangeEnd) {
 			return new ReparseRange(rangeStart, rangeEnd);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}

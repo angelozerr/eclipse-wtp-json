@@ -1,5 +1,8 @@
 package org.eclipse.wst.json.core.internal.document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.document.IJSONObject;
 import org.eclipse.wst.json.core.document.IJSONPair;
@@ -7,11 +10,15 @@ import org.eclipse.wst.json.core.document.JSONException;
 
 public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 
+	private final List<IJSONPair> pairs;
+
 	public JSONObjectImpl() {
+		this(null);
 	}
 
 	public JSONObjectImpl(JSONObjectImpl object) {
 		super(object);
+		pairs = new ArrayList<IJSONPair>();
 	}
 
 	@Override
@@ -63,11 +70,11 @@ public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 		if (attr.getOwnerObject() != null)
 			return null;
 
-		//if (this.attrNodes == null)
-		//	this.attrNodes = new NodeListImpl();
-		//this.attrNodes.appendNode(attr);
+		// if (this.attrNodes == null)
+		// this.attrNodes = new NodeListImpl();
+		// this.attrNodes.appendNode(attr);
 		attr.setOwnerObject(this);
-
+		pairs.add(newAttr);
 		notifyPairReplaced(attr, null);
 		return this;
 	}
@@ -81,13 +88,18 @@ public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 			return;
 		model.pairReplaced(this, newPair, oldPair);
 	}
-	
+
 	@Override
 	public IJSONObject remove(IJSONPair pair) {
-		// TODO Auto-generated method stub
-		return null;
+		pairs.remove(pair);
+		notifyPairReplaced(null, pair);
+		return this;
 	}
-	
+
+	public List<IJSONPair> getPairs() {
+		return pairs;
+	}
+
 	// @Override
 	// public boolean getBoolean(String paramString) {
 	// // TODO Auto-generated method stub

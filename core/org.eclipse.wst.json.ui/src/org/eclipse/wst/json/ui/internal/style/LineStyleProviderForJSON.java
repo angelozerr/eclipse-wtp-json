@@ -1,3 +1,14 @@
+/**
+ *  Copyright (c) 2015-present Angelo ZERR.
+ *  
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *
+ *  Contributors:
+ *  Angelo Zerr <angelo.zerr@gmail.com> - initial API and implementation
+ */
 package org.eclipse.wst.json.ui.internal.style;
 
 import java.util.HashMap;
@@ -7,21 +18,18 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.wst.json.core.regions.JSONRegionContexts;
+import org.eclipse.wst.json.ui.internal.ColorTypesHelper;
 import org.eclipse.wst.json.ui.internal.JSONUIPlugin;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 import org.eclipse.wst.sse.ui.internal.provisional.style.AbstractLineStyleProvider;
 import org.eclipse.wst.sse.ui.internal.provisional.style.LineStyleProvider;
 
 /**
+ * Line style provider for JSON.
  */
 public class LineStyleProviderForJSON extends AbstractLineStyleProvider
 		implements LineStyleProvider {
-	/** Contains region to style mapping */
-	private Map fColorTypes;
 
-	/**
-	 * LineStyleProviderForEmbeddedCSS constructor comment.
-	 */
 	public LineStyleProviderForJSON() {
 		super();
 	}
@@ -46,151 +54,13 @@ public class LineStyleProviderForJSON extends AbstractLineStyleProvider
 	 * @return
 	 */
 	protected TextAttribute getAttributeFor(String type) {
-		return (TextAttribute) getTextAttributes().get(fColorTypes.get(type));
+		return (TextAttribute) getTextAttributes().get(
+				ColorTypesHelper.getColor(type));
 	}
 
-	private void initAttributes() {
-		if (fColorTypes == null) {
-			fColorTypes = new HashMap();
-		}
-		fColorTypes.put(JSONRegionContexts.JSON_OBJECT_OPEN,
-				IStyleConstantsJSON.CURLY_BRACE);
-		fColorTypes.put(JSONRegionContexts.JSON_OBJECT_CLOSE,
-				IStyleConstantsJSON.CURLY_BRACE);
-		fColorTypes.put(JSONRegionContexts.JSON_ARRAY_OPEN,
-				IStyleConstantsJSON.CURLY_BRACE);
-		fColorTypes.put(JSONRegionContexts.JSON_ARRAY_CLOSE,
-				IStyleConstantsJSON.CURLY_BRACE);
-		fColorTypes.put(JSONRegionContexts.JSON_COLON,
-				IStyleConstantsJSON.COLON);
-		fColorTypes.put(JSONRegionContexts.JSON_COMMA,
-				IStyleConstantsJSON.COMMA);
-
-		fColorTypes.put(JSONRegionContexts.JSON_OBJECT_KEY,
-				IStyleConstantsJSON.OBJECT_KEY);
-		fColorTypes.put(JSONRegionContexts.JSON_VALUE_STRING,
-				IStyleConstantsJSON.VALUE_STRING);
-		fColorTypes.put(JSONRegionContexts.JSON_VALUE_NUMBER,
-				IStyleConstantsJSON.VALUE_NUMBER);
-		fColorTypes.put(JSONRegionContexts.JSON_VALUE_BOOLEAN,
-				IStyleConstantsJSON.VALUE_BOOLEAN);
-		fColorTypes.put(JSONRegionContexts.JSON_VALUE_NULL,
-				IStyleConstantsJSON.VALUE_NULL);
-		/*
-		 * fColorTypes.put(CSSRegionContexts.CSS_COMMENT,
-		 * IStyleConstantsCSS.COMMENT);
-		 * fColorTypes.put(CSSRegionContexts.CSS_CDO,
-		 * IStyleConstantsCSS.COMMENT);
-		 * fColorTypes.put(CSSRegionContexts.CSS_CDC,
-		 * IStyleConstantsCSS.COMMENT); fColorTypes.put(CSSRegionContexts.CSS_S,
-		 * IStyleConstantsCSS.NORMAL);
-		 * 
-		 * fColorTypes.put(CSSRegionContexts.CSS_DELIMITER,
-		 * IStyleConstantsCSS.SEMI_COLON);
-		 * fColorTypes.put(CSSRegionContexts.CSS_LBRACE,
-		 * IStyleConstantsCSS.CURLY_BRACE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_RBRACE,
-		 * IStyleConstantsCSS.CURLY_BRACE);
-		 * 
-		 * fColorTypes.put(CSSRegionContexts.CSS_IMPORT,
-		 * IStyleConstantsCSS.ATMARK_RULE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_PAGE,
-		 * IStyleConstantsCSS.ATMARK_RULE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_MEDIA,
-		 * IStyleConstantsCSS.ATMARK_RULE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_FONT_FACE,
-		 * IStyleConstantsCSS.ATMARK_RULE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_CHARSET,
-		 * IStyleConstantsCSS.ATMARK_RULE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_ATKEYWORD,
-		 * IStyleConstantsCSS.ATMARK_RULE);
-		 * 
-		 * fColorTypes .put(CSSRegionContexts.CSS_STRING,
-		 * IStyleConstantsCSS.STRING);
-		 * fColorTypes.put(CSSRegionContexts.CSS_URI, IStyleConstantsCSS.URI);
-		 * fColorTypes.put(CSSRegionContexts.CSS_MEDIUM,
-		 * IStyleConstantsCSS.MEDIA);
-		 * fColorTypes.put(CSSRegionContexts.CSS_MEDIA_SEPARATOR,
-		 * IStyleConstantsCSS.MEDIA);
-		 * 
-		 * fColorTypes.put(CSSRegionContexts.CSS_CHARSET_NAME,
-		 * IStyleConstantsCSS.STRING);
-		 * 
-		 * fColorTypes.put(CSSRegionContexts.CSS_PAGE_SELECTOR,
-		 * IStyleConstantsCSS.MEDIA);
-		 * 
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_ELEMENT_NAME,
-		 * IStyleConstantsCSS.SELECTOR);
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_UNIVERSAL,
-		 * IStyleConstantsCSS.UNIVERSAL);
-		 * 
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_PSEUDO,
-		 * IStyleConstantsCSS.PSEUDO);
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_CLASS,
-		 * IStyleConstantsCSS.SELECTOR_CLASS);
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_ID,
-		 * IStyleConstantsCSS.ID);
-		 * 
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_COMBINATOR,
-		 * IStyleConstantsCSS.COMBINATOR);
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_SEPARATOR,
-		 * IStyleConstantsCSS.SELECTOR);
-		 * 
-		 * /* Attribute selector
-		 */
-		/*
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_ATTRIBUTE_START,
-		 * IStyleConstantsCSS.ATTRIBUTE_DELIM);
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_ATTRIBUTE_END,
-		 * IStyleConstantsCSS.ATTRIBUTE_DELIM);
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_ATTRIBUTE_NAME,
-		 * IStyleConstantsCSS.ATTRIBUTE_NAME);
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_ATTRIBUTE_VALUE,
-		 * IStyleConstantsCSS.ATTRIBUTE_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_SELECTOR_ATTRIBUTE_OPERATOR,
-		 * IStyleConstantsCSS.ATTRIBUTE_OPERATOR);
-		 * 
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_PROPERTY,
-		 * IStyleConstantsCSS.PROPERTY_NAME);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_VALUE_IDENT,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_VALUE_DIMENSION,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_VALUE_PERCENTAGE,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_VALUE_NUMBER,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_VALUE_FUNCTION,
-		 * IStyleConstantsCSS.PROPERTY_VALUE); fColorTypes.put(
-		 * CSSRegionContexts.CSS_DECLARATION_VALUE_PARENTHESIS_CLOSE,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_VALUE_STRING,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_VALUE_URI,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_VALUE_HASH,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.
-		 * CSS_DECLARATION_VALUE_UNICODE_RANGE,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_VALUE_IMPORTANT,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_VALUE_OPERATOR,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_VALUE_S,
-		 * IStyleConstantsCSS.PROPERTY_VALUE);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_SEPARATOR,
-		 * IStyleConstantsCSS.COLON);
-		 * fColorTypes.put(CSSRegionContexts.CSS_DECLARATION_DELIMITER,
-		 * IStyleConstantsCSS.SEMI_COLON);
-		 * 
-		 * fColorTypes.put(CSSRegionContexts.CSS_UNKNOWN,
-		 * IStyleConstantsCSS.NORMAL);
-		 */
-	}
-
+	@Override
 	protected void handlePropertyChange(PropertyChangeEvent event) {
-		String styleKey = null;
+		String styleKey = ColorTypesHelper.getNewStyle(event);
 
 		/*
 		 * if (event != null) { String prefKey = event.getProperty(); // check
@@ -251,17 +121,13 @@ public class LineStyleProviderForJSON extends AbstractLineStyleProvider
 		}
 	}
 
+	@Override
 	public void release() {
-		if (fColorTypes != null) {
-			fColorTypes.clear();
-			fColorTypes = null;
-		}
 		super.release();
 	}
 
+	@Override
 	public void loadColors() {
-		initAttributes();
-
 		addTextAttribute(IStyleConstantsJSON.NORMAL);
 		addTextAttribute(IStyleConstantsJSON.CURLY_BRACE);
 		addTextAttribute(IStyleConstantsJSON.COLON);

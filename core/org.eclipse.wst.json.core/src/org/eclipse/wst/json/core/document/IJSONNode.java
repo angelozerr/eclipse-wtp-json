@@ -14,7 +14,6 @@ package org.eclipse.wst.json.core.document;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
-import org.w3c.dom.DOMException;
 
 /**
  * The JSON node API.
@@ -25,7 +24,13 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 	short DOCUMENT_NODE = -1;
 	short OBJECT_NODE = 0;
 	short ARRAY_NODE = 1;
+	short PAIR_NODE = 2;
 
+	short VALUE_STRING_NODE = 3;
+	short VALUE_NUMBER_NODE = 4;
+	short VALUE_BOOLEAN_NODE = 5;
+	short VALUE_NULL_NODE = 6;
+	
 	/**
 	 * Gets the last structured document region of this node.
 	 * 
@@ -35,7 +40,7 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 	 *         region associated with
 	 */
 	IStructuredDocumentRegion getEndStructuredDocumentRegion();
-	
+
 	/**
 	 * Gets the first structured document region of this node.
 	 * 
@@ -62,7 +67,7 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 	void setNodeValue(String paramString) throws JSONException;
 
 	IJSONNode removeChild(IJSONNode oldChild) throws JSONException;
-	
+
 	IJSONNode cloneNode(boolean deep);
 
 	IJSONDocument getOwnerDocument();
@@ -80,6 +85,14 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 	short getNodeType();
 
 	IStructuredDocumentRegion getStartStructuredDocumentRegion();
-	
+
 	IJSONNode insertBefore(IJSONNode node, IJSONNode next) throws JSONException;
+
+	/**
+	 * Returns the model associated with this node. Returns null if not part of
+	 * an active model.
+	 * 
+	 * @return IDOMModel - returns the IDOMModel this node is part of.
+	 */
+	IJSONModel getModel();
 }

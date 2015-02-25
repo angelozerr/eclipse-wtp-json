@@ -1,11 +1,14 @@
-/*****************************************************************************
- * Copyright (c) 2004, 2011 IBM Corporation and others. All rights reserved. This
- * program and the accompanying materials are made available under the terms
- * of the Eclipse Public License v1.0 which accompanies this distribution, and
- * is available at http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: IBM Corporation - initial API and implementation
- ****************************************************************************/
+/**
+ *  Copyright (c) 2015-present Angelo ZERR.
+ *  
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *
+ *  Contributors:
+ *  Angelo Zerr <angelo.zerr@gmail.com> - initial API and implementation
+ */
 package org.eclipse.wst.json.ui.views.contentoutline;
 
 import org.eclipse.jface.action.IContributionItem;
@@ -27,7 +30,6 @@ import org.eclipse.wst.sse.ui.views.contentoutline.ContentOutlineConfiguration;
  * Configuration for outline view page which shows JSON content.
  * 
  * @see org.eclipse.wst.sse.ui.views.contentoutline.ContentOutlineConfiguration
- * @since 1.0
  */
 public class JSONContentOutlineConfiguration extends
 		ContentOutlineConfiguration {

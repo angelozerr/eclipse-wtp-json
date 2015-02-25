@@ -195,29 +195,7 @@ public class JSONSourceParser implements RegionParser {
 				|| type == JSONRegionContexts.JSON_OBJECT_KEY
 				|| type == JSONRegionContexts.JSON_ARRAY_OPEN
 				|| type == JSONRegionContexts.JSON_ARRAY_CLOSE
-				|| type == JSONRegionContexts.JSON_COLON
 				|| type == JSONRegionContexts.JSON_COMMA;
-		/*
-		 * ((type == JSONRegionContexts.JSON_DELIMITER || type ==
-		 * JSONRegionContexts.JSON_LBRACE || type ==
-		 * JSONRegionContexts.JSON_RBRACE || type ==
-		 * JSONRegionContexts.JSON_IMPORT || type ==
-		 * JSONRegionContexts.JSON_PAGE || type == JSONRegionContexts.JSON_MEDIA
-		 * || type == JSONRegionContexts.JSON_FONT_FACE || type ==
-		 * JSONRegionContexts.JSON_CHARSET || type ==
-		 * JSONRegionContexts.JSON_ATKEYWORD || type ==
-		 * JSONRegionContexts.JSON_DECLARATION_PROPERTY || type ==
-		 * JSONRegionContexts.JSON_DECLARATION_DELIMITER) || (docRegionType ==
-		 * JSONRegionContexts.JSON_DECLARATION_PROPERTY && type ==
-		 * JSONRegionContexts.JSON_S) || (!JSONRegionUtil
-		 * .isSelectorBegginingType(docRegionType) && (type ==
-		 * JSONRegionContexts.JSON_SELECTOR_ELEMENT_NAME || type ==
-		 * JSONRegionContexts.JSON_SELECTOR_UNIVERSAL || type ==
-		 * JSONRegionContexts.JSON_SELECTOR_PSEUDO || type ==
-		 * JSONRegionContexts.JSON_SELECTOR_CLASS || type ==
-		 * JSONRegionContexts.JSON_SELECTOR_ID || type ==
-		 * JSONRegionContexts.JSON_SELECTOR_ATTRIBUTE_START)));
-		 */
 	}
 
 	/**

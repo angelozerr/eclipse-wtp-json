@@ -3,11 +3,16 @@ package org.eclipse.wst.json.ui.internal.contentoutline;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.json.core.document.IJSONNode;
+import org.eclipse.wst.json.core.document.IJSONObject;
+import org.eclipse.wst.json.core.document.IJSONPair;
 import org.eclipse.wst.json.ui.internal.editor.JSONEditorPluginImageHelper;
 import org.eclipse.wst.json.ui.internal.editor.JSONEditorPluginImages;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
@@ -16,7 +21,8 @@ import org.eclipse.wst.sse.ui.internal.contentoutline.IJFaceNodeAdapter;
 /**
  * Adapts a JSON node to a JFace viewer.
  */
-public class JFaceNodeAdapter implements IJFaceNodeAdapter {
+public class JFaceNodeAdapter implements IJFaceNodeAdapter,
+		IStyledJFaceNodeAdapter {
 
 	final static Class ADAPTER_KEY = IJFaceNodeAdapter.class;
 
@@ -26,7 +32,8 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter {
 	private static final boolean DEBUG = getDebugValue();
 
 	private static boolean getDebugValue() {
-		String value = Platform.getDebugOption("org.eclipse.wst.sse.ui/debug/outline"); //$NON-NLS-1$
+		String value = Platform
+				.getDebugOption("org.eclipse.wst.sse.ui/debug/outline"); //$NON-NLS-1$
 		boolean result = (value != null) && value.equalsIgnoreCase("true"); //$NON-NLS-1$
 		return result;
 	}
@@ -43,59 +50,38 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter {
 		Image image = null;
 		IJSONNode node = (IJSONNode) object;
 		switch (node.getNodeType()) {
-			case IJSONNode.OBJECT_NODE : {
-				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_OBJECT);
+		case IJSONNode.OBJECT_NODE: {
+			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_OBJECT);
+			break;
+		}
+		case IJSONNode.ARRAY_NODE: {
+			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_ARRAY);
+			break;
+		}
+		case IJSONNode.PAIR_NODE: {
+			IJSONPair pair = (IJSONPair) node;
+			switch (pair.getNodeValueType()) {
+			case IJSONNode.VALUE_BOOLEAN_NODE:
+				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_BOOLEAN);
+				break;
+			case IJSONNode.VALUE_NULL_NODE:
+				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_NULL);
+				break;
+			case IJSONNode.VALUE_NUMBER_NODE:
+				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_NUMBER);
+				break;
+			case IJSONNode.VALUE_STRING_NODE:
+				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_STRING);
 				break;
 			}
-			case IJSONNode.ARRAY_NODE : {
-				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_ARRAY);
-				break;
-			}
-
-//			case Node.ATTRIBUTE_NODE : {
-//				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_ATTRIBUTE);
-//				break;
-//			}
-//			case Node.TEXT_NODE : { // actually, TEXT should never be seen in
-//				// the tree
-//				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_TXTEXT);
-//				break;
-//			}
-//			case Node.CDATA_SECTION_NODE : {
-//				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_CDATASECTION);
-//				break;
-//			}
-//			case Node.ENTITY_REFERENCE_NODE :
-//			case Node.ENTITY_NODE : {
-//				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_ENTITY);
-//				break;
-//			}
-//			case Node.PROCESSING_INSTRUCTION_NODE : {
-//				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_PROCESSINGINSTRUCTION);
-//				break;
-//			}
-//			case Node.COMMENT_NODE : {
-//				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_COMMENT);
-//				break;
-//			}
-//			case Node.DOCUMENT_TYPE_NODE : {
-//				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_DOCTYPE);
-//				break;
-//			}
-//			case Node.NOTATION_NODE : {
-//				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_NOTATION);
-//				break;
-//			}
-//			default : {
-//				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_TXTEXT);
-//				break;
-//			}
+		}
 		}
 		return image;
 	}
 
 	protected Image createJSONImageDescriptor(String imageResourceName) {
-		return JSONEditorPluginImageHelper.getInstance().getImage(imageResourceName);
+		return JSONEditorPluginImageHelper.getInstance().getImage(
+				imageResourceName);
 	}
 
 	public Object[] getChildren(Object object) {
@@ -108,19 +94,25 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter {
 		ArrayList v = new ArrayList();
 		if (object instanceof IJSONNode) {
 			IJSONNode node = (IJSONNode) object;
-			for (IJSONNode child = node.getFirstChild(); child != null; child = child.getNextSibling()) {
-				IJSONNode n = child;
-				//if (n.getNodeType() != Node.TEXT_NODE) {
+			if (node.getNodeType() == IJSONNode.OBJECT_NODE) {
+				List<IJSONPair> pairs = ((IJSONObject) node).getPairs();
+				v.addAll(pairs);
+			} else {
+				for (IJSONNode child = node.getFirstChild(); child != null; child = child
+						.getNextSibling()) {
+					IJSONNode n = child;
+					// if (n.getNodeType() != Node.TEXT_NODE) {
 					v.add(n);
-				//}
+					// }
+				}
 			}
 		}
 		return v.toArray();
 	}
 
 	/**
-	 * Returns an enumeration with the elements belonging to the passed
-	 * element. These are the top level items in a list, tree, table, etc...
+	 * Returns an enumeration with the elements belonging to the passed element.
+	 * These are the top level items in a list, tree, table, etc...
 	 */
 	public Object[] getElements(Object node) {
 		return getChildren(node);
@@ -133,7 +125,8 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter {
 		Image image = null;
 		if (node instanceof IJSONNode) {
 			// check for an image from the content model
-			image = null;//CMImageUtil.getImage(CMImageUtil.getDeclaration((Node) node));
+			image = null;// CMImageUtil.getImage(CMImageUtil.getDeclaration((Node)
+							// node));
 			if (image == null) {
 				/*
 				 * Create/get image based on Node type. Images are cached
@@ -150,23 +143,31 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter {
 	 * Fetches the label text specific to this object instance.
 	 */
 	public String getLabelText(Object node) {
-		return getNodeName(node);
+		return getStyledLabelText(node).getString();
 	}
 
-	private String getNodeName(Object object) {
-		StringBuffer nodeName = new StringBuffer();
-		if (object instanceof IJSONNode) {
-			IJSONNode node = (IJSONNode) object;
-			nodeName.append(node.getNodeName());
-
-//			if (node.getNodeType() == Node.DOCUMENT_TYPE_NODE) {
-//				nodeName.insert(0, "DOCTYPE:"); //$NON-NLS-1$
-//			}
-
+	@Override
+	public StyledString getStyledLabelText(Object element) {
+		StyledString styledString = new StyledString();
+		if (element instanceof IJSONNode) {
+			IJSONNode node = (IJSONNode) element;
+			switch (node.getNodeType()) {
+			case IJSONNode.PAIR_NODE:
+				IJSONPair pair = ((IJSONPair) node);
+				String name = pair.getName();
+				if (name != null) {
+					styledString.append(name);
+					String value = pair.getSimpleValue();
+					if (value != null) {
+						styledString.append(": ");
+						Styler styler = fAdapterFactory.getStyler(pair.getValueRegionType());
+						styledString.append(value, styler);
+					}
+				}
+			}
 		}
-		return nodeName.toString();
+		return styledString;
 	}
-
 
 	public Object getParent(Object object) {
 		if (object instanceof IJSONNode) {
@@ -183,23 +184,26 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter {
 		return fRefreshJob;
 	}
 
-
 	public boolean hasChildren(Object object) {
 		// (pa) 20021217
 		// cmvc defect 235554 > use child.getNextSibling() instead of
 		// nodeList(item) for O(n) vs. O(n*n)
 		IJSONNode node = (IJSONNode) object;
-		for (IJSONNode child = node.getFirstChild(); child != null; child = child.getNextSibling()) {
-			//if (child.getNodeType() != Node.TEXT_NODE) {
-				return true;
-			//}
+		if (node.getNodeType() == IJSONNode.OBJECT_NODE) {
+			return ((IJSONObject) node).getPairs().size() > 0;
+		}
+		for (IJSONNode child = node.getFirstChild(); child != null; child = child
+				.getNextSibling()) {
+			// if (child.getNodeType() != Node.TEXT_NODE) {
+			return true;
+			// }
 		}
 		return false;
 	}
 
 	/**
-	 * Allowing the INodeAdapter to compare itself against the type allows it
-	 * to return true in more than one case.
+	 * Allowing the INodeAdapter to compare itself against the type allows it to
+	 * return true in more than one case.
 	 */
 	public boolean isAdapterForType(Object type) {
 		if (type == null) {
@@ -212,7 +216,8 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter {
 	 * Called by the object being adapter (the notifier) when something has
 	 * changed.
 	 */
-	public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
+	public void notifyChanged(INodeNotifier notifier, int eventType,
+			Object changedFeature, Object oldValue, Object newValue, int pos) {
 		// future_TODO: the 'uijobs' used in this method were added to solve
 		// threading problems when the dom
 		// is updated in the background while the editor is open. They may be
@@ -231,19 +236,24 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter {
 				// StructuredViewer) && (eventType ==
 				// INodeNotifier.STRUCTURE_CHANGED || (eventType ==
 				// INodeNotifier.CHANGE && changedFeature == null))) {
-				if ((listener instanceof StructuredViewer) && ((eventType == INodeNotifier.STRUCTURE_CHANGED) || (eventType == INodeNotifier.CONTENT_CHANGED) || (eventType == INodeNotifier.CHANGE))) {
+				if ((listener instanceof StructuredViewer)
+						&& ((eventType == INodeNotifier.STRUCTURE_CHANGED)
+								|| (eventType == INodeNotifier.CONTENT_CHANGED) || (eventType == INodeNotifier.CHANGE))) {
 					if (DEBUG) {
-						System.out.println("JFaceNodeAdapter notified on event type > " + eventType); //$NON-NLS-1$
+						System.out
+								.println("JFaceNodeAdapter notified on event type > " + eventType); //$NON-NLS-1$
 					}
 
 					// refresh on structural and "unknown" changes
 					StructuredViewer structuredViewer = (StructuredViewer) listener;
 					// https://w3.opensource.ibm.com/bugzilla/show_bug.cgi?id=5230
 					if (structuredViewer.getControl() != null) {
-						getRefreshJob().refresh(structuredViewer, (IJSONNode) notifier);
+						getRefreshJob().refresh(structuredViewer,
+								(IJSONNode) notifier);
 					}
 				}
 			}
 		}
 	}
+
 }

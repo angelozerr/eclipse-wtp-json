@@ -1,7 +1,6 @@
 package org.eclipse.wst.json.core.internal.document;
 
 import org.eclipse.wst.json.core.contenttype.ContentTypeIdForJSON;
-import org.eclipse.wst.json.core.document.IJSONArray;
 import org.eclipse.wst.json.core.document.IJSONDocument;
 import org.eclipse.wst.json.core.document.IJSONModel;
 import org.eclipse.wst.json.core.document.IJSONNode;
@@ -22,11 +21,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentReg
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegionList;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegionList;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * JSONModelImpl class
@@ -534,7 +529,12 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 			parser.replaceStructuredDocumentRegions(
 					newStructuredDocumentRegions, oldStructuredDocumentRegions);
 		} catch (Exception ex) {
-			Logger.logException(ex);
+			if (ex.getClass().equals(StructuredDocumentRegionManagementException.class)) {
+				Logger.traceException(TRACE_PARSER_MANAGEMENT_EXCEPTION, ex);
+			}
+			else {
+				Logger.logException(ex);
+			}
 			this.refresh = true;
 			handleRefresh();
 		} finally {

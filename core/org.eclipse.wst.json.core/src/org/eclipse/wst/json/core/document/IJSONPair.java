@@ -6,4 +6,9 @@ public interface IJSONPair extends IJSONNode {
 	
 	IJSONValue getValue();
 
+	short getNodeValueType();
+	
+	String getSimpleValue();
+
+	String getValueRegionType();
 }
