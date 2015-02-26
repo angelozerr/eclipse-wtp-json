@@ -14,7 +14,7 @@ Eclipse WTP JSON provides a JSON Editor based on Eclipse WTP (SSE):
 
 Today this project is a POC, but her goal is to provide a WTP JSON Editor with the following commons features :
 
-- [Color text highlighting](https://github.com/angelozerr/eclipse-wtp-json/wiki/Color-text-highlighting) which can be customized with preferences.
+- [Syntax Coloring](https://github.com/angelozerr/eclipse-wtp-json/wiki/SyntaxColoring) which can be customized with preferences.
 - An Outline Tree view : **TODO!**
 - JSON validation based on WTP Validator : **TODO!**
 - Text formatting : **TODO!**
