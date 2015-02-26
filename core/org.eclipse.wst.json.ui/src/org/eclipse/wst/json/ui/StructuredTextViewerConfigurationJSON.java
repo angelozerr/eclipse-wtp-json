@@ -1,10 +1,14 @@
 package org.eclipse.wst.json.ui;
 
+import org.eclipse.jface.text.formatter.IContentFormatter;
+import org.eclipse.jface.text.formatter.MultiPassContentFormatter;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.wst.json.core.format.FormatProcessorJSON;
 import org.eclipse.wst.json.core.text.IJSONPartitions;
 import org.eclipse.wst.json.ui.internal.style.LineStyleProviderForJSON;
 import org.eclipse.wst.sse.core.text.IStructuredPartitions;
 import org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration;
+import org.eclipse.wst.sse.ui.internal.format.StructuredFormattingStrategy;
 import org.eclipse.wst.sse.ui.internal.provisional.style.LineStyleProvider;
 
 /**
@@ -30,6 +34,7 @@ public class StructuredTextViewerConfigurationJSON extends
 	 */
 	private LineStyleProvider fLineStyleProviderForJSON;
 
+	@Override
 	public LineStyleProvider[] getLineStyleProviders(
 			ISourceViewer sourceViewer, String partitionType) {
 		LineStyleProvider[] providers = null;
@@ -46,6 +51,24 @@ public class StructuredTextViewerConfigurationJSON extends
 			fLineStyleProviderForJSON = new LineStyleProviderForJSON();
 		}
 		return fLineStyleProviderForJSON;
+	}
+
+	@Override
+	public IContentFormatter getContentFormatter(ISourceViewer sourceViewer) {
+		IContentFormatter formatter = super.getContentFormatter(sourceViewer);
+		// super was unable to create a formatter, probably because
+		// sourceViewer does not have document set yet, so just create a
+		// generic one
+		if (!(formatter instanceof MultiPassContentFormatter))
+			formatter = new MultiPassContentFormatter(
+					getConfiguredDocumentPartitioning(sourceViewer),
+					IJSONPartitions.JSON);
+
+		((MultiPassContentFormatter) formatter)
+				.setMasterStrategy(new StructuredFormattingStrategy(
+						new FormatProcessorJSON()));
+
+		return formatter;
 	}
 
 	@Override

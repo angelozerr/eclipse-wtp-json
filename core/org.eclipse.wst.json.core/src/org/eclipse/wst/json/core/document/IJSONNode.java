@@ -30,7 +30,7 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 	short VALUE_NUMBER_NODE = 4;
 	short VALUE_BOOLEAN_NODE = 5;
 	short VALUE_NULL_NODE = 6;
-	
+
 	/**
 	 * Gets the last structured document region of this node.
 	 * 
@@ -95,4 +95,6 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 	 * @return IDOMModel - returns the IDOMModel this node is part of.
 	 */
 	IJSONModel getModel();
+
+	boolean hasChildNodes();
 }

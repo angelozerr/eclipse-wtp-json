@@ -36,7 +36,7 @@ public class JSONContentOutlineConfiguration extends
 	private IContentProvider fContentProvider = null;
 	private ILabelProvider fLabelProvider = null;
 	private final String OUTLINE_SORT_PREF = "outline-sort"; //$NON-NLS-1$
-	private static final String OUTLINE_FILTER_PREF = "org.eclipse.wst.json.ui.OutlinePage"; //$NON-NLS-1$
+	private static final String OUTLINE_FILTER_PREF = "org.eclipse.wst.css.ui.OutlinePage"; //$NON-NLS-1$
 
 	/**
 	 * Create new instance of JSONContentOutlineConfiguration

@@ -1,4 +1,4 @@
-package org.eclipse.wst.json.core.internal.preferences;
+package org.eclipse.wst.json.core.preferences;
 
 /**
  * JSON core preference keys.

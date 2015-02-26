@@ -1,4 +1,4 @@
-package org.eclipse.wst.json.core.internal;
+package org.eclipse.wst.json.core;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;

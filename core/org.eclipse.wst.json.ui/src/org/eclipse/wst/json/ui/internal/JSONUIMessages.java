@@ -30,8 +30,17 @@ public class JSONUIMessages extends NLS {
 	public static String VALUE_NUMBER_UI_;
 	public static String VALUE_STRING_UI_;
 	
+	// Preferences
 	public static String EmptyFilePreferencePage_0;
-
+	public static String EncodingSettings_0;
+	public static String EncodingSettings_1;
+	// JSONFilesPreferencePage preferences
+	public static String Creating_files;
+	public static String Encoding_desc;
+	public static String Encoding;
+	public static String JSONFilesPreferencePage_ExtensionLabel;
+	public static String JSONFilesPreferencePage_ExtensionError;
+	
 	static {
 		// load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, JSONUIMessages.class);

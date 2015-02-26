@@ -22,7 +22,7 @@
 	
 	<extension point="org.eclipse.wst.sse.core.formatProcessors">
 		<processor
-			class="org.eclipse.wst.json.core.internal.formatter.JSONFormatterFormatProcessor"
+			class="org.eclipse.wst.json.core.format.FormatProcessorJSON"
 			contentTypeId="org.eclipse.wst.json.core.jsonsource">
 		</processor>
 	</extension>

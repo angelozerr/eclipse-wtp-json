@@ -11,4 +11,6 @@ public interface IJSONPair extends IJSONNode {
 	String getSimpleValue();
 
 	String getValueRegionType();
+
+	IJSONObject getOwnerObject();
 }
