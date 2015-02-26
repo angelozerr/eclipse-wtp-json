@@ -1290,43 +1290,60 @@ public class JSONModelParser {
 	 *            org.w3c.dom.Node
 	 */
 	private void insertNode(IJSONNode node) {
-		if (node != null && this.context != null) {
-			IJSONNode parent = this.context.getParentNode();
-			if (parent != null) {
-				IJSONNode next = this.context.getNextNode();
-				// Reset parents which are closed container elements; should not
-				// be parents
-				if (parent.getNodeType() == IJSONNode.OBJECT_NODE) {
-					String type = ((JSONObjectImpl) parent)
-							.getStartStructuredDocumentRegion().getLastRegion()
-							.getType();
-					if (((JSONObjectImpl) parent).isContainer()
-					/* && type == JSONRegionContexts.JSON_EMPTY_TAG_CLOSE */) {
-						// next = parent.getNextSibling();
-						// parent = parent.getParentNode();
-					} else {
-						// ModelParserAdapter adapter = getParserAdapter();
-						// if (adapter != null) {
-						// while (parent.getNodeType() == IJSONNode.OBJECT_NODE
-						// && !adapter.canContain((Element) parent,
-						// node)
-						// && adapter
-						// .isEndTagOmissible((Element) parent)) {
-						// next = parent.getNextSibling();
-						// parent = parent.getParentNode();
-						// }
-						// }
-					}
-				}
-				insertNode(parent, node, next);
-				next = node.getNextSibling();
-				if (next != null) {
-					this.context.setNextNode(next);
-				} else {
-					this.context.setParentNode(node.getParentNode());
-				}
-			}
+		if (node == null || this.context == null) {
+			return;
 		}
+		IJSONNode parent = this.context.getParentNode();
+		if (parent == null) {
+			return;
+		}
+		IJSONNode next = this.context.getNextNode();
+		insertNode(parent, node, next);
+		next = node.getNextSibling();
+		if (next != null) {
+			this.context.setNextNode(next);
+		} else {
+			this.context.setParentNode(node.getParentNode());
+		}
+		
+		
+//		if (node != null && this.context != null) {
+//			IJSONNode aparent = this.context.getParentNode();
+//			if (parent != null) {
+//				IJSONNode next = this.context.getNextNode();
+//				// Reset parents which are closed container elements; should not
+//				// be parents
+//				if (parent.getNodeType() == IJSONNode.OBJECT_NODE) {
+//					String type = ((JSONObjectImpl) parent)
+//							.getStartStructuredDocumentRegion().getLastRegion()
+//							.getType();
+//					if (((JSONObjectImpl) parent).isContainer()
+//					/* && type == JSONRegionContexts.JSON_EMPTY_TAG_CLOSE */) {
+//						// next = parent.getNextSibling();
+//						// parent = parent.getParentNode();
+//					} else {
+//						// ModelParserAdapter adapter = getParserAdapter();
+//						// if (adapter != null) {
+//						// while (parent.getNodeType() == IJSONNode.OBJECT_NODE
+//						// && !adapter.canContain((Element) parent,
+//						// node)
+//						// && adapter
+//						// .isEndTagOmissible((Element) parent)) {
+//						// next = parent.getNextSibling();
+//						// parent = parent.getParentNode();
+//						// }
+//						// }
+//					}
+//				}
+//				insertNode(parent, node, next);
+//				next = node.getNextSibling();
+//				if (next != null) {
+//					this.context.setNextNode(next);
+//				} else {
+//					this.context.setParentNode(node.getParentNode());
+//				}
+//			}
+//		}
 	}
 
 	/**
@@ -1510,7 +1527,7 @@ public class JSONModelParser {
 	 * insertStartTag method
 	 * 
 	 */
-	private void insertStartArray(IStructuredDocumentRegion flatNode) {
+	private void insertArray(IStructuredDocumentRegion flatNode) {
 		ITextRegionList regions = flatNode.getRegions();
 		if (regions == null)
 			return;
@@ -1520,7 +1537,7 @@ public class JSONModelParser {
 		insertStartArray(element);
 	}
 
-	private void insertEndArray(IStructuredDocumentRegion flatNode) {
+	private void updateEndArray(IStructuredDocumentRegion flatNode) {
 		JSONArrayImpl start = (JSONArrayImpl) this.context.findPreviousArray();
 		if (start != null) { // start tag found
 			start.setEndStructuredDocumentRegion(flatNode);
@@ -1545,9 +1562,9 @@ public class JSONModelParser {
 		} else if (regionType == JSONRegionContexts.JSON_OBJECT_CLOSE) {
 			updateEndObject(flatNode);
 		} else if (regionType == JSONRegionContexts.JSON_ARRAY_OPEN) {
-			insertStartArray(flatNode);
+			insertArray(flatNode);
 		} else if (regionType == JSONRegionContexts.JSON_ARRAY_CLOSE) {
-			insertEndArray(flatNode);
+			updateEndArray(flatNode);
 		} else if (regionType == JSONRegionContexts.JSON_OBJECT_KEY) {
 			insertObjectKey(flatNode);
 		}
@@ -1638,6 +1655,7 @@ public class JSONModelParser {
 				pair = (JSONPairImpl) this.model.getDocument().createJSONPair(
 						name);
 				pair.setNameRegion(region);
+				//insertNode(object, pair, null);
 				object.add(pair);
 			} else if (region.getType() == JSONRegionContexts.JSON_COLON) {
 				pair.setEqualRegion(region);

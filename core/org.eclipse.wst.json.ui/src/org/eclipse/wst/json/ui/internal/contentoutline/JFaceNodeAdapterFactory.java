@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ColorRegistry;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -27,6 +29,7 @@ import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.TextStyle;
 import org.eclipse.wst.json.core.regions.JSONRegionContexts;
 import org.eclipse.wst.json.ui.internal.ColorTypesHelper;
 import org.eclipse.wst.json.ui.internal.JSONUIPlugin;
@@ -237,11 +240,10 @@ public class JFaceNodeAdapterFactory extends AbstractAdapterFactory implements
 			String[] stylePrefs = ColorHelper
 					.unpackStylePreferences(prefString);
 			if (stylePrefs != null) {
-				String foreground = stylePrefs[0];
-				String background = stylePrefs[1];
+				RGB foreground = ColorHelper.toRGB(stylePrefs[0]);
+				RGB background = ColorHelper.toRGB(stylePrefs[1]);
 
-				Styler styler = StyledString.createColorRegistryStyler(
-						foreground, background);
+				Styler styler = new RGBStyler(foreground, background);
 				getStylers().put(regionType, styler);
 			}
 		}
@@ -267,4 +269,25 @@ public class JFaceNodeAdapterFactory extends AbstractAdapterFactory implements
 	protected IPreferenceStore getColorPreferences() {
 		return JSONUIPlugin.getDefault().getPreferenceStore();
 	}
+
+	private static class RGBStyler extends StyledString.Styler {
+		private final RGB fForegroundColorName;
+		private final RGB fBackgroundColorName;
+
+		public RGBStyler(RGB foregroundColorName, RGB backgroundColorName) {
+			this.fForegroundColorName = foregroundColorName;
+			this.fBackgroundColorName = backgroundColorName;
+		}
+
+		public void applyStyles(TextStyle textStyle) {
+			if (this.fForegroundColorName != null) {
+				textStyle.foreground = EditorUtility
+						.getColor(fForegroundColorName);
+			}
+			if (this.fBackgroundColorName != null)
+				textStyle.background = EditorUtility
+						.getColor(fBackgroundColorName);
+		}
+	}
+
 }

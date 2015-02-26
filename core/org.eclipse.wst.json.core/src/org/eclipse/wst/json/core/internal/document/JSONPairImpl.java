@@ -8,7 +8,7 @@ import org.eclipse.wst.json.core.regions.JSONRegionContexts;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 
-public class JSONPairImpl extends JSONNodeImpl implements IJSONPair {
+public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 
 	private String name;
 	private ITextRegion nameRegion = null;

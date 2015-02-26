@@ -26,17 +26,28 @@ public class JSONDocumentTest {
 	}
 
 	@Test
-	public void testDocument() throws Exception {
+	public void addSpaceBeforeStartObject() throws Exception {
 
 		IJSONModel model = (IJSONModel) createModel();
-//		IStructuredDocument doc = model.getModelHandler()
-//				.getDocumentLoader()
-//				.createNewStructuredDocument(
-//						"test.json",
-//						JSONDocumentTest.class
-//								.getResourceAsStream("sample.json"));
+		IStructuredDocument structuredDocument = model.getStructuredDocument();		
 		IJSONDocument document = model.getDocument();
-
+		assertNull(document.getFirstChild());
+		
+		// Add a JSON Object
+		structuredDocument.set("{}");
+		assertNotNull(document.getFirstChild());
+		Assert.assertTrue(document.getFirstChild() instanceof IJSONObject);
+		
+		IJSONObject object1 = (IJSONObject)document.getFirstChild();
+		// object is closed
+		Assert.assertNotNull(object1.getEndStructuredDocumentRegion());
+		
+		// Add space
+		structuredDocument.replaceText(structuredDocument, 0, 0, " ");
+		assertNotNull(document.getFirstChild());
+		IJSONObject object2 = (IJSONObject)document.getFirstChild();
+		Assert.assertNotNull(object2.getEndStructuredDocumentRegion());
+		
 	}
 
 	private IStructuredModel createModel() {

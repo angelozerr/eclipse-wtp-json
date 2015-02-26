@@ -98,7 +98,8 @@ public class JSONContentOutlineConfiguration extends
 
 	public ILabelProvider getLabelProvider(TreeViewer viewer) {
 		if (fLabelProvider == null)
-			fLabelProvider = new JFaceNodeLabelProvider();
+			fLabelProvider = new MyDelegatingStyledCellLabelProvider(
+					new JFaceNodeLabelProvider());
 		return fLabelProvider;
 	}
 

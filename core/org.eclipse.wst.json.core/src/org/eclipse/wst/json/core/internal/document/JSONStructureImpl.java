@@ -541,4 +541,9 @@ public abstract class JSONStructureImpl extends JSONValueImpl implements
 			return flatNode.getEnd();
 		return super.getStartOffset();
 	}
+
+	@Override
+	public boolean isClosed() {
+		return getEndStructuredDocumentRegion() != null;
+	}
 }
