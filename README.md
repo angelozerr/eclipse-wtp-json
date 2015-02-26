@@ -18,7 +18,7 @@ Today this project is a POC, but her goal is to provide a WTP JSON Editor with t
 - An Outline Tree view : **TODO!**
 - JSON validation based on WTP Validator : **TODO!**
 - Text formatting : **TODO!**
-- Text folding on JSON Objects and Arrays : **TODO!**
+- [Text folding](https://github.com/angelozerr/eclipse-wtp-json/wiki/TextFolding) on JSON Objects and Arrays.
 
 And provides advanced features like : 
  
