@@ -691,9 +691,9 @@
 
    <!-- dark theme defaults -->
    <extension
-      point="org.eclipse.e4.ui.json.swt.theme">
-      <stylesheet uri="json/dark/preferencestyle.json"> 
-         <themeid refid="org.eclipse.e4.ui.json.theme.e4_dark"></themeid>
+      point="org.eclipse.e4.ui.css.swt.theme">
+      <stylesheet uri="css/dark/preferencestyle.css"> 
+         <themeid refid="org.eclipse.e4.ui.css.theme.e4_dark"></themeid>
       </stylesheet>
    </extension>
    

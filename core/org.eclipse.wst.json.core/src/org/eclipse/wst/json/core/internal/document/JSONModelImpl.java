@@ -435,6 +435,22 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 		}
 		if (this.document == null)
 			return; // being constructed
+		
+		
+//		IJSONObject root = document.createJSONObject();
+//		document.insertBefore(root, null);
+//		
+//		IJSONPair pair1 = document.createJSONPair("'A'");
+//		root.insertBefore(pair1, null);
+//		
+//		IJSONPair pair2 = document.createJSONPair("'B'");
+//		root.insertBefore(pair2, pair1);
+//		
+//		if (true) {
+//			return;
+//		}
+		
+		
 		JSONModelUpdater updater = getActiveUpdater();
 		if (updater != null) { // being updated
 			try {

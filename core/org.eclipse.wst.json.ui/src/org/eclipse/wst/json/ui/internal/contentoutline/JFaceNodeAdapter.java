@@ -46,43 +46,6 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter,
 		this.fAdapterFactory = adapterFactory;
 	}
 
-	protected Image createImage(Object object) {
-		Image image = null;
-		IJSONNode node = (IJSONNode) object;
-		switch (node.getNodeType()) {
-		case IJSONNode.OBJECT_NODE: {
-			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_OBJECT);
-			break;
-		}
-		case IJSONNode.ARRAY_NODE: {
-			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_ARRAY);
-			break;
-		}
-		case IJSONNode.PAIR_NODE: {
-			IJSONPair pair = (IJSONPair) node;
-			switch (pair.getNodeValueType()) {
-			case IJSONNode.VALUE_BOOLEAN_NODE:
-				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_BOOLEAN);
-				break;
-			case IJSONNode.VALUE_NULL_NODE:
-				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_NULL);
-				break;
-			case IJSONNode.VALUE_NUMBER_NODE:
-				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_NUMBER);
-				break;
-			case IJSONNode.VALUE_STRING_NODE:
-				image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_STRING);
-				break;
-			}
-		}
-		}
-		return image;
-	}
-
-	protected Image createJSONImageDescriptor(String imageResourceName) {
-		return JSONEditorPluginImageHelper.getInstance().getImage(
-				imageResourceName);
-	}
 
 	public Object[] getChildren(Object object) {
 
@@ -94,10 +57,14 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter,
 		ArrayList v = new ArrayList();
 		if (object instanceof IJSONNode) {
 			IJSONNode node = (IJSONNode) object;
-			if (node.getNodeType() == IJSONNode.OBJECT_NODE) {
-				List<IJSONPair> pairs = ((IJSONObject) node).getPairs();
-				v.addAll(pairs);
-			} else {
+			if (node.getNodeType() == IJSONNode.PAIR_NODE) {
+				node = ((IJSONPair) node).getValue();
+			}
+			if (node != null) {
+				// if (node.getNodeType() == IJSONNode.OBJECT_NODE) {
+				// List<IJSONPair> pairs = ((IJSONObject) node).getPairs();
+				// v.addAll(pairs);
+				// } else {
 				for (IJSONNode child = node.getFirstChild(); child != null; child = child
 						.getNextSibling()) {
 					IJSONNode n = child;
@@ -106,6 +73,7 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter,
 					// }
 				}
 			}
+			// }
 		}
 		return v.toArray();
 	}
@@ -133,10 +101,57 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter,
 				 * transparently in this class, subclasses must do this for
 				 * themselves if they're going to return their own results.
 				 */
-				image = createImage(node);
+				image = createImage((IJSONNode)node);
 			}
 		}
 		return image;
+	}
+
+	protected Image createImage(IJSONNode node) {
+		Image image = null;
+		switch (node.getNodeType()) {
+		case IJSONNode.PAIR_NODE: {
+			IJSONPair pair = (IJSONPair) node;
+			short nodeType = pair.getNodeValueType();
+			image = createImage(nodeType);
+			break;
+		}
+		default:
+			image = createImage(node.getNodeType());
+		}
+		return image;
+	}
+
+	private Image createImage(short nodeType) {
+		Image image = null;
+		switch (nodeType) {
+		case IJSONNode.OBJECT_NODE: {
+			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_OBJECT);
+			break;
+		}
+		case IJSONNode.ARRAY_NODE: {
+			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_ARRAY);
+			break;
+		}
+		case IJSONNode.VALUE_BOOLEAN_NODE:
+			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_BOOLEAN);
+			break;
+		case IJSONNode.VALUE_NULL_NODE:
+			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_NULL);
+			break;
+		case IJSONNode.VALUE_NUMBER_NODE:
+			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_NUMBER);
+			break;
+		case IJSONNode.VALUE_STRING_NODE:
+			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_STRING);
+			break;
+		}
+		return image;
+	}
+
+	protected Image createJSONImageDescriptor(String imageResourceName) {
+		return JSONEditorPluginImageHelper.getInstance().getImage(
+				imageResourceName);
 	}
 
 	/**
@@ -159,8 +174,9 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter,
 					styledString.append(name);
 					String value = pair.getSimpleValue();
 					if (value != null) {
-						styledString.append(": ");
-						Styler styler = fAdapterFactory.getStyler(pair.getValueRegionType());
+						styledString.append(" : ");
+						Styler styler = fAdapterFactory.getStyler(pair
+								.getValueRegionType());
 						styledString.append(value, styler);
 					}
 				}
@@ -189,9 +205,15 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter,
 		// cmvc defect 235554 > use child.getNextSibling() instead of
 		// nodeList(item) for O(n) vs. O(n*n)
 		IJSONNode node = (IJSONNode) object;
-		if (node.getNodeType() == IJSONNode.OBJECT_NODE) {
-			return ((IJSONObject) node).getPairs().size() > 0;
+		if (node.getNodeType() == IJSONNode.PAIR_NODE) {
+			node = ((IJSONPair) node).getValue();
 		}
+		if (node == null) {
+			return false;
+		}
+		// if (node.getNodeType() == IJSONNode.OBJECT_NODE) {
+		// return ((IJSONObject) node).getPairs().size() > 0;
+		// }
 		for (IJSONNode child = node.getFirstChild(); child != null; child = child
 				.getNextSibling()) {
 			// if (child.getNodeType() != Node.TEXT_NODE) {

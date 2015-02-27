@@ -1,7 +1,9 @@
 package org.eclipse.wst.json.ui.internal.projection;
 
 import org.eclipse.jface.text.Position;
+import org.eclipse.wst.json.core.document.IJSONArray;
 import org.eclipse.wst.json.core.document.IJSONNode;
+import org.eclipse.wst.json.core.document.IJSONObject;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.sse.ui.internal.projection.AbstractStructuredFoldingStrategy;
@@ -51,6 +53,6 @@ public class JSONFoldingStrategy extends AbstractStructuredFoldingStrategy {
 
 	@Override
 	protected boolean indexedRegionValidType(IndexedRegion indexedRegion) {
-		return (indexedRegion instanceof IJSONNode);
+		return (indexedRegion instanceof IJSONObject || indexedRegion instanceof IJSONArray);
 	}
 }

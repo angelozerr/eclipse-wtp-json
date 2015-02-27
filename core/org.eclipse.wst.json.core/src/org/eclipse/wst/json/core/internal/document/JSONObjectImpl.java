@@ -7,6 +7,7 @@ import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.document.IJSONObject;
 import org.eclipse.wst.json.core.document.IJSONPair;
 import org.eclipse.wst.json.core.document.JSONException;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 
 public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 
@@ -74,7 +75,7 @@ public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 		// this.attrNodes = new NodeListImpl();
 		// this.attrNodes.appendNode(attr);
 		attr.setOwnerObject(this);
-		pairs.add(newAttr);
+		//pairs.add(newAttr);
 		notifyPairReplaced(attr, null);
 		return this;
 	}
@@ -100,6 +101,32 @@ public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 		return pairs;
 	}
 
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		String tagName = null;//getName();
+		if (hasStartTag())
+			buffer.append(tagName);
+		if (isEmptyTag())
+			buffer.append('/');
+		if (hasEndTag()) {
+			buffer.append('/');
+			buffer.append(tagName);
+		}
+		if (buffer.length() == 0)
+			buffer.append(tagName);
+
+		IStructuredDocumentRegion startStructuredDocumentRegion = getStartStructuredDocumentRegion();
+		if (startStructuredDocumentRegion != null) {
+			buffer.append('@');
+			buffer.append(startStructuredDocumentRegion.toString());
+		}
+		IStructuredDocumentRegion endStructuredDocumentRegion = getEndStructuredDocumentRegion();
+		if (endStructuredDocumentRegion != null) {
+			buffer.append('@');
+			buffer.append(endStructuredDocumentRegion.toString());
+		}
+		return buffer.toString();
+	}
 	// @Override
 	// public boolean getBoolean(String paramString) {
 	// // TODO Auto-generated method stub

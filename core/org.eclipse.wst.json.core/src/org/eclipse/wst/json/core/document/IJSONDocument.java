@@ -11,8 +11,6 @@
  */
 package org.eclipse.wst.json.core.document;
 
-import org.eclipse.wst.json.core.internal.document.JSONObjectImpl;
-
 /**
  * JSON Document API.
  *
@@ -47,4 +45,12 @@ public interface IJSONDocument extends IJSONNode {
 	 * @return an instance JSON pair name/value
 	 */
 	IJSONPair createJSONPair(String name);
+
+	IJSONBooleanValue createBooleanValue();
+
+	IJSONNumberValue createNumberValue();
+
+	IJSONNullValue createNullValue();
+
+	IJSONStringValue createStringValue();
 }

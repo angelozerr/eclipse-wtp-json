@@ -460,6 +460,7 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 	}
 
 	/**
+	 * 
 	 */
 	public boolean isClosed() {
 		return true;
