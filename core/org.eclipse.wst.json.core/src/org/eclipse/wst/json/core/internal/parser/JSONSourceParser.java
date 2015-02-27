@@ -195,7 +195,10 @@ public class JSONSourceParser implements RegionParser {
 				|| type == JSONRegionContexts.JSON_OBJECT_KEY
 				|| type == JSONRegionContexts.JSON_ARRAY_OPEN
 				|| type == JSONRegionContexts.JSON_ARRAY_CLOSE
-				|| type == JSONRegionContexts.JSON_COMMA;
+				|| type == JSONRegionContexts.JSON_COMMA
+				|| (type != JSONRegionContexts.WHITE_SPACE && docRegionType == JSONRegionContexts.JSON_ARRAY_OPEN)
+				|| (type != JSONRegionContexts.WHITE_SPACE && docRegionType == JSONRegionContexts.JSON_COMMA);
+
 	}
 
 	/**

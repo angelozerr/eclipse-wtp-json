@@ -75,7 +75,7 @@ public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 		// this.attrNodes = new NodeListImpl();
 		// this.attrNodes.appendNode(attr);
 		attr.setOwnerObject(this);
-		pairs.add(newAttr);
+		//pairs.add(newAttr);
 		notifyPairReplaced(attr, null);
 		return this;
 	}

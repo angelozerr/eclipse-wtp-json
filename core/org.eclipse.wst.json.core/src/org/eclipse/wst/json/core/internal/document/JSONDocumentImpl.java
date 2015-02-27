@@ -1,11 +1,15 @@
 package org.eclipse.wst.json.core.internal.document;
 
 import org.eclipse.wst.json.core.document.IJSONArray;
+import org.eclipse.wst.json.core.document.IJSONBooleanValue;
 import org.eclipse.wst.json.core.document.IJSONDocument;
 import org.eclipse.wst.json.core.document.IJSONModel;
 import org.eclipse.wst.json.core.document.IJSONNode;
+import org.eclipse.wst.json.core.document.IJSONNullValue;
+import org.eclipse.wst.json.core.document.IJSONNumberValue;
 import org.eclipse.wst.json.core.document.IJSONObject;
 import org.eclipse.wst.json.core.document.IJSONPair;
+import org.eclipse.wst.json.core.document.IJSONStringValue;
 import org.eclipse.wst.json.core.document.JSONException;
 
 public class JSONDocumentImpl extends JSONStructureImpl implements
@@ -49,6 +53,34 @@ public class JSONDocumentImpl extends JSONStructureImpl implements
 		pair.setOwnerDocument(this);
 		pair.setName(name);
 		return pair;
+	}
+
+	@Override
+	public IJSONBooleanValue createBooleanValue() {
+		JSONBooleanValueImpl value = new JSONBooleanValueImpl();
+		value.setOwnerDocument(this);
+		return value;
+	}
+
+	@Override
+	public IJSONNumberValue createNumberValue() {
+		JSONNumberValueImpl value = new JSONNumberValueImpl();
+		value.setOwnerDocument(this);
+		return value;
+	}
+
+	@Override
+	public IJSONNullValue createNullValue() {
+		JSONNullValueImpl value = new JSONNullValueImpl();
+		value.setOwnerDocument(this);
+		return value;
+	}
+
+	@Override
+	public IJSONStringValue createStringValue() {
+		JSONStringValueImpl value = new JSONStringValueImpl();
+		value.setOwnerDocument(this);
+		return value;
 	}
 
 	@Override

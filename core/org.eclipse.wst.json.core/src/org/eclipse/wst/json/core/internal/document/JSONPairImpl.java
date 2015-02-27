@@ -15,6 +15,7 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 	private ITextRegion equalRegion = null;
 	private JSONObjectImpl ownerObject = null;
 	private ITextRegion fValueRegion = null;
+	private IJSONValue value;
 
 	@Override
 	public String getName() {
@@ -73,7 +74,7 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 	@Override
 	public IJSONValue getValue() {
 		// TODO Auto-generated method stub
-		return null;
+		return value;
 	}
 
 	public void setNameRegion(ITextRegion nameRegion) {
@@ -143,6 +144,8 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 			} else if (fValueRegion.getType() == JSONRegionContexts.JSON_ARRAY_OPEN) {
 				return ARRAY_NODE;
 			}
+		} else if (value != null) {
+			return value.getNodeType();
 		}
 		return -1;
 	}
@@ -166,5 +169,10 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 			return fValueRegion.getType();
 		}
 		return null;
+	}
+
+	public void setValue(IJSONValue value) {
+		this.value = value;
+		((JSONValueImpl)value).setParentNode(ownerObject);
 	}
 }
