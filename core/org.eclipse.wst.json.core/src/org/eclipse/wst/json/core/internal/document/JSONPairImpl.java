@@ -87,36 +87,42 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 
 	@Override
 	public int getStartOffset() {
-		if (this.ownerObject == null)
+		if (this.getStartStructuredDocumentRegion() == null)
 			return 0;
-		int offset = this.ownerObject.getStartOffset();
-		if (this.nameRegion != null) {
-			return (offset + this.nameRegion.getStart());
-		}
-		if (this.equalRegion != null) {
-			return (offset + this.equalRegion.getStart());
-		}
-		if (this.value != null) {
-			return (offset + this.value.getStartOffset());
-		}
-		return 0;
+		int offset = this.getStartStructuredDocumentRegion().getStartOffset();
+//		if (this.value != null) {
+//			if (value.getNodeType() == IJSONNode.ARRAY_NODE)
+//				return (offset + this.value.getStartOffset());
+//			//return (offset);
+//		}
+//		if (this.nameRegion != null) {
+//			return (offset + this.nameRegion.getStart());
+//		}
+//		if (this.equalRegion != null) {
+//			return (offset + this.equalRegion.getStart());
+//		}
+//		if (this.value != null) {
+//			return (offset + this.value.getStartOffset());
+//		}
+		return offset;
 	}
 
 	@Override
 	public int getEndOffset() {
-		if (this.ownerObject == null)
+		if (this.getStartStructuredDocumentRegion() == null)
 			return 0;
-		int offset = this.ownerObject.getStartOffset();
+		int offset = this.getStartStructuredDocumentRegion().getEndOffset();
 		if (this.value != null) {
-			return (offset + this.value.getEndOffset());
+			if (value.getNodeType() == IJSONNode.OBJECT_NODE || value.getNodeType() == IJSONNode.ARRAY_NODE )
+			return (this.value.getEndOffset());
 		}
-		if (this.equalRegion != null) {
-			return (offset + this.equalRegion.getEnd());
-		}
-		if (this.nameRegion != null) {
-			return (offset + this.nameRegion.getEnd());
-		}
-		return 0;
+		// if (this.equalRegion != null) {
+		// return (offset + this.equalRegion.getEnd());
+		// }
+		// if (this.nameRegion != null) {
+		// return (offset + this.nameRegion.getEnd());
+		// }
+		return offset;
 	}
 
 	public void setEqualRegion(ITextRegion equalRegion) {
@@ -158,6 +164,6 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 
 	public void setValue(IJSONValue value) {
 		this.value = value;
-		((JSONValueImpl)value).setParentNode(ownerObject);
+		((JSONValueImpl) value).setParentNode(ownerObject);
 	}
 }

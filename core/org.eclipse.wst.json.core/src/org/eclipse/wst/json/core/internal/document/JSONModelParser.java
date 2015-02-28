@@ -1702,6 +1702,7 @@ public class JSONModelParser {
 				String name = flatNode.getText(region);
 				pair = (JSONPairImpl) this.model.getDocument().createJSONPair(
 						name);
+				pair.setStartStructuredDocumentRegion(flatNode);
 				pair.setNameRegion(region);
 				insertNode(object, pair, null);
 				object.add(pair);
