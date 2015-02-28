@@ -73,7 +73,6 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 
 	@Override
 	public IJSONValue getValue() {
-		// TODO Auto-generated method stub
 		return value;
 	}
 
@@ -97,8 +96,8 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 		if (this.equalRegion != null) {
 			return (offset + this.equalRegion.getStart());
 		}
-		if (this.fValueRegion != null) {
-			return (offset + this.fValueRegion.getStart());
+		if (this.value != null) {
+			return (offset + this.value.getStartOffset());
 		}
 		return 0;
 	}
@@ -108,8 +107,8 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 		if (this.ownerObject == null)
 			return 0;
 		int offset = this.ownerObject.getStartOffset();
-		if (this.fValueRegion != null) {
-			return (offset + this.fValueRegion.getEnd());
+		if (this.value != null) {
+			return (offset + this.value.getEndOffset());
 		}
 		if (this.equalRegion != null) {
 			return (offset + this.equalRegion.getEnd());
@@ -130,21 +129,7 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 
 	@Override
 	public short getNodeValueType() {
-		if (fValueRegion != null) {
-			if (fValueRegion.getType() == JSONRegionContexts.JSON_VALUE_BOOLEAN) {
-				return VALUE_BOOLEAN_NODE;
-			} else if (fValueRegion.getType() == JSONRegionContexts.JSON_VALUE_NULL) {
-				return VALUE_NULL_NODE;
-			} else if (fValueRegion.getType() == JSONRegionContexts.JSON_VALUE_NUMBER) {
-				return VALUE_NUMBER_NODE;
-			} else if (fValueRegion.getType() == JSONRegionContexts.JSON_VALUE_STRING) {
-				return VALUE_STRING_NODE;
-			} else if (fValueRegion.getType() == JSONRegionContexts.JSON_OBJECT_OPEN) {
-				return OBJECT_NODE;
-			} else if (fValueRegion.getType() == JSONRegionContexts.JSON_ARRAY_OPEN) {
-				return ARRAY_NODE;
-			}
-		} else if (value != null) {
+		if (value != null) {
 			return value.getNodeType();
 		}
 		return -1;

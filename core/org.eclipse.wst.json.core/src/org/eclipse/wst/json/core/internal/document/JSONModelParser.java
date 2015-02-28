@@ -1707,11 +1707,23 @@ public class JSONModelParser {
 				object.add(pair);
 			} else if (region.getType() == JSONRegionContexts.JSON_COLON) {
 				pair.setEqualRegion(region);
-			} else if (region.getType() == JSONRegionContexts.JSON_VALUE_BOOLEAN
-					|| region.getType() == JSONRegionContexts.JSON_VALUE_NULL
-					|| region.getType() == JSONRegionContexts.JSON_VALUE_NUMBER
-					|| region.getType() == JSONRegionContexts.JSON_VALUE_STRING) {
-				pair.setValueRegion(region);
+			} else if (region.getType() == JSONRegionContexts.JSON_VALUE_BOOLEAN) {
+				JSONBooleanValueImpl value = (JSONBooleanValueImpl) this.model
+						.getDocument().createBooleanValue();
+				pair.setValue(value);
+			} else if (region.getType() == JSONRegionContexts.JSON_VALUE_NULL) {
+				JSONNullValueImpl value = (JSONNullValueImpl) this.model
+						.getDocument().createNullValue();
+				pair.setValue(value);
+			} else if (region.getType() == JSONRegionContexts.JSON_VALUE_NUMBER) {
+				JSONNumberValueImpl value = (JSONNumberValueImpl) this.model
+						.getDocument().createNumberValue();
+				pair.setValue(value);
+			}
+			else if (region.getType() == JSONRegionContexts.JSON_VALUE_STRING) {
+				JSONStringValueImpl value = (JSONStringValueImpl) this.model
+						.getDocument().createStringValue();
+				pair.setValue(value);
 			}
 		}
 	}
