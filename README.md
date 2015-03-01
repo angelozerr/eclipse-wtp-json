@@ -43,6 +43,16 @@ But there are some limitations :
  - not possible to update the JSON Editor with an JSON model kind like WTP IDOMModel and ICSSModel.
  - not extensible to extends completion and validation
 
+# Installation
+
+Eclipse WTP Web JSON is developed/tested with Eclipse 4.4 Luna. It is advised to use Eclipse 4.4 Luna (even if it could work with older version of Eclipse).
+
+To install Eclipse WTP JSON, please read [Installation - Update Site](https://github.com/angelozerr/eclipse-wtp-json/wiki/InstallationUpdateSite) section.
+ 
+# Build
+
+Eclipse WTP Web Resourcese is build with this [cloudbees job](https://opensagres.ci.cloudbees.com/job/eclipse-wtp-json/).
+
 # Architecture 
 
 WTP JSON Editor It follows the same architecture than XML, CSS, DTD, WTP Editors (org.eclipse.wst.sse.ui.StructuredTextEditor) 
