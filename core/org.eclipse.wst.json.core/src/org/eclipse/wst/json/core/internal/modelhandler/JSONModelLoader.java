@@ -8,10 +8,10 @@ import org.eclipse.wst.sse.core.internal.provisional.IModelLoader;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 
 /**
- * 
+ * JSON Model loader.
  */
 public class JSONModelLoader extends AbstractModelLoader {
-	
+
 	/**
 	 * JSON Loader constructor comment.
 	 */

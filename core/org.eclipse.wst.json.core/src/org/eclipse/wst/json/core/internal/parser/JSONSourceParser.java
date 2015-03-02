@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.wst.json.core.internal.Logger;
+import org.eclipse.wst.json.core.internal.util.JSONUtil;
 import org.eclipse.wst.json.core.regions.JSONRegionContexts;
 import org.eclipse.wst.sse.core.internal.ltk.parser.RegionParser;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
@@ -190,11 +191,10 @@ public class JSONSourceParser implements RegionParser {
 	 * currently public but may be made default access protected in future.
 	 */
 	protected boolean mustBeStart(String type, String docRegionType) {
-		return type == JSONRegionContexts.JSON_OBJECT_OPEN
-				|| type == JSONRegionContexts.JSON_OBJECT_CLOSE
+		return JSONUtil.isStartJSONStructure(type)
+				|| JSONUtil.isEndJSONStructure(type)
+				|| JSONUtil.isJSONSimpleValue(type)
 				|| type == JSONRegionContexts.JSON_OBJECT_KEY
-				|| type == JSONRegionContexts.JSON_ARRAY_OPEN
-				|| type == JSONRegionContexts.JSON_ARRAY_CLOSE
 				|| type == JSONRegionContexts.JSON_COMMA
 				|| (type != JSONRegionContexts.WHITE_SPACE && docRegionType == JSONRegionContexts.JSON_ARRAY_OPEN)
 				|| (type != JSONRegionContexts.WHITE_SPACE && docRegionType == JSONRegionContexts.JSON_COMMA);
@@ -204,8 +204,8 @@ public class JSONSourceParser implements RegionParser {
 	/**
 	 * currently public but may be made default access protected in future.
 	 */
-	protected boolean mustBeEnd(String type) {
-		return (type == JSONRegionContexts.JSON_ARRAY_CLOSE || type == JSONRegionContexts.JSON_OBJECT_CLOSE);
+	protected boolean mustBeEnd(String regionType) {
+		return JSONUtil.isEndJSONStructure(regionType);
 	}
 
 	private ITextRegion getNextRegion() {

@@ -3,6 +3,7 @@ package org.eclipse.wst.json.core.internal.document;
 import org.eclipse.wst.json.core.document.IJSONArray;
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.document.IJSONObject;
+import org.eclipse.wst.json.core.document.IJSONStructure;
 import org.eclipse.wst.json.core.internal.document.JSONObjectImpl;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -158,6 +159,15 @@ class JSONModelContext {
 		if (parentNode != null
 				&& parentNode.getNodeType() == IJSONNode.ARRAY_NODE) {
 			return (IJSONArray) parentNode;
+		}
+		return null;
+	}
+
+	IJSONStructure findPreviousStructure() {
+		if (parentNode != null
+				&& (parentNode.getNodeType() == IJSONNode.OBJECT_NODE || parentNode
+						.getNodeType() == IJSONNode.ARRAY_NODE)) {
+			return (IJSONStructure) parentNode;
 		}
 		return null;
 	}

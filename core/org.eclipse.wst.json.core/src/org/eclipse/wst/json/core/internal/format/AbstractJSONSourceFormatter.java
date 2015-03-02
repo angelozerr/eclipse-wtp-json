@@ -447,19 +447,19 @@ public abstract class AbstractJSONSourceFormatter implements
 	/**
 	 * 
 	 */
-//	protected String decoratedRegion(CompoundRegion region, int type,
-//			IJSONCleanupStrategy stgy) {
-//		if (isFormat())
-//			return region.getText();
-//
-//		Preferences preferences = JSONCorePlugin.getDefault()
-//				.getPluginPreferences();
-//
-//		String text = null;
-//		if (!stgy.isFormatSource())
-//			text = region.getFullText();
-//		else
-//			text = region.getText();
+	protected String decoratedRegion(CompoundRegion region, int type,
+			IJSONCleanupStrategy stgy) {
+		if (isFormat())
+			return region.getText();
+
+		Preferences preferences = JSONCorePlugin.getDefault()
+				.getPluginPreferences();
+
+		String text = null;
+		if (!stgy.isFormatSource())
+			text = region.getFullText();
+		else
+			text = region.getText();
 //
 //		String regionType = region.getType();
 //		if (regionType == JSONRegionContexts.JSON_URI
@@ -513,8 +513,8 @@ public abstract class AbstractJSONSourceFormatter implements
 //					text = text + quote;
 //			}
 //		}
-//		return text;
-//	}
+		return text;
+	}
 
 	/**
 	 * 

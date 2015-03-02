@@ -46,13 +46,13 @@ public class JSONArrayImpl extends JSONStructureImpl implements IJSONArray {
 		// TODO Auto-generated method stub
 		return this;
 	}
-	
+
 	@Override
 	public IJSONArray remove(IJSONValue value) {
 		// TODO Auto-generated method stub
 		return this;
 	}
-	
+
 	// @Override
 	// public boolean getBoolean(int paramInt) {
 	// // TODO Auto-generated method stub
@@ -269,4 +269,13 @@ public class JSONArrayImpl extends JSONStructureImpl implements IJSONArray {
 	// return null;
 	// }
 
+	@Override
+	public String getSimpleValue() {
+		return null;
+	}
+	
+	@Override
+	public String getValueRegionType() {
+		return null;
+	}
 }

@@ -1,6 +1,6 @@
 package org.eclipse.wst.json.core.document;
 
-public interface IJSONPair extends IJSONNode {
+public interface IJSONPair extends IJSONStructure {
 
 	String getName();
 	

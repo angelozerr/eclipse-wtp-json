@@ -3,6 +3,7 @@ package org.eclipse.wst.json.core.document;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.eclipse.wst.json.core.TestUtil;
 import org.eclipse.wst.json.core.contenttype.ContentTypeIdForJSON;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
@@ -15,7 +16,7 @@ public class JSONObjectCreationTest {
 
 	@Test
 	public void createEmptyObjectNotClosed() throws Exception {
-		IJSONModel model = (IJSONModel) createModel();
+		IJSONModel model = (IJSONModel) TestUtil.createModel();
 		IStructuredDocument structuredDocument = model.getStructuredDocument();
 		IJSONDocument document = model.getDocument();
 		assertNull(document.getFirstChild());
@@ -32,7 +33,7 @@ public class JSONObjectCreationTest {
 
 	@Test
 	public void createEmptyObject() throws Exception {
-		IJSONModel model = (IJSONModel) createModel();
+		IJSONModel model = (IJSONModel) TestUtil.createModel();
 		IStructuredDocument structuredDocument = model.getStructuredDocument();
 		IJSONDocument document = model.getDocument();
 		assertNull(document.getFirstChild());
@@ -50,7 +51,7 @@ public class JSONObjectCreationTest {
 	@Test
 	public void createObjectWithObjectValue() throws Exception {
 
-		IJSONModel model = (IJSONModel) createModel();
+		IJSONModel model = (IJSONModel) TestUtil.createModel();
 		IStructuredDocument structuredDocument = model.getStructuredDocument();
 		IJSONDocument document = model.getDocument();
 		assertNull(document.getFirstChild());
@@ -71,7 +72,7 @@ public class JSONObjectCreationTest {
 	@Test
 	public void createComplexObject() throws Exception {
 
-		IJSONModel model = (IJSONModel) createModel();
+		IJSONModel model = (IJSONModel) TestUtil.createModel();
 		IStructuredDocument structuredDocument = model.getStructuredDocument();
 		IJSONDocument document = model.getDocument();
 		assertNull(document.getFirstChild());
@@ -83,10 +84,4 @@ public class JSONObjectCreationTest {
 
 	}
 
-	private IStructuredModel createModel() {
-		IModelManager manager = StructuredModelManager.getModelManager();
-		return manager
-				.createUnManagedStructuredModelFor(ContentTypeIdForJSON.ContentTypeID_JSON);
-
-	}
 }

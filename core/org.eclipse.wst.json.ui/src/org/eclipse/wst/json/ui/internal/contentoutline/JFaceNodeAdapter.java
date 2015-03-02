@@ -13,6 +13,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.document.IJSONObject;
 import org.eclipse.wst.json.core.document.IJSONPair;
+import org.eclipse.wst.json.core.document.IJSONValue;
 import org.eclipse.wst.json.ui.internal.editor.JSONEditorPluginImageHelper;
 import org.eclipse.wst.json.ui.internal.editor.JSONEditorPluginImages;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
@@ -45,7 +46,6 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter,
 		super();
 		this.fAdapterFactory = adapterFactory;
 	}
-
 
 	public Object[] getChildren(Object object) {
 
@@ -101,7 +101,7 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter,
 				 * transparently in this class, subclasses must do this for
 				 * themselves if they're going to return their own results.
 				 */
-				image = createImage((IJSONNode)node);
+				image = createImage((IJSONNode) node);
 			}
 		}
 		return image;
@@ -180,6 +180,19 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter,
 						styledString.append(value, styler);
 					}
 				}
+				break;
+			case IJSONNode.VALUE_BOOLEAN_NODE:
+			case IJSONNode.VALUE_NULL_NODE:
+			case IJSONNode.VALUE_NUMBER_NODE:
+			case IJSONNode.VALUE_STRING_NODE:
+				String value = ((IJSONValue) node).getSimpleValue();
+				if (value != null) {
+					styledString.append(" : ");
+					Styler styler = fAdapterFactory
+							.getStyler(((IJSONValue) node).getValueRegionType());
+					styledString.append(value, styler);
+				}
+				break;
 			}
 		}
 		return styledString;

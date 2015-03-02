@@ -299,7 +299,7 @@ num = [+-]?([0-9]+|[0-9]*"."[0-9]*)
 string = {string1}|{string2}
 nl = \n|\r\n|\r|\f
 
-Key = \" {name} \"
+Key = {string1}
 
 startObject = \{
 endObject = \}

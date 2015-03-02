@@ -2,8 +2,10 @@ package org.eclipse.wst.json.core.internal.document;
 
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.document.IJSONPair;
+import org.eclipse.wst.json.core.document.IJSONStructure;
 import org.eclipse.wst.json.core.document.IJSONValue;
 import org.eclipse.wst.json.core.document.JSONException;
+import org.eclipse.wst.json.core.internal.util.JSONUtil;
 import org.eclipse.wst.json.core.regions.JSONRegionContexts;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
@@ -90,20 +92,20 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 		if (this.getStartStructuredDocumentRegion() == null)
 			return 0;
 		int offset = this.getStartStructuredDocumentRegion().getStartOffset();
-//		if (this.value != null) {
-//			if (value.getNodeType() == IJSONNode.ARRAY_NODE)
-//				return (offset + this.value.getStartOffset());
-//			//return (offset);
-//		}
-//		if (this.nameRegion != null) {
-//			return (offset + this.nameRegion.getStart());
-//		}
-//		if (this.equalRegion != null) {
-//			return (offset + this.equalRegion.getStart());
-//		}
-//		if (this.value != null) {
-//			return (offset + this.value.getStartOffset());
-//		}
+		// if (this.value != null) {
+		// if (value.getNodeType() == IJSONNode.ARRAY_NODE)
+		// return (offset + this.value.getStartOffset());
+		// //return (offset);
+		// }
+		// if (this.nameRegion != null) {
+		// return (offset + this.nameRegion.getStart());
+		// }
+		// if (this.equalRegion != null) {
+		// return (offset + this.equalRegion.getStart());
+		// }
+		// if (this.value != null) {
+		// return (offset + this.value.getStartOffset());
+		// }
 		return offset;
 	}
 
@@ -113,7 +115,8 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 			return 0;
 		int offset = this.getStartStructuredDocumentRegion().getEndOffset();
 		if (this.value != null) {
-			if (value.getNodeType() == IJSONNode.OBJECT_NODE || value.getNodeType() == IJSONNode.ARRAY_NODE )
+			// if (value.getNodeType() == IJSONNode.OBJECT_NODE ||
+			// value.getNodeType() == IJSONNode.ARRAY_NODE )
 			return (this.value.getEndOffset());
 		}
 		// if (this.equalRegion != null) {
@@ -143,21 +146,19 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 
 	@Override
 	public String getSimpleValue() {
-		if (ownerObject == null) {
+		if (value == null) {
 			return null;
 		}
-		IStructuredDocumentRegion ownerRegion = this.ownerObject
-				.getStartStructuredDocumentRegion();
-		if (this.fValueRegion != null)
-			return StructuredDocumentRegionUtil.getAttrValue(ownerRegion,
-					this.fValueRegion);
-		return JSONNodeImpl.EMPTY_STRING;
+		return value.getSimpleValue();
 	}
 
 	@Override
 	public String getValueRegionType() {
-		if (this.fValueRegion != null) {
-			return fValueRegion.getType();
+		if (value != null) {
+			if (value.getStartStructuredDocumentRegion() == null) {
+				return null;
+			}
+			return value.getStartStructuredDocumentRegion().getType();
 		}
 		return null;
 	}
@@ -165,5 +166,15 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 	public void setValue(IJSONValue value) {
 		this.value = value;
 		((JSONValueImpl) value).setParentNode(ownerObject);
+	}
+
+	@Override
+	public IStructuredDocumentRegion getEndStructuredDocumentRegion() {
+		if (value != null
+				&& (value.getNodeType() == IJSONNode.OBJECT_NODE || value
+						.getNodeType() == IJSONNode.ARRAY_NODE)) {
+			return ((IJSONStructure) value).getEndStructuredDocumentRegion();
+		}
+		return super.getEndStructuredDocumentRegion();
 	}
 }

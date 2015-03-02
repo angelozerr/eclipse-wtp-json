@@ -118,8 +118,8 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 		range.expand(getUpdateRangeForUnknownRegion(range.getStart(),
 				range.getEnd()));
 
-		range.expand(getUpdateRangeForQuotes(range.getStart(), range.getEnd()));
-		range.expand(getUpdateRangeForComments(range.getStart(), range.getEnd()));
+		//range.expand(getUpdateRangeForQuotes(range.getStart(), range.getEnd()));
+		//range.expand(getUpdateRangeForComments(range.getStart(), range.getEnd()));
 		range.expand(getUpdateRangeForBraces(range.getStart(), range.getEnd()));
 
 		StructuredDocumentEvent result;

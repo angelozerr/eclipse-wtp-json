@@ -1,6 +1,8 @@
 package org.eclipse.wst.json.core.internal.document;
 
-public abstract class JSONValueImpl extends JSONNodeImpl {
+import org.eclipse.wst.json.core.document.IJSONValue;
+
+public abstract class JSONValueImpl extends JSONNodeImpl implements IJSONValue {
 
 	protected JSONValueImpl() {
 		super();
@@ -14,5 +16,21 @@ public abstract class JSONValueImpl extends JSONNodeImpl {
 	 */
 	protected JSONValueImpl(JSONValueImpl that) {
 		super(that);
+	}
+
+	@Override
+	public String getSimpleValue() {
+		if (getStartStructuredDocumentRegion() == null) {
+			return null;
+		}
+		return getStartStructuredDocumentRegion().getText();
+	}
+
+	@Override
+	public String getValueRegionType() {
+		if (getStartStructuredDocumentRegion() == null) {
+			return null;
+		}
+		return getStartStructuredDocumentRegion().getType();
 	}
 }

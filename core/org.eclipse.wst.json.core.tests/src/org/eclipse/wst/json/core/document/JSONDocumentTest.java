@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.StringReader;
 
+import org.eclipse.wst.json.core.TestUtil;
 import org.eclipse.wst.json.core.contenttype.ContentTypeIdForJSON;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
@@ -17,7 +18,7 @@ public class JSONDocumentTest {
 	@Test
 	public void testModel() throws Exception {
 
-		IStructuredModel model = createModel();
+		IStructuredModel model = TestUtil.createModel();
 		Assert.assertTrue(model instanceof IJSONModel);
 
 		IJSONModel jsonModel = (IJSONModel) model;
@@ -28,7 +29,7 @@ public class JSONDocumentTest {
 	@Test
 	public void addSpaceBeforeStartObject() throws Exception {
 
-		IJSONModel model = (IJSONModel) createModel();
+		IJSONModel model = (IJSONModel) TestUtil.createModel();
 		IStructuredDocument structuredDocument = model.getStructuredDocument();		
 		IJSONDocument document = model.getDocument();
 		assertNull(document.getFirstChild());
@@ -50,10 +51,4 @@ public class JSONDocumentTest {
 		
 	}
 
-	private IStructuredModel createModel() {
-		IModelManager manager = StructuredModelManager.getModelManager();
-		return manager
-				.createUnManagedStructuredModelFor(ContentTypeIdForJSON.ContentTypeID_JSON);
-
-	}
 }

@@ -67,6 +67,10 @@ public class JSONSourceFormatterFactory {
 		// return StyleSheetFormatter.getInstance();
 		// case IJSONNode.ATTR_NODE :
 		// return AttrFormatter.getInstance();
+		case IJSONNode.DOCUMENT_NODE:
+			return JSONDocumentFormatter.getInstance();
+		case IJSONNode.OBJECT_NODE:
+			return JSONObjectFormatter.getInstance();
 		default:
 			return UnknownRuleFormatter.getInstance();
 		}

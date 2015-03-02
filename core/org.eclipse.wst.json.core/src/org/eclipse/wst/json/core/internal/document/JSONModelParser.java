@@ -120,7 +120,7 @@ public class JSONModelParser {
 		}
 
 		JSONObjectImpl element = (JSONObjectImpl) node;
-		List<IJSONPair> attributes = element.getPairs();
+		/*List<IJSONPair> attributes = element.getPairs();
 		if (attributes == null)
 			return;
 		for (IJSONPair attr : attributes) {
@@ -130,7 +130,7 @@ public class JSONModelParser {
 			String name = flatNode.getText(region);
 			((JSONPairImpl) attr).setName(name);
 			break;
-		}
+		}*/
 	}
 
 	/**
@@ -1576,13 +1576,13 @@ public class JSONModelParser {
 		} else if (regionType == JSONRegionContexts.JSON_OBJECT_KEY) {
 			insertObjectKey(flatNode);
 		} else if (regionType == JSONRegionContexts.JSON_VALUE_BOOLEAN) {
-			insertBooleanValue(flatNode);
+			insertValue(flatNode, regionType);
 		} else if (regionType == JSONRegionContexts.JSON_VALUE_NULL) {
-			insertNullValue(flatNode);
+			insertValue(flatNode, regionType);
 		} else if (regionType == JSONRegionContexts.JSON_VALUE_NUMBER) {
-			insertNumberValue(flatNode);
+			insertValue(flatNode, regionType);
 		} else if (regionType == JSONRegionContexts.JSON_VALUE_STRING) {
-			insertStringValue(flatNode);
+			insertValue(flatNode, regionType);
 		}
 		/*
 		 * else if (regionType == JSONRegionContexts.JSON_COLON) {
@@ -1621,19 +1621,41 @@ public class JSONModelParser {
 		// }
 	}
 
-	private void insertBooleanValue(IStructuredDocumentRegion flatNode) {
+	private void insertValue(IStructuredDocumentRegion flatNode,
+			String regionType) {
 		ITextRegionList regions = flatNode.getRegions();
 		if (regions == null)
 			return;
 
 		ITextRegion nameRegion = StructuredDocumentRegionUtil
 				.getFirstRegion(flatNode);
-		JSONArrayImpl array = (JSONArrayImpl) this.context.findPreviousArray();
-		if (array != null) {
-			JSONBooleanValueImpl value = (JSONBooleanValueImpl) this.model
-					.getDocument().createBooleanValue();
-			insertNode(array, value, null);
+		JSONStructureImpl structure = (JSONStructureImpl) this.context
+				.findPreviousStructure();
+		if (structure != null) {
+			JSONValueImpl value = (JSONValueImpl) createJSONValue(regionType);
+			value.setStructuredDocumentRegion(flatNode);
+			if (structure.getNodeType() == IJSONNode.OBJECT_NODE) {
+				if (structure.getLastChild() != null
+						&& structure.getLastChild().getNodeType() == IJSONNode.PAIR_NODE) {
+					((JSONPairImpl) structure.getLastChild()).setValue(value);
+				}
+			} else {
+				insertNode(structure, value, null);
+			}
 		}
+	}
+
+	private IJSONValue createJSONValue(String regionType) {
+		if (regionType == JSONRegionContexts.JSON_VALUE_BOOLEAN) {
+			return this.model.getDocument().createBooleanValue();
+		} else if (regionType == JSONRegionContexts.JSON_VALUE_NULL) {
+			return this.model.getDocument().createNullValue();
+		} else if (regionType == JSONRegionContexts.JSON_VALUE_NUMBER) {
+			return this.model.getDocument().createNumberValue();
+		} else if (regionType == JSONRegionContexts.JSON_VALUE_STRING) {
+			return this.model.getDocument().createStringValue();
+		}
+		return null;
 	}
 
 	private void insertNumberValue(IStructuredDocumentRegion flatNode) {
@@ -1643,7 +1665,8 @@ public class JSONModelParser {
 
 		ITextRegion nameRegion = StructuredDocumentRegionUtil
 				.getFirstRegion(flatNode);
-		JSONArrayImpl array = (JSONArrayImpl) this.context.findPreviousArray();
+		JSONStructureImpl array = (JSONStructureImpl) this.context
+				.findPreviousStructure();
 		if (array != null) {
 			JSONNumberValueImpl value = (JSONNumberValueImpl) this.model
 					.getDocument().createNumberValue();
@@ -1658,7 +1681,8 @@ public class JSONModelParser {
 
 		ITextRegion nameRegion = StructuredDocumentRegionUtil
 				.getFirstRegion(flatNode);
-		JSONArrayImpl array = (JSONArrayImpl) this.context.findPreviousArray();
+		JSONStructureImpl array = (JSONStructureImpl) this.context
+				.findPreviousStructure();
 		if (array != null) {
 			JSONNullValueImpl value = (JSONNullValueImpl) this.model
 					.getDocument().createNullValue();
@@ -1673,7 +1697,8 @@ public class JSONModelParser {
 
 		ITextRegion nameRegion = StructuredDocumentRegionUtil
 				.getFirstRegion(flatNode);
-		JSONArrayImpl array = (JSONArrayImpl) this.context.findPreviousArray();
+		JSONStructureImpl array = (JSONStructureImpl) this.context
+				.findPreviousStructure();
 		if (array != null) {
 			JSONStringValueImpl value = (JSONStringValueImpl) this.model
 					.getDocument().createStringValue();
@@ -1720,8 +1745,7 @@ public class JSONModelParser {
 				JSONNumberValueImpl value = (JSONNumberValueImpl) this.model
 						.getDocument().createNumberValue();
 				pair.setValue(value);
-			}
-			else if (region.getType() == JSONRegionContexts.JSON_VALUE_STRING) {
+			} else if (region.getType() == JSONRegionContexts.JSON_VALUE_STRING) {
 				JSONStringValueImpl value = (JSONStringValueImpl) this.model
 						.getDocument().createStringValue();
 				pair.setValue(value);

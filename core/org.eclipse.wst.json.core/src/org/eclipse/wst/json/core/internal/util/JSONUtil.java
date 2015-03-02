@@ -258,4 +258,18 @@ public class JSONUtil {
 			// }
 		}
 	}
+
+	public static boolean isJSONSimpleValue(String regionType) {
+		return (regionType == JSONRegionContexts.JSON_VALUE_BOOLEAN
+				|| regionType == JSONRegionContexts.JSON_VALUE_NULL
+				|| regionType == JSONRegionContexts.JSON_VALUE_NUMBER || regionType == JSONRegionContexts.JSON_VALUE_STRING);
+	}
+
+	public static boolean isStartJSONStructure(String regionType) {
+		return (regionType == JSONRegionContexts.JSON_ARRAY_OPEN || regionType == JSONRegionContexts.JSON_OBJECT_OPEN);
+	}
+
+	public static boolean isEndJSONStructure(String regionType) {
+		return (regionType == JSONRegionContexts.JSON_ARRAY_CLOSE || regionType == JSONRegionContexts.JSON_OBJECT_CLOSE);
+	}
 }

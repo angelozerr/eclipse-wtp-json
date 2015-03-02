@@ -11,15 +11,12 @@ import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentReg
 
 public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 
-	private final List<IJSONPair> pairs;
-
 	public JSONObjectImpl() {
 		this(null);
 	}
 
 	public JSONObjectImpl(JSONObjectImpl object) {
 		super(object);
-		pairs = new ArrayList<IJSONPair>();
 	}
 
 	@Override
@@ -92,13 +89,8 @@ public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 
 	@Override
 	public IJSONObject remove(IJSONPair pair) {
-		pairs.remove(pair);
 		notifyPairReplaced(null, pair);
 		return this;
-	}
-
-	public List<IJSONPair> getPairs() {
-		return pairs;
 	}
 
 	public String toString() {
@@ -270,4 +262,13 @@ public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 	// return null;
 	// }
 
+	@Override
+	public String getSimpleValue() {
+		return null;
+	}
+	
+	@Override
+	public String getValueRegionType() {
+		return null;
+	}
 }
