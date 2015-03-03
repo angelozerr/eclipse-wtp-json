@@ -1,3 +1,14 @@
+/**
+ *  Copyright (c) 2015-present Angelo ZERR.
+ *  
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *
+ *  Contributors:
+ *  Angelo Zerr <angelo.zerr@gmail.com> - initial API and implementation
+ */
 package org.eclipse.wst.json.core.internal.document;
 
 import org.eclipse.wst.json.core.contenttype.ContentTypeIdForJSON;
@@ -6,6 +17,7 @@ import org.eclipse.wst.json.core.document.IJSONModel;
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.document.IJSONObject;
 import org.eclipse.wst.json.core.document.IJSONPair;
+import org.eclipse.wst.json.core.document.IJSONValue;
 import org.eclipse.wst.json.core.internal.Logger;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.model.AbstractStructuredModel;
@@ -24,7 +36,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegionList;
 import org.w3c.dom.Document;
 
 /**
- * JSONModelImpl class
+ * SSE {@link IStructuredDocument} implementation for JSON.
  */
 public class JSONModelImpl extends AbstractStructuredModel implements
 		IStructuredDocumentListener, IJSONModel {
@@ -287,7 +299,13 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 				}
 				// dig more
 				parent = child;
-				child = (IJSONNode) parent.getFirstChild();
+				if (parent != null
+						&& parent.getNodeType() == IJSONNode.PAIR_NODE) {
+					IJSONPair pair = (IJSONPair) parent;
+					child = pair.getValue();
+				} else {
+					child = (IJSONNode) parent.getFirstChild();
+				}
 			}
 		} else {
 			// search from the last
@@ -314,10 +332,16 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 				}
 				// dig more
 				parent = child;
-				child = (IJSONNode) parent.getLastChild();
+				if (parent != null
+						&& parent.getNodeType() == IJSONNode.PAIR_NODE) {
+					IJSONPair pair = (IJSONPair) parent;
+					child = pair.getValue();
+				} else {
+					child = (IJSONNode) parent.getLastChild();
+				}
 			}
 		}
-		return parent;
+		return parent != null ? parent : document.getFirstChild();
 	}
 
 	/**
@@ -435,22 +459,20 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 		}
 		if (this.document == null)
 			return; // being constructed
-		
-		
-//		IJSONObject root = document.createJSONObject();
-//		document.insertBefore(root, null);
-//		
-//		IJSONPair pair1 = document.createJSONPair("'A'");
-//		root.insertBefore(pair1, null);
-//		
-//		IJSONPair pair2 = document.createJSONPair("'B'");
-//		root.insertBefore(pair2, pair1);
-//		
-//		if (true) {
-//			return;
-//		}
-		
-		
+
+		// IJSONObject root = document.createJSONObject();
+		// document.insertBefore(root, null);
+		//
+		// IJSONPair pair1 = document.createJSONPair("'A'");
+		// root.insertBefore(pair1, null);
+		//
+		// IJSONPair pair2 = document.createJSONPair("'B'");
+		// root.insertBefore(pair2, pair1);
+		//
+		// if (true) {
+		// return;
+		// }
+
 		JSONModelUpdater updater = getActiveUpdater();
 		if (updater != null) { // being updated
 			try {
@@ -545,10 +567,10 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 			parser.replaceStructuredDocumentRegions(
 					newStructuredDocumentRegions, oldStructuredDocumentRegions);
 		} catch (Exception ex) {
-			if (ex.getClass().equals(StructuredDocumentRegionManagementException.class)) {
+			if (ex.getClass().equals(
+					StructuredDocumentRegionManagementException.class)) {
 				Logger.traceException(TRACE_PARSER_MANAGEMENT_EXCEPTION, ex);
-			}
-			else {
+			} else {
 				Logger.logException(ex);
 			}
 			this.refresh = true;

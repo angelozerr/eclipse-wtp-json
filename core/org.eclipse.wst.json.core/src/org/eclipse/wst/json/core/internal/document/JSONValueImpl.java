@@ -1,8 +1,12 @@
 package org.eclipse.wst.json.core.internal.document;
 
+import org.eclipse.wst.json.core.document.IJSONNode;
+import org.eclipse.wst.json.core.document.IJSONPair;
 import org.eclipse.wst.json.core.document.IJSONValue;
 
 public abstract class JSONValueImpl extends JSONNodeImpl implements IJSONValue {
+
+	private IJSONPair ownerPairNode;
 
 	protected JSONValueImpl() {
 		super();
@@ -33,4 +37,23 @@ public abstract class JSONValueImpl extends JSONNodeImpl implements IJSONValue {
 		}
 		return getStartStructuredDocumentRegion().getType();
 	}
+
+	public void setOwnerPairNode(IJSONPair pairNode) {
+		this.ownerPairNode = pairNode;
+	}
+
+	@Override
+	public IJSONNode getParentOrPairNode() {
+		if (ownerPairNode != null) {
+			return ownerPairNode;
+		}
+		IJSONNode parent = super.getParentNode();
+		return parent.getOwnerPairNode() != null ? parent.getOwnerPairNode()
+				: parent;
+	}
+
+	public IJSONPair getOwnerPairNode() {
+		return ownerPairNode;
+	}
+
 }

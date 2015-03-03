@@ -5,8 +5,8 @@ import org.eclipse.wst.json.core.document.IJSONPair;
 import org.eclipse.wst.json.core.document.IJSONStructure;
 import org.eclipse.wst.json.core.document.IJSONValue;
 import org.eclipse.wst.json.core.document.JSONException;
-import org.eclipse.wst.json.core.internal.util.JSONUtil;
 import org.eclipse.wst.json.core.regions.JSONRegionContexts;
+import org.eclipse.wst.json.core.util.JSONUtil;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 
@@ -16,7 +16,6 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 	private ITextRegion nameRegion = null;
 	private ITextRegion equalRegion = null;
 	private JSONObjectImpl ownerObject = null;
-	private ITextRegion fValueRegion = null;
 	private IJSONValue value;
 
 	@Override
@@ -132,10 +131,6 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 		this.equalRegion = equalRegion;
 	}
 
-	public void setValueRegion(ITextRegion valueRegion) {
-		this.fValueRegion = valueRegion;
-	}
-
 	@Override
 	public short getNodeValueType() {
 		if (value != null) {
@@ -166,15 +161,33 @@ public class JSONPairImpl extends JSONStructureImpl implements IJSONPair {
 	public void setValue(IJSONValue value) {
 		this.value = value;
 		((JSONValueImpl) value).setParentNode(ownerObject);
+		((JSONValueImpl) value).setOwnerPairNode(this);
 	}
 
 	@Override
 	public IStructuredDocumentRegion getEndStructuredDocumentRegion() {
-		if (value != null
-				&& (value.getNodeType() == IJSONNode.OBJECT_NODE || value
-						.getNodeType() == IJSONNode.ARRAY_NODE)) {
+		if (value != null) {
 			return ((IJSONStructure) value).getEndStructuredDocumentRegion();
 		}
 		return super.getEndStructuredDocumentRegion();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder buffer = new StringBuilder();
+		String tagName = getName();
+		buffer.append(tagName);
+		IStructuredDocumentRegion startStructuredDocumentRegion = getStartStructuredDocumentRegion();
+		if (startStructuredDocumentRegion != null) {
+			buffer.append('@');
+			buffer.append(startStructuredDocumentRegion.toString());
+		}
+		IStructuredDocumentRegion endStructuredDocumentRegion = getEndStructuredDocumentRegion();
+		if (endStructuredDocumentRegion != null) {
+			buffer.append('@');
+			buffer.append(endStructuredDocumentRegion.toString());
+		}
+		return buffer.toString();
+
 	}
 }

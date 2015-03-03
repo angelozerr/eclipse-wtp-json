@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.wst.json.core.internal.Logger;
-import org.eclipse.wst.json.core.internal.util.JSONUtil;
 import org.eclipse.wst.json.core.regions.JSONRegionContexts;
+import org.eclipse.wst.json.core.util.JSONUtil;
 import org.eclipse.wst.sse.core.internal.ltk.parser.RegionParser;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;

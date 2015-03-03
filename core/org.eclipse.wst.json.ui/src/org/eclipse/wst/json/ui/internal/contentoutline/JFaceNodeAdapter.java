@@ -201,7 +201,7 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter,
 	public Object getParent(Object object) {
 		if (object instanceof IJSONNode) {
 			IJSONNode node = (IJSONNode) object;
-			return node.getParentNode();
+			return node.getParentOrPairNode();
 		}
 		return null;
 	}

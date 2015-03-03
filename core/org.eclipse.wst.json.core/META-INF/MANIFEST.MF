@@ -21,4 +21,5 @@ Export-Package: org.eclipse.wst.json.core,
  org.eclipse.wst.json.core.modelhandler,
  org.eclipse.wst.json.core.preferences,
  org.eclipse.wst.json.core.regions,
- org.eclipse.wst.json.core.text
+ org.eclipse.wst.json.core.text,
+ org.eclipse.wst.json.core.util

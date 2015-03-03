@@ -97,4 +97,8 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 	IJSONModel getModel();
 
 	boolean hasChildNodes();
+	
+	IJSONPair getOwnerPairNode();
+	
+	IJSONNode getParentOrPairNode();
 }

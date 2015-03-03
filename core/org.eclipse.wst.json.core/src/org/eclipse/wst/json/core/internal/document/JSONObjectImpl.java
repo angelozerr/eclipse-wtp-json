@@ -94,7 +94,7 @@ public class JSONObjectImpl extends JSONStructureImpl implements IJSONObject {
 	}
 
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		String tagName = null;//getName();
 		if (hasStartTag())
 			buffer.append(tagName);

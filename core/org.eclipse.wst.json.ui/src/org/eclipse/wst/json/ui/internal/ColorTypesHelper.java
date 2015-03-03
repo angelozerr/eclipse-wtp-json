@@ -1,18 +1,29 @@
+/**
+ *  Copyright (c) 2015-present Angelo ZERR.
+ *  
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *
+ *  Contributors:
+ *  Angelo Zerr <angelo.zerr@gmail.com> - initial API and implementation
+ */
 package org.eclipse.wst.json.ui.internal;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.wst.json.core.regions.JSONRegionContexts;
 import org.eclipse.wst.json.ui.internal.style.IStyleConstantsJSON;
-import org.eclipse.wst.sse.ui.internal.preferences.ui.ColorHelper;
-import org.eclipse.wst.sse.ui.internal.util.EditorUtility;
 
+/**
+ * Color region types helper.
+ * 
+ * @author azerr
+ *
+ */
 public class ColorTypesHelper {
 
 	/** Contains region to style mapping */
@@ -45,8 +56,15 @@ public class ColorTypesHelper {
 				IStyleConstantsJSON.VALUE_NULL);
 	}
 
-	public static String getColor(String type) {
-		return fColorTypes.get(type);
+	/**
+	 * Returns the Color for the given region type {@link JSONRegionContexts}.
+	 * 
+	 * @param regionType
+	 *            the region type.
+	 * @return the Color for the given region type {@link JSONRegionContexts}.
+	 */
+	public static String getColor(String regionType) {
+		return fColorTypes.get(regionType);
 	}
 
 	public static String getNewStyle(PropertyChangeEvent event) {

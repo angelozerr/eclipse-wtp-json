@@ -47,24 +47,29 @@ public class JSONStructureFormatter extends DefaultJSONSourceFormatter {
 
 		String type = region.getType();
 		short selCase = -1;
-//		if (type == JSONRegionContexts.JSON_SELECTOR_ATTRIBUTE_NAME
-//				|| type == JSONRegionContexts.JSON_SELECTOR_ATTRIBUTE_VALUE
-//				|| type == JSONRegionContexts.JSON_SELECTOR_ELEMENT_NAME
-//				|| type == JSONRegionContexts.JSON_SELECTOR_PSEUDO) {
-//			selCase = stgy.getSelectorTagCase();
-//		} else if (type == JSONRegionContexts.JSON_SELECTOR_CLASS) {
-//			selCase = stgy.getClassSelectorCase();
-//		} else if (type == JSONRegionContexts.JSON_SELECTOR_ID) {
-//			selCase = stgy.getIdSelectorCase();
-//		}
-//
-//		if (selCase == org.eclipse.wst.css.core.internal.cleanup.JSONCleanupStrategy.UPPER) {
-//			return text.toUpperCase();
-//		} else if (selCase == org.eclipse.wst.css.core.internal.cleanup.JSONCleanupStrategy.LOWER) {
-//			return text.toLowerCase();
-//		} else if (selCase == org.eclipse.wst.css.core.internal.cleanup.JSONCleanupStrategy.ASIS) {
-//			return text;
-//		}
+		// if (type == JSONRegionContexts.JSON_SELECTOR_ATTRIBUTE_NAME
+		// || type == JSONRegionContexts.JSON_SELECTOR_ATTRIBUTE_VALUE
+		// || type == JSONRegionContexts.JSON_SELECTOR_ELEMENT_NAME
+		// || type == JSONRegionContexts.JSON_SELECTOR_PSEUDO) {
+		// selCase = stgy.getSelectorTagCase();
+		// } else if (type == JSONRegionContexts.JSON_SELECTOR_CLASS) {
+		// selCase = stgy.getClassSelectorCase();
+		// } else if (type == JSONRegionContexts.JSON_SELECTOR_ID) {
+		// selCase = stgy.getIdSelectorCase();
+		// }
+		//
+		// if (selCase ==
+		// org.eclipse.wst.css.core.internal.cleanup.JSONCleanupStrategy.UPPER)
+		// {
+		// return text.toUpperCase();
+		// } else if (selCase ==
+		// org.eclipse.wst.css.core.internal.cleanup.JSONCleanupStrategy.LOWER)
+		// {
+		// return text.toLowerCase();
+		// } else if (selCase ==
+		// org.eclipse.wst.css.core.internal.cleanup.JSONCleanupStrategy.ASIS) {
+		// return text;
+		// }
 
 		return decoratedRegion(region, 0, stgy);
 	}
@@ -125,7 +130,8 @@ public class JSONStructureFormatter extends DefaultJSONSourceFormatter {
 			IStructuredDocumentRegion flatNode = node.getOwnerDocument()
 					.getModel().getStructuredDocument()
 					.getRegionAtCharacterOffset(n - 1);
-			if (flatNode.getRegionAtCharacterOffset(n - 1).getType() == JSONRegionContexts.JSON_OBJECT_OPEN)
+			if (flatNode.getRegionAtCharacterOffset(n - 1).getType() == JSONRegionContexts.JSON_OBJECT_OPEN
+					|| flatNode.getRegionAtCharacterOffset(n - 1).getType() == JSONRegionContexts.JSON_ARRAY_OPEN)
 				return n - 1;
 			else
 				return n;

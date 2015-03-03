@@ -11,6 +11,7 @@
  */
 package org.eclipse.wst.json.ui.views.contentoutline;
 
+import org.eclipse.wst.json.core.util.JSONUtil;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -33,6 +34,7 @@ import org.eclipse.wst.sse.ui.views.contentoutline.ContentOutlineConfiguration;
  */
 public class JSONContentOutlineConfiguration extends
 		ContentOutlineConfiguration {
+	
 	private IContentProvider fContentProvider = null;
 	private ILabelProvider fLabelProvider = null;
 	private final String OUTLINE_SORT_PREF = "outline-sort"; //$NON-NLS-1$
@@ -76,6 +78,9 @@ public class JSONContentOutlineConfiguration extends
 		IJSONNode node = null;
 		if (o instanceof IJSONNode) {
 			node = (IJSONNode) o;
+			if (node.getOwnerPairNode() != null) {
+				return node.getOwnerPairNode();
+			}
 			/*
 			 * short nodeType = node.getNodeType(); if (node instanceof
 			 * IJSONValue) { while (node != null && !(node instanceof

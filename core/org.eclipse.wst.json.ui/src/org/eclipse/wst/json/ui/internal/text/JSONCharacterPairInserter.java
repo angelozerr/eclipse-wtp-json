@@ -1,3 +1,14 @@
+/**
+ *  Copyright (c) 2015-present Angelo ZERR.
+ *  
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *
+ *  Contributors:
+ *  Angelo Zerr <angelo.zerr@gmail.com> - initial API and implementation
+ */
 package org.eclipse.wst.json.ui.internal.text;
 
 import org.eclipse.jface.text.BadLocationException;
@@ -9,6 +20,10 @@ import org.eclipse.jface.text.link.LinkedModeUI.IExitPolicy;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.wst.sse.ui.typing.AbstractCharacterPairInserter;
 
+/**
+ * Character pair insrter for JSON to auto close JSON character like '{', '['.
+ *
+ */
 public class JSONCharacterPairInserter extends AbstractCharacterPairInserter {
 
 	public boolean hasPair(char c) {

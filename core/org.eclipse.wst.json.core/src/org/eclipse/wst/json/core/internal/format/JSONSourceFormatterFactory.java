@@ -70,7 +70,10 @@ public class JSONSourceFormatterFactory {
 		case IJSONNode.DOCUMENT_NODE:
 			return JSONDocumentFormatter.getInstance();
 		case IJSONNode.OBJECT_NODE:
+		case IJSONNode.ARRAY_NODE:
 			return JSONObjectFormatter.getInstance();
+		case IJSONNode.PAIR_NODE:
+			return JSONObjectFormatter.getInstance();			
 		default:
 			return UnknownRuleFormatter.getInstance();
 		}
