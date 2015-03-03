@@ -26,7 +26,9 @@ public class JSONUIMessages extends NLS {
 
 	private static ResourceBundle fResourceBundle;
 
+	// Outline
 	public static String refreshoutline_0;
+	public static String SortAction_0;
 
 	public static String Sample_JSON_doc;
 	public static String SyntaxColoringPage_0;

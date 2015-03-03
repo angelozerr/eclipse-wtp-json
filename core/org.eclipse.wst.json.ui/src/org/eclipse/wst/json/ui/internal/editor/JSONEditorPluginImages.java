@@ -8,5 +8,7 @@ public class JSONEditorPluginImages {
 	public static final String IMG_OBJ_VALUE_NUMBER = "icons/full/obj16/JsonNumber.gif";
 	public static final String IMG_OBJ_VALUE_NULL = "icons/full/obj16/JsonNull.gif";
 	public static final String IMG_OBJ_VALUE_STRING = "icons/full/obj16/JsonString.gif";
+	
+	public static final String IMG_OBJ_SORT = "icons/full/obj16/sort.gif";
 
 }
