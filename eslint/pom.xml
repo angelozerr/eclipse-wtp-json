@@ -13,6 +13,5 @@
 	<modules>
 		<module>org.eclipse.wst.eslint.core</module>
 		<module>org.eclipse.wst.eslint.ui</module>
-		<module>org.eclipse.wst.eslint.feature</module>
 	</modules>
 </project>

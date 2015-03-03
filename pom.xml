@@ -18,6 +18,9 @@
 	</licenses>
 	<modules>
 		<module>core</module>
+		<module>eslint</module>
+		<module>jshint</module>
+		<module>update-site</module>
 	</modules>
 	<build>
 		<defaultGoal>clean install</defaultGoal>

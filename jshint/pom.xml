@@ -13,6 +13,5 @@
 	<modules>
 		<module>org.eclipse.wst.jshint.core</module>
 		<module>org.eclipse.wst.jshint.ui</module>
-		<module>org.eclipse.wst.jshint.feature</module>
 	</modules>
 </project>

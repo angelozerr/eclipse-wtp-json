@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>fr.opensagres.eclipse.wtp</groupId>
-		<artifactId>core</artifactId>
+		<artifactId>update-site</artifactId>
 		<version>0.9.0-SNAPSHOT</version>
 	</parent>
 	<groupId>fr.opensagres.eclipse.wtp</groupId>

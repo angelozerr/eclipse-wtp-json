@@ -14,7 +14,5 @@
 		<module>org.eclipse.wst.json.core</module>
 		<module>org.eclipse.wst.json.ui</module>
 		<module>org.eclipse.wst.json.core.tests</module>
-		<module>org.eclipse.wst.json.feature</module>
-		<module>org.eclipse.wst.json.repository</module>
 	</modules>
 </project>
