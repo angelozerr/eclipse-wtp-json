@@ -48,8 +48,8 @@ public abstract class JSONValueImpl extends JSONNodeImpl implements IJSONValue {
 			return ownerPairNode;
 		}
 		IJSONNode parent = super.getParentNode();
-		return parent.getOwnerPairNode() != null ? parent.getOwnerPairNode()
-				: parent;
+		return (parent != null && parent.getOwnerPairNode() != null) ? parent
+				.getOwnerPairNode() : parent;
 	}
 
 	public IJSONPair getOwnerPairNode() {
