@@ -9,10 +9,9 @@
    <feature url="features/org.eclipse.wst.eslint.feature_0.9.0.qualifier.jar" id="org.eclipse.wst.eslint.feature" version="0.9.0.qualifier">
       <category name="JSON Editors"/>
    </feature>
-   
    <category-def name="JSON Editors" label="JSON Editors">
       <description>
-         Provides several JSON Editors.
+         JSON Editors based on WTP.
       </description>
    </category-def>
 </site>
