@@ -36,10 +36,11 @@
 		<!--<propertySheetConfiguration
 			class="org.eclipse.wst.json.ui.views.properties.JSONPropertySheetConfiguration"
 			target="org.eclipse.wst.json.core.jsonsource" />
+		-->
 		<documentationTextHover
-        	class="org.eclipse.wst.json.ui.internal.text.hover.JSONColorHover"
+        	class="org.eclipse.wst.json.ui.internal.text.hover.JSONHoverProcessor"
         	target="org.eclipse.wst.json.JSON" />
-		<provisionalConfiguration
+		<!--<provisionalConfiguration
 			type="characterpairmatcher"
 			class="org.eclipse.wst.json.ui.internal.text.JSONDocumentRegionEdgeMatcher"
 			target="org.eclipse.wst.json.core.jsonsource" />-->

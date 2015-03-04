@@ -1,13 +1,21 @@
 package org.eclipse.wst.json.ui.internal.editor;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.ui.internal.JSONUIPlugin;
+import org.eclipse.wst.json.ui.internal.Logger;
 
 /**
  * Helper class to handle images provided by this plug-in.
@@ -19,6 +27,11 @@ import org.eclipse.wst.json.ui.internal.JSONUIPlugin;
 public class JSONEditorPluginImageHelper {
 
 	private static JSONEditorPluginImageHelper instance = null;
+	private static final String IMAGE_DIR = "wtp-json-images"; //$NON-NLS-1$
+
+	private final Map<ImageDescriptor, URL> fURLMap;
+	private final File fTempDir;
+	private int fImageCount;
 
 	/**
 	 * Gets the instance.
@@ -35,6 +48,12 @@ public class JSONEditorPluginImageHelper {
 	// save a descriptor for each image
 	private Map<String, ImageDescriptor> fImageDescRegistry = null;
 	private final String PLUGINID = JSONUIPlugin.PLUGIN_ID;
+
+	public JSONEditorPluginImageHelper() {
+		fURLMap = new HashMap<ImageDescriptor, URL>();
+		fTempDir = getTempDir();
+		fImageCount = 0;
+	}
 
 	/**
 	 * Creates an image from the given resource and adds the image to the image
@@ -78,6 +97,35 @@ public class JSONEditorPluginImageHelper {
 		}
 
 		return imageDescriptor;
+	}
+
+	public Image getImage(short nodeType) {
+		String imageName = getImageName(nodeType);
+		return imageName != null ? getImage(imageName) : null;
+	}
+
+	public ImageDescriptor getImageDescriptor(short nodeType) {
+		String imageName = getImageName(nodeType);
+		return imageName != null ? getImageDescriptor(imageName) : null;
+	}
+
+	private String getImageName(short nodeType) {
+		switch (nodeType) {
+		case IJSONNode.OBJECT_NODE:
+			return JSONEditorPluginImages.IMG_OBJ_OBJECT;
+		case IJSONNode.ARRAY_NODE:
+			return JSONEditorPluginImages.IMG_OBJ_ARRAY;
+		case IJSONNode.VALUE_BOOLEAN_NODE:
+			return JSONEditorPluginImages.IMG_OBJ_VALUE_BOOLEAN;
+		case IJSONNode.VALUE_NULL_NODE:
+			return JSONEditorPluginImages.IMG_OBJ_VALUE_NULL;
+		case IJSONNode.VALUE_NUMBER_NODE:
+			return JSONEditorPluginImages.IMG_OBJ_VALUE_NUMBER;
+		case IJSONNode.VALUE_STRING_NODE:
+			return JSONEditorPluginImages.IMG_OBJ_VALUE_STRING;
+		default:
+			return null;
+		}
 	}
 
 	/**
@@ -140,4 +188,79 @@ public class JSONEditorPluginImageHelper {
 	private ImageRegistry getImageRegistry() {
 		return JSONUIPlugin.getDefault().getImageRegistry();
 	}
+
+	public URL getImageURL(ImageDescriptor descriptor) {
+		if (fTempDir == null)
+			return null;
+
+		URL url = fURLMap.get(descriptor);
+		if (url != null)
+			return url;
+
+		File imageFile = getNewFile();
+		ImageData imageData = descriptor.getImageData();
+		if (imageData == null) {
+			return null;
+		}
+
+		ImageLoader loader = new ImageLoader();
+		loader.data = new ImageData[] { imageData };
+		loader.save(imageFile.getAbsolutePath(), SWT.IMAGE_PNG);
+
+		try {
+			url = imageFile.toURI().toURL();
+			fURLMap.put(descriptor, url);
+			return url;
+		} catch (MalformedURLException e) {
+			Logger.logException("Failed to create image directory ", e); //$NON-NLS-1$
+		}
+		return null;
+	}
+
+	private File getNewFile() {
+		File file;
+		do {
+			file = new File(fTempDir, String.valueOf(getImageCount()) + ".png"); //$NON-NLS-1$
+		} while (file.exists());
+		return file;
+	}
+
+	private synchronized int getImageCount() {
+		return fImageCount++;
+	}
+
+	private File getTempDir() {
+		try {
+			File imageDir = JSONUIPlugin.getDefault().getStateLocation()
+					.append(IMAGE_DIR).toFile();
+			if (imageDir.exists()) {
+				// has not been deleted on previous shutdown
+				delete(imageDir);
+			}
+			if (!imageDir.exists()) {
+				imageDir.mkdir();
+			}
+			if (!imageDir.isDirectory()) {
+				Logger.log(
+						Logger.ERROR,
+						"Failed to create image directory " + imageDir.toString()); //$NON-NLS-1$
+				return null;
+			}
+			return imageDir;
+		} catch (IllegalStateException e) {
+			// no state location
+			return null;
+		}
+	}
+
+	private void delete(File file) {
+		if (file.isDirectory()) {
+			File[] listFiles = file.listFiles();
+			for (int i = 0; i < listFiles.length; i++) {
+				delete(listFiles[i]);
+			}
+		}
+		file.delete();
+	}
+
 }

@@ -31,6 +31,8 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 	short VALUE_BOOLEAN_NODE = 5;
 	short VALUE_NULL_NODE = 6;
 
+	short OBJECT_KEY_NODE = 7;
+	
 	/**
 	 * Gets the last structured document region of this node.
 	 * 

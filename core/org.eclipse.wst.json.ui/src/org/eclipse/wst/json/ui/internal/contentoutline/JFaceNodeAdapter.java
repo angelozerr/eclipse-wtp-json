@@ -113,45 +113,15 @@ public class JFaceNodeAdapter implements IJFaceNodeAdapter,
 		case IJSONNode.PAIR_NODE: {
 			IJSONPair pair = (IJSONPair) node;
 			short nodeType = pair.getNodeValueType();
-			image = createImage(nodeType);
+			image = JSONEditorPluginImageHelper.getInstance()
+					.getImage(nodeType);
 			break;
 		}
 		default:
-			image = createImage(node.getNodeType());
+			image = JSONEditorPluginImageHelper.getInstance().getImage(
+					node.getNodeType());
 		}
 		return image;
-	}
-
-	private Image createImage(short nodeType) {
-		Image image = null;
-		switch (nodeType) {
-		case IJSONNode.OBJECT_NODE: {
-			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_OBJECT);
-			break;
-		}
-		case IJSONNode.ARRAY_NODE: {
-			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_ARRAY);
-			break;
-		}
-		case IJSONNode.VALUE_BOOLEAN_NODE:
-			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_BOOLEAN);
-			break;
-		case IJSONNode.VALUE_NULL_NODE:
-			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_NULL);
-			break;
-		case IJSONNode.VALUE_NUMBER_NODE:
-			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_NUMBER);
-			break;
-		case IJSONNode.VALUE_STRING_NODE:
-			image = createJSONImageDescriptor(JSONEditorPluginImages.IMG_OBJ_VALUE_STRING);
-			break;
-		}
-		return image;
-	}
-
-	protected Image createJSONImageDescriptor(String imageResourceName) {
-		return JSONEditorPluginImageHelper.getInstance().getImage(
-				imageResourceName);
 	}
 
 	/**
