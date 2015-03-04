@@ -54,6 +54,9 @@ public class ColorTypesHelper {
 				IStyleConstantsJSON.VALUE_BOOLEAN);
 		fColorTypes.put(JSONRegionContexts.JSON_VALUE_NULL,
 				IStyleConstantsJSON.VALUE_NULL);
+		
+		fColorTypes.put(JSONRegionContexts.JSON_COMMENT,
+				IStyleConstantsJSON.COMMENT);
 	}
 
 	/**

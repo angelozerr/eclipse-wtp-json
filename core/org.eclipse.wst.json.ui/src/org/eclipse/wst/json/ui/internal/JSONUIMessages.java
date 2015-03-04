@@ -46,7 +46,8 @@ public class JSONUIMessages extends NLS {
 	public static String VALUE_NULL_UI_;
 	public static String VALUE_NUMBER_UI_;
 	public static String VALUE_STRING_UI_;
-
+	public static String COMMENT_UI_;
+	
 	// Preferences
 	public static String EmptyFilePreferencePage_0;
 	public static String EncodingSettings_0;

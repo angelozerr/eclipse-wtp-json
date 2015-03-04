@@ -39,7 +39,7 @@ public class StructuredTextViewerConfigurationJSON extends
 			ISourceViewer sourceViewer, String partitionType) {
 		LineStyleProvider[] providers = null;
 
-		if ((partitionType == IJSONPartitions.JSON)) {
+		if ((partitionType == IJSONPartitions.JSON || partitionType == IJSONPartitions.COMMENT)) {
 			providers = new LineStyleProvider[] { getLineStyleProviderForJSON() };
 		}
 
@@ -75,6 +75,7 @@ public class StructuredTextViewerConfigurationJSON extends
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		if (fConfiguredContentTypes == null) {
 			fConfiguredContentTypes = new String[] { IJSONPartitions.JSON,
+					IJSONPartitions.COMMENT,
 					IStructuredPartitions.DEFAULT_PARTITION,
 					IStructuredPartitions.UNKNOWN_PARTITION };
 		}

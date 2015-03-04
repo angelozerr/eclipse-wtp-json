@@ -51,6 +51,9 @@ public class JSONUIPreferenceInitializer extends AbstractPreferenceInitializer {
 		styleValue = ColorHelper.findRGBString(registry,
 				IStyleConstantsJSON.COMMA, 0, 0, 0) + NOBACKGROUNDBOLD;
 		store.setDefault(IStyleConstantsJSON.COMMA, styleValue);
+		styleValue = ColorHelper.findRGBString(registry,
+				IStyleConstantsJSON.COMMENT, 63, 95, 191) + NOBACKGROUNDBOLD;
+		store.setDefault(IStyleConstantsJSON.COMMENT, styleValue);
 
 		// JSON Key
 		styleValue = ColorHelper.findRGBString(registry,

@@ -28,7 +28,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 	private int fBufferedStart;
 //	private int fBufferedTextLength;
 	private int fBufferedLength;
-//	private StringBuffer fBufferedText = null;
+//	private StringBuilder fBufferedText = null;
 	private JSONTextRegionFactory fRegionFactory = JSONTextRegionFactory.getInstance();
 	private int fInitialState = YYINITIAL;
 	public final static int BUFFER_SIZE_NORMAL = 16384;
@@ -50,7 +50,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 		String context;
 		String nextTokenType;
 		boolean spaceFollows;
-//		StringBuffer text;
+//		StringBuilder text;
 		int start;
 		int textLength;
 		int length;
@@ -63,7 +63,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 			fBufferedContext = null;
 		} else {
 			context = primGetNextToken();
-//			text = new StringBuffer(yytext());
+//			text = new StringBuilder(yytext());
 			start = yychar;
 			textLength = length = yylength();
 		}
@@ -79,7 +79,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 					nextTokenType = primGetNextToken();
 				}
 				fBufferedContext = nextTokenType;
-//				fBufferedText = new StringBuffer(yytext());
+//				fBufferedText = new StringBuilder(yytext());
 				fBufferedStart = yychar;
 				fBufferedLength = yylength();
 			} else {
@@ -95,14 +95,14 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 					//spaceFollows = (nextTokenType == JSON_S);
 				//}
 				if (nextTokenType != null) { // nextToken is retrieved
-					if (spaceFollows /*&& (context != JSON_COMMENT)*/) {
+					if (spaceFollows && (context != JSON_COMMENT)) {
 						// next is space -> append
 //						text.append(yytext());
 						length += yylength();
 					} else {
 						// next is NOT space -> push this for next time, return itself
 						fBufferedContext = nextTokenType;
-//						fBufferedText = new StringBuffer(yytext());
+//						fBufferedText = new StringBuilder(yytext());
 						fBufferedStart = yychar;
 						fBufferedLength = yylength();
 					}
@@ -275,6 +275,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 %state ST_JSON_ARRAY
 %state ST_JSON_OBJECT_COLON
 %state ST_JSON_VALUE
+%state ST_JSON_COMMENT
 
 WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
 NUMBER_TEXT=-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?
@@ -306,8 +307,10 @@ endObject = \}
 startArray = \[
 endArray = \]
 comma = \,
-
 %%
+
+\/\*[^*]*\*+([^/*][^*]*\*+)*\/ { return JSON_COMMENT; }
+\/\/.* { return JSON_COMMENT; }
 
 /* white space within a tag */
 <ST_JSON_OBJECT, ST_JSON_OBJECT_COLON, ST_JSON_ARRAY, ST_JSON_VALUE> {S}* {

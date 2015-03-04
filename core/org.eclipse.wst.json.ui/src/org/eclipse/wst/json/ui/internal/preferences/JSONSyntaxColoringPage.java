@@ -762,6 +762,7 @@ public final class JSONSyntaxColoringPage extends AbstractSyntaxColoringPage
 			styles.add(IStyleConstantsJSON.CURLY_BRACE);
 			styles.add(IStyleConstantsJSON.COLON);
 			styles.add(IStyleConstantsJSON.COMMA);
+			styles.add(IStyleConstantsJSON.COMMENT);
 			styles.add(IStyleConstantsJSON.OBJECT_KEY);
 			styles.add(IStyleConstantsJSON.VALUE_BOOLEAN);
 			styles.add(IStyleConstantsJSON.VALUE_NULL);
@@ -882,6 +883,8 @@ public final class JSONSyntaxColoringPage extends AbstractSyntaxColoringPage
 				IStyleConstantsJSON.COLON);
 		fContextToStyleMap.put(JSONRegionContexts.JSON_COMMA,
 				IStyleConstantsJSON.COMMA);
+		fContextToStyleMap.put(JSONRegionContexts.JSON_COMMENT,
+				IStyleConstantsJSON.COMMENT);
 	}
 
 	private void initStyleToDescriptionMap() {
@@ -893,10 +896,12 @@ public final class JSONSyntaxColoringPage extends AbstractSyntaxColoringPage
 				JSONUIMessages.COMMA_UI_);
 		fStyleToDescriptionMap.put(IStyleConstantsJSON.NORMAL,
 				JSONUIMessages.NORMAL_UI_);
+		fStyleToDescriptionMap.put(IStyleConstantsJSON.COMMENT,
+				JSONUIMessages.COMMENT_UI_);
 		
 		fStyleToDescriptionMap.put(IStyleConstantsJSON.OBJECT_KEY,
 				JSONUIMessages.OBJECT_KEY_UI_);
-		
+
 		fStyleToDescriptionMap.put(IStyleConstantsJSON.VALUE_BOOLEAN,
 				JSONUIMessages.VALUE_BOOLEAN_UI_);
 		fStyleToDescriptionMap.put(IStyleConstantsJSON.VALUE_NULL,

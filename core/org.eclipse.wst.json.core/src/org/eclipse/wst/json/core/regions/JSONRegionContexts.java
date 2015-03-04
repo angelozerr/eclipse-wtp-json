@@ -35,6 +35,7 @@ public interface JSONRegionContexts {
 	public static final String JSON_VALUE_NULL = "JSON_VALUE_NULL"; //$NON-NLS-1$
 
 	// Other
+	public static final String JSON_COMMENT = "JSON_COMMENT"; //$NON-NLS-1$
 	public static final String JSON_UNKNOWN = "JSON_UNKNOWN"; //$NON-NLS-1$
 	public static final String WHITE_SPACE = "WHITE_SPACE"; //$NON-NLS-1$
 	public static final String UNDEFINED = "UNDEFINED"; //$NON-NLS-1$

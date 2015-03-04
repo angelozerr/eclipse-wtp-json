@@ -19,5 +19,5 @@ package org.eclipse.wst.json.core.text;
 public interface IJSONPartitions {
 
 	String JSON = "org.eclipse.wst.json.JSON"; //$NON-NLS-1$
-	//String COMMENT = "org.eclipse.wst.json.COMMENT"; //$NON-NLS-1$
+	String COMMENT = "org.eclipse.wst.json.COMMENT"; //$NON-NLS-1$
 }

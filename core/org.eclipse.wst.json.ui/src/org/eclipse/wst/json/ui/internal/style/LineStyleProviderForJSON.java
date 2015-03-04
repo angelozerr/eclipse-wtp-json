@@ -78,6 +78,8 @@ public class LineStyleProviderForJSON extends AbstractLineStyleProvider
 				styleKey = IStyleConstantsJSON.VALUE_NUMBER;
 			} else if (IStyleConstantsJSON.VALUE_STRING.equals(prefKey)) {
 				styleKey = IStyleConstantsJSON.VALUE_STRING;
+			} else if (IStyleConstantsJSON.COMMENT.equals(prefKey)) {
+				styleKey = IStyleConstantsJSON.COMMENT;
 			}
 		}
 		if (styleKey != null) {
@@ -98,6 +100,7 @@ public class LineStyleProviderForJSON extends AbstractLineStyleProvider
 		addTextAttribute(IStyleConstantsJSON.CURLY_BRACE);
 		addTextAttribute(IStyleConstantsJSON.COLON);
 		addTextAttribute(IStyleConstantsJSON.COMMA);
+		addTextAttribute(IStyleConstantsJSON.COMMENT);
 
 		addTextAttribute(IStyleConstantsJSON.OBJECT_KEY);
 		addTextAttribute(IStyleConstantsJSON.VALUE_STRING);
