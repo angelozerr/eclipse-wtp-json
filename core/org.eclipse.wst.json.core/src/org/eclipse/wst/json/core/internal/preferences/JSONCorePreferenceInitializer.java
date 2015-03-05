@@ -29,6 +29,10 @@ public class JSONCorePreferenceInitializer extends
 		IEclipsePreferences node = new DefaultScope().getNode(JSONCorePlugin
 				.getDefault().getBundle().getSymbolicName());
 
+		// Validation preferences
+		node.putBoolean(JSONCorePreferenceNames.SYNTAX_VALIDATION, true);
+		node.putInt(JSONCorePreferenceNames.MISSING_BRACKET, 2);
+		
 		// formatting preferences
 		node.putInt(JSONCorePreferenceNames.LINE_WIDTH, 72);
 		node.putBoolean(JSONCorePreferenceNames.CLEAR_ALL_BLANK_LINES, false);

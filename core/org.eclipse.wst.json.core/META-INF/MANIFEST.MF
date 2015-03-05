@@ -9,7 +9,9 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.sse.core,
  com.ibm.icu,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.eclipse.wst.validation,
+ org.eclipse.wst.common.uriresolver
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.wst.json.core,
@@ -22,4 +24,5 @@ Export-Package: org.eclipse.wst.json.core,
  org.eclipse.wst.json.core.preferences,
  org.eclipse.wst.json.core.regions,
  org.eclipse.wst.json.core.text,
- org.eclipse.wst.json.core.util
+ org.eclipse.wst.json.core.util,
+ org.eclipse.wst.json.core.validation

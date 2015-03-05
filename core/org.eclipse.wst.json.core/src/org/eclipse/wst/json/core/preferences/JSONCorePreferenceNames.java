@@ -5,9 +5,35 @@ package org.eclipse.wst.json.core.preferences;
  * 
  */
 public class JSONCorePreferenceNames {
+	
 	private JSONCorePreferenceNames() {
 		// empty private constructor so users cannot instantiate class
 	}
+	
+    /**
+	 * Indicates whether or not Syntax Validator should run as part of JSON Validation.
+	 * <p>
+	 * Value is of type <code>boolean</code>.<br />
+	 * Possible values: {TRUE, FALSE} 
+	 * </p>
+	 */
+    public static final String SYNTAX_VALIDATION = "syntaxValidation"; //$NON-NLS-1$
+
+	/**
+	 * Indicates whether or not a message should be produced when validating a
+	 * file that specifies not grammar.
+	 * <p>
+	 * Value is of type <code>integer</code>.<br />
+	 * Possible values: {0, 1, 2} (none, warning, error)
+	 * </p>
+	 */
+	public static final String INDICATE_NO_GRAMMAR = "indicateNoGrammar";//$NON-NLS-1$
+
+    public static final String USE_PROJECT_SETTINGS = "use-project-settings";//$NON-NLS-1$
+
+	public static final String MISSING_BRACKET = "missingBracket";
+	
+	// TODO : clean the following preference names...
 
 	public static final String CASE_IDENTIFIER = "identifierCase"; //$NON-NLS-1$
 	public static final String CASE_SELECTOR = "selectorCase"; //$NON-NLS-1$
@@ -125,4 +151,5 @@ public class JSONCorePreferenceNames {
 	 * @see #ASIS
 	 */
 	public static final int UPPER = 2;
+
 }

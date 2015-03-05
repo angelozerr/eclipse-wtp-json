@@ -76,15 +76,6 @@
                </fileext>
             </rules>
          </include>
-         <exclude>
-            <rules>
-				<projectNature id="org.eclipse.jst.j2ee.ejb.EJBNature"/>
-				<projectNature id="org.eclipse.jst.j2ee.EARNature"/>
-    			<file caseSensitive="true" name=".project" type="file"/>
-    			<file caseSensitive="true" name=".classpath" type="file"/>
-    			<file caseSensitive="true" name=".settings"  type="folder"/>
-            </rules>
-         </exclude>
       </validator>
    </extension>
 </plugin>

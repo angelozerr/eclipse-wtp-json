@@ -13,6 +13,7 @@ package org.eclipse.wst.json.core.document;
 
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 
 /**
@@ -32,7 +33,20 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 	short VALUE_NULL_NODE = 6;
 
 	short OBJECT_KEY_NODE = 7;
-	
+
+	/**
+	 * Returns the structured document that underlies this node's model.
+	 * 
+	 * Returns null if this node is not actively part of a source document. In
+	 * contrast, in the pure DOM world, "owning document" is not null even after
+	 * a node is deleted from the DOM.
+	 * 
+	 * ISSUE: we need to fix our implementation to match this spec.
+	 * 
+	 * @return the structured document.
+	 */
+	IStructuredDocument getStructuredDocument();
+
 	/**
 	 * Gets the last structured document region of this node.
 	 * 
@@ -99,8 +113,8 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 	IJSONModel getModel();
 
 	boolean hasChildNodes();
-	
+
 	IJSONPair getOwnerPairNode();
-	
+
 	IJSONNode getParentOrPairNode();
 }
