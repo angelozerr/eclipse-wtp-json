@@ -35,10 +35,10 @@ See [tern.java issue 253](https://github.com/angelozerr/tern.java/issues/253).
 There exist several JSON Editors :
 
  - [JSDT](http://www.eclipse.org/webtools/jsdt/) has some limited support
- - [JSON Editor Plugin](http://marketplace.eclipse.org/content/json-editor-plugin}
+ - [JSON Editor Plugin](http://marketplace.eclipse.org/content/json-editor-plugin)
  - [Json Tools](http://marketplace.eclipse.org/content/json-tools) (see sources at https://bitbucket.org/denmiroch/jsontools/src/)
- - jsonclipse https://github.com/skoptelov/jsonclipse
- - jbosstools-jsoneditor https://github.com/xcoulon/jbosstools-jsoneditor
+ - jsonclipse https://github.com/skoptelov/jsonclipse Xtext-based
+ - jbosstools-jsoneditor https://github.com/xcoulon/jbosstools-jsoneditor Xtext-based
 
 But there are some limitations : 
 
