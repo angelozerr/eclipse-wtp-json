@@ -35,13 +35,18 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.json.core.JSONCorePlugin;
 import org.eclipse.wst.json.core.contenttype.ContentTypeIdForJSON;
+import org.eclipse.wst.json.core.internal.JSONCoreMessages;
 import org.eclipse.wst.json.core.internal.Logger;
 import org.eclipse.wst.json.core.internal.parser.JSONLineTokenizer;
 import org.eclipse.wst.json.core.preferences.JSONCorePreferenceNames;
 import org.eclipse.wst.json.core.regions.JSONRegionContexts;
+import org.eclipse.wst.json.core.util.JSONUtil;
 import org.eclipse.wst.json.core.validation.AnnotationMsg;
+import org.eclipse.wst.json.core.validation.ISeverityProvider;
+import org.eclipse.wst.json.core.validation.JSONSyntaxValidatorHelper;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.document.DocumentReader;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
@@ -57,44 +62,13 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 
-public class StreamingSyntaxValidator extends AbstractValidator implements
-		IValidator {
-
-	/**
-	 * The error threshold - sometimes, after you get so many errors, it's not
-	 * worth seeing the others
-	 */
-	private static final int ERROR_THRESHOLD = 25;
+public class JSONSyntaxValidator extends AbstractValidator implements
+		IValidator, ISeverityProvider {
 
 	/** The validation reporter */
 	private IReporter fReporter;
 
 	private IContentType jsonContentType;
-
-	/**
-	 * A token from the tokenizer
-	 */
-	private static class Token {
-		String type;
-		int offset;
-		int length;
-		int line;
-		String text;
-
-		public Token(String type, String text, int offset, int length, int line) {
-			this.type = type;
-			this.text = text;
-			this.offset = offset;
-			this.length = length;
-			this.line = line;
-		}
-
-		@Override
-		public String toString() {
-			return new StringBuilder(type).append("[").append(line).append("-")
-					.append(offset).append("]: ").append(text).toString();
-		}
-	}
 
 	@Override
 	public void cleanup(IReporter reporter) {
@@ -170,7 +144,7 @@ public class StreamingSyntaxValidator extends AbstractValidator implements
 	private void validateFile(IFile file, IReporter reporter) {
 		Message message = new LocalizedMessage(IMessage.LOW_SEVERITY, file
 				.getFullPath().toString().substring(1));
-		reporter.displaySubtask(StreamingSyntaxValidator.this, message);
+		reporter.displaySubtask(JSONSyntaxValidator.this, message);
 
 		JSONLineTokenizer tokenizer = null;
 		try {
@@ -185,7 +159,8 @@ public class StreamingSyntaxValidator extends AbstractValidator implements
 					tokenizer = new JSONLineTokenizer(new BufferedReader(
 							new DocumentReader(model.getStructuredDocument())));
 				}
-				checkTokens(tokenizer, reporter);
+				JSONSyntaxValidatorHelper.validate(tokenizer, reporter, this,
+						this);
 			} finally {
 				if (model != null) {
 					model.releaseFromRead();
@@ -196,110 +171,6 @@ public class StreamingSyntaxValidator extends AbstractValidator implements
 		} catch (CoreException e) {
 		} catch (IOException e) {
 		}
-	}
-
-	private void checkTokens(JSONLineTokenizer tokenizer, IReporter reporter) {
-		List previousRegion = null;
-		String type = null;
-		Stack<Token> tagStack = new Stack<Token>();
-		List<Token> region = null;
-		boolean isClosed = true;
-		int tagErrorCount = 0;
-		while ((type = getNextToken(tokenizer)) != null) {
-
-			Token token = new Token(type, tokenizer.yytext(),
-					tokenizer.getOffset(), tokenizer.yylength(),
-					tokenizer.getLine());
-			isClosed = false;
-			if (type == JSONRegionContexts.JSON_OBJECT_OPEN) {
-				tagStack.push(token);
-			} else if (type == JSONRegionContexts.JSON_OBJECT_CLOSE) {
-				if (tagStack.isEmpty()) {
-					// error
-				} else {
-					Token lastToken = tagStack.peek();
-					if (lastToken.type == JSONRegionContexts.JSON_OBJECT_OPEN) {
-						tagStack.pop();
-					}
-				}
-			}
-		}
-
-		if (!tagStack.isEmpty()) {
-			while (!tagStack.isEmpty()) {
-				createMissingTagError(tagStack.pop(), true, reporter,
-						tagErrorCount, tagStack);
-			}
-		}
-	}
-
-	private void createMissingTagError(Token token, boolean isStartTag,
-			IReporter reporter, int tagErrorCount, Stack<Token> tagStack) {
-		Object[] args = { token.text };
-		String messageText = "Error";/*
-									 * NLS.bind( isStartTag ?
-									 * JSONCoreMessages.Missing_end_tag_ :
-									 * JSONCoreMessages.Missing_start_tag_,
-									 * args)
-									 */
-		;
-
-		LocalizedMessage message = new LocalizedMessage(getPluginPreference()
-				.getInt(JSONCorePreferenceNames.MISSING_BRACKET), messageText);
-		message.setOffset(token.offset);
-		message.setLength(token.length);
-		message.setLineNo(getLine(token));
-
-		Object fixInfo = /*
-						 * isStartTag ? (Object) getStartEndFixInfo(token.text,
-						 * token) :
-						 */token.text;
-		getAnnotationMsg(reporter,
-				isStartTag ? ProblemIDsJSON.MissingEndBracket
-						: ProblemIDsJSON.MissingStartBracket, message, fixInfo,
-				token.length);
-
-		if (++tagErrorCount > ERROR_THRESHOLD) {
-			tagStack.clear();
-		}
-	}
-
-	public void getAnnotationMsg(IReporter reporter, int problemId,
-			LocalizedMessage message, Object attributeValueText, int len) {
-		AnnotationMsg annotation = new AnnotationMsg(problemId,
-				attributeValueText, len);
-		message.setAttribute(AnnotationMsg.ID, annotation);
-		reporter.addMessage(this, message);
-	}
-
-	/**
-	 * Gets the line number for a token
-	 * 
-	 * @param token
-	 *            the token to find the line of
-	 * @return the line in the document where the token can be found
-	 */
-	private int getLine(Token token) {
-		return token.line + 1;
-	}
-
-	/**
-	 * Gets the next token from the tokenizer.
-	 * 
-	 * @param tokenizer
-	 *            the JSON tokenizer for the file being validated
-	 * @return the next token type from the tokenizer, or null if it's at the
-	 *         end of the file
-	 */
-	private String getNextToken(JSONLineTokenizer tokenizer) {
-		String token = null;
-		try {
-			if (!tokenizer.isEOF()) {
-				token = tokenizer.primGetNextToken();
-			}
-		} catch (IOException e) {
-		}
-		return token;
 	}
 
 	private void validateProject(IValidationContext helper,
@@ -374,6 +245,11 @@ public class StreamingSyntaxValidator extends AbstractValidator implements
 			}
 		}
 		return ResourcesPlugin.getEncoding();
+	}
+
+	@Override
+	public int getSeverity(String preferenceName) {
+		return getPluginPreference().getInt(preferenceName);
 	}
 
 	private Preferences getPluginPreference() {

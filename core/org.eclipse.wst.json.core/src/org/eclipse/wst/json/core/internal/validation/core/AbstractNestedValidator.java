@@ -20,6 +20,7 @@ import java.util.Locale;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
@@ -62,6 +63,40 @@ public abstract class AbstractNestedValidator extends AbstractValidator
 	@Override
 	public void cleanup(IReporter reporter) {
 		// No cleanup to perform. Subclasses are free to implement this method.
+	}
+
+	/**
+	 * Perform the validation using version 2 of the validation framework.
+	 */
+	@Override
+	public ValidationResult validate(IResource resource, int kind,
+			ValidationState state, IProgressMonitor monitor) {
+		ValidationResult result = new ValidationResult();
+		IFile file = null;
+		if (resource instanceof IFile)
+			file = (IFile) resource;
+		if (file != null && shouldValidate(file)) {
+			IReporter reporter = result.getReporter(monitor);
+
+			NestedValidatorContext nestedcontext = getNestedContext(state,
+					false);
+			boolean teardownRequired = false;
+			if (nestedcontext == null) {
+				// validationstart was not called, so manually setup and tear
+				// down
+				nestedcontext = getNestedContext(state, true);
+				nestedcontext.setProject(file.getProject());
+				setupValidation(nestedcontext);
+				teardownRequired = true;
+			} else {
+				nestedcontext.setProject(file.getProject());
+			}
+			validate(file, null, result, reporter, nestedcontext);
+
+			if (teardownRequired)
+				teardownValidation(nestedcontext);
+		}
+		return result;
 	}
 
 	@Override

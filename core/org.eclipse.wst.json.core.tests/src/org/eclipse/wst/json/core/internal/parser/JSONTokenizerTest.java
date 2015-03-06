@@ -37,6 +37,16 @@ public class JSONTokenizerTest {
 	}
 
 	@Test
+	public void objectWithArray() {
+		assertRegions("{\"array\":[]}", "[ContextRegion--> JSON_OBJECT_OPEN: 0-1, "
+				+ "ContextRegion--> JSON_OBJECT_KEY: 1-8, "
+				+ "ContextRegion--> JSON_COLON: 8-9, "
+				+ "ContextRegion--> JSON_ARRAY_OPEN: 9-10, "
+				+ "ContextRegion--> JSON_ARRAY_CLOSE: 10-11, "
+				+ "ContextRegion--> JSON_OBJECT_CLOSE: 11-12]");
+	}
+	
+	@Test
 	public void notValidStartObject() {
 		assertRegions("{", "[ContextRegion--> JSON_OBJECT_OPEN: 0-1]");
 	}

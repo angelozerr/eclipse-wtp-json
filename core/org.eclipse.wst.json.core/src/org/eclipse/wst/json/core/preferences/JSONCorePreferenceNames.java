@@ -5,19 +5,20 @@ package org.eclipse.wst.json.core.preferences;
  * 
  */
 public class JSONCorePreferenceNames {
-	
+
 	private JSONCorePreferenceNames() {
 		// empty private constructor so users cannot instantiate class
 	}
-	
-    /**
-	 * Indicates whether or not Syntax Validator should run as part of JSON Validation.
+
+	/**
+	 * Indicates whether or not Syntax Validator should run as part of JSON
+	 * Validation.
 	 * <p>
 	 * Value is of type <code>boolean</code>.<br />
-	 * Possible values: {TRUE, FALSE} 
+	 * Possible values: {TRUE, FALSE}
 	 * </p>
 	 */
-    public static final String SYNTAX_VALIDATION = "syntaxValidation"; //$NON-NLS-1$
+	public static final String SYNTAX_VALIDATION = "syntaxValidation"; //$NON-NLS-1$
 
 	/**
 	 * Indicates whether or not a message should be produced when validating a
@@ -29,10 +30,15 @@ public class JSONCorePreferenceNames {
 	 */
 	public static final String INDICATE_NO_GRAMMAR = "indicateNoGrammar";//$NON-NLS-1$
 
-    public static final String USE_PROJECT_SETTINGS = "use-project-settings";//$NON-NLS-1$
+	public static final String USE_PROJECT_SETTINGS = "use-project-settings";//$NON-NLS-1$
+
+	public static final String MISSING_START_OBJECT = "missingStartObject"; //$NON-NLS-1$
+	public static final String MISSING_END_OBJECT = "missingEndObject"; //$NON-NLS-1$
+	public static final String MISSING_START_ARRAY = "missingStartArray"; //$NON-NLS-1$
+	public static final String MISSING_END_ARRAY = "missingEndArray";//$NON-NLS-1$
 
 	public static final String MISSING_BRACKET = "missingBracket";
-	
+
 	// TODO : clean the following preference names...
 
 	public static final String CASE_IDENTIFIER = "identifierCase"; //$NON-NLS-1$
@@ -57,7 +63,7 @@ public class JSONCorePreferenceNames {
 	 * </p>
 	 */
 	public static final String DEFAULT_EXTENSION = "defaultExtension"; //$NON-NLS-1$
-	
+
 	/**
 	 * The maximum width of a line before a line split is needed.
 	 * <p>
@@ -67,8 +73,8 @@ public class JSONCorePreferenceNames {
 	public static final String LINE_WIDTH = "lineWidth";//$NON-NLS-1$
 
 	/**
-	 * Indicates if all blanks lines should be cleared during formatting.
-	 * Blank lines will be kept when false.
+	 * Indicates if all blanks lines should be cleared during formatting. Blank
+	 * lines will be kept when false.
 	 * <p>
 	 * Value is of type <code>Boolean</code>.
 	 * </p>
@@ -93,8 +99,8 @@ public class JSONCorePreferenceNames {
 	public static final String INDENTATION_CHAR = "indentationChar";//$NON-NLS-1$
 
 	/**
-	 * Possible value for the preference #INDENTATION_CHAR. Indicates to use
-	 * tab character when formatting.
+	 * Possible value for the preference #INDENTATION_CHAR. Indicates to use tab
+	 * character when formatting.
 	 * 
 	 * @see #SPACE
 	 * @see #INDENTATION_CHAR
@@ -135,8 +141,7 @@ public class JSONCorePreferenceNames {
 	public static final int ASIS = 0;
 
 	/**
-	 * Possible value for the case preferences Indicates to make name
-	 * lowercase.
+	 * Possible value for the case preferences Indicates to make name lowercase.
 	 * 
 	 * @see #ASIS
 	 * @see #UPPER
@@ -144,8 +149,7 @@ public class JSONCorePreferenceNames {
 	public static final int LOWER = 1;
 
 	/**
-	 * Possible value for the case preferences Indicates to make name
-	 * uppercase.
+	 * Possible value for the case preferences Indicates to make name uppercase.
 	 * 
 	 * @see #LOWER
 	 * @see #ASIS

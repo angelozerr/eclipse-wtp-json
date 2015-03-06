@@ -25,8 +25,11 @@ public class JSONCoreMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.wst.json.core.internal.JSONCoreMessages";//$NON-NLS-1$
 
 	private static ResourceBundle fResourceBundle;
-	
-	public static String JSONFilesPreferencePage_ExtensionError;
+
+	public static String Missing_start_array;
+	public static String Missing_end_array;
+	public static String Missing_start_object;
+	public static String Missing_end_object;
 
 	static {
 		// load message values from bundle file

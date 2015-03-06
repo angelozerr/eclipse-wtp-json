@@ -163,25 +163,18 @@
 	<!-- JSON Content Settings Property Page -->
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			name="%WebContentSettings.name"
-			class="org.eclipse.wst.json.ui.internal.contentproperties.ui.JSONWebContentSettingsPropertyPage"
-			id="org.eclipse.wst.json.ui.internal.contentproperties.JSONWebContentSettingsPropertyPage.json">
-         	<enabledWhen>
-               	<and>
-					<adapt type="org.eclipse.core.resources.IFile">
-						<or> 
-							<test 
-								forcePluginActivation="true"
-								property="org.eclipse.core.resources.contentTypeId"
-								value="org.eclipse.wst.json.core.jsonsource" />
-						</or>
-					</adapt>
-				</and> 
+			name="%JSON_Property_validation"
+			class="org.eclipse.wst.json.ui.internal.preferences.JSONValidatorPreferencePage"
+			id="org.eclipse.wst.json.ui.propertyPage.project.validation"
+			category="ValidationPropertiesPage">
+			<enabledWhen>
+				<adapt type="org.eclipse.core.resources.IProject">
+					
+				</adapt>
 			</enabledWhen>
-         	<keywordReference id="org.eclipse.wst.json.ui.webcontent"/>
 		</page>
 	</extension>
-
+	
 	<!-- Keywords for preference and properties pages -->
 	<extension point="org.eclipse.ui.keywords">
 		<keyword

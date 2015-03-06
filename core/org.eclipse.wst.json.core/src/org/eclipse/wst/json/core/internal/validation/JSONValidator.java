@@ -42,7 +42,7 @@ import org.xml.sax.SAXParseException;
 public class JSONValidator {
 	  
 	protected URIResolver uriResolver = null;
-	private StreamingSyntaxValidator val = new StreamingSyntaxValidator();
+	private JSONSyntaxValidator val = new JSONSyntaxValidator();
 	/**
 	 * Validate the inputStream
 	 * 

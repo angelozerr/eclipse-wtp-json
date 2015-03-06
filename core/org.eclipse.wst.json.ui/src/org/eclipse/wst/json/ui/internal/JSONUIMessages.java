@@ -30,6 +30,7 @@ public class JSONUIMessages extends NLS {
 	public static String refreshoutline_0;
 	public static String SortAction_0;
 
+	// Syntax color preferences page
 	public static String Sample_JSON_doc;
 	public static String SyntaxColoringPage_0;
 	public static String SyntaxColoringPage_2;
@@ -48,6 +49,16 @@ public class JSONUIMessages extends NLS {
 	public static String VALUE_STRING_UI_;
 	public static String COMMENT_UI_;
 	
+	// Validation preferences page
+	public static String SyntaxValidation_files;
+	public static String SyntaxValidation_files_label;
+	public static String Severity_error;
+	public static String Severity_warning;
+	public static String Severity_ignore;
+	public static String Missing_start_object;
+	public static String Missing_end_object;
+	public static String Missing_start_array;
+	public static String Missing_end_array;
 	// Preferences
 	public static String EmptyFilePreferencePage_0;
 	public static String EncodingSettings_0;

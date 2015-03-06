@@ -13,7 +13,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 
 %public
 %class JSONLineTokenizer
-%implements JSONRegionContexts, IJSONLineTokenizer
+%extends AbstractJSONTokenizer
 %function primGetNextToken
 %type String
 %char
@@ -36,8 +36,6 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 	public final static int BUFFER_SIZE_SMALL = 256;
 	private int fInitialBufferSize = BUFFER_SIZE_NORMAL;
 
-	private final Stack<Boolean> jsonContextStack = new Stack<Boolean>();
-	 
 	public void setInitialState(int state) {
 		fInitialState = state;
 	}
@@ -46,6 +44,21 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 		fInitialBufferSize = size;
 	}
 
+	@Override
+	protected void setJSONArrayState() {
+		yybegin(ST_JSON_ARRAY);
+	}
+
+	@Override
+	protected void setJSONObjectState() {
+		yybegin(ST_JSON_OBJECT);
+	}
+
+	@Override
+	protected void setJSONValueState() {
+		yybegin(ST_JSON_VALUE);
+	}
+	
 	/* user method */
   	public final ITextRegion getNextToken() throws IOException {
 		String context;
@@ -225,40 +238,6 @@ import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 		/* user variables */
 		//		fUndefined.delete(0, fUndefined.length());
 		jsonContextStack.clear();
-	}
-
-	private String startElement(boolean isArray) {
-		jsonContextStack.push(isArray);
-		if (isArray) {
-			yybegin(ST_JSON_ARRAY);
-			return JSON_ARRAY_OPEN;
-		}
-		yybegin(ST_JSON_OBJECT);
-		return JSON_OBJECT_OPEN;
-	}
-
-	private String endElement(boolean isArray) {
-		boolean arrayContent = isArrayParsing();
-		if (!jsonContextStack.isEmpty()) {
-			jsonContextStack.pop();
-		}
-		if (isArray) {
-			if (arrayContent) {
-				return JSON_ARRAY_CLOSE;
-			}
-			return UNDEFINED;
-		}
-		if (!arrayContent) {
-			return JSON_OBJECT_CLOSE;
-		}
-		return UNDEFINED;
-	}
-
-	public boolean isArrayParsing() {
-		if (jsonContextStack.isEmpty()) {
-			return false;
-		}
-		return jsonContextStack.peek();
 	}
 	
 	/* user method */
