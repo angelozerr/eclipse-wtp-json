@@ -70,6 +70,9 @@ public class JSONUIMessages extends NLS {
 	public static String JSONFilesPreferencePage_ExtensionLabel;
 	public static String JSONFilesPreferencePage_ExtensionError;
 
+	// Content assist
+	public static String Content_Assist_not_availab_UI_;
+
 	static {
 		// load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, JSONUIMessages.class);

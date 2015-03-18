@@ -296,6 +296,7 @@
 			name="%JSON_source_target_name">
 		</target>
 	</extension>
+	
 	<extension
 		point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
 		<hyperlinkDetector
@@ -639,6 +640,7 @@
 			</contentTypeIdentifier>
 		</inserter>
 	</extension>
+	
  <extension
        point="org.eclipse.wst.sse.ui.commentingStrategy">
     <blockCommentingStrategy
@@ -653,6 +655,7 @@
        </contentType>
     </blockCommentingStrategy>
  </extension>
+ 
  <extension
        point="org.eclipse.wst.sse.ui.completionProposal">
     <proposalCategory
