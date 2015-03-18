@@ -37,6 +37,15 @@ public class JSONTokenizerTest {
 	}
 
 	@Test
+	public void arrayStringAndSpace() {
+		assertRegions("[\"a\" ]",
+				"[ContextRegion--> JSON_ARRAY_OPEN: 0-1, "
+				+ "ContextRegion--> JSON_VALUE_STRING: 1-4, "
+				+ "ContextRegion--> WHITE_SPACE: 4-5, "
+				+ "ContextRegion--> JSON_ARRAY_CLOSE: 5-6]");
+	}
+	
+	@Test
 	public void objectWithArray() {
 		assertRegions("{\"array\":[]}", "[ContextRegion--> JSON_OBJECT_OPEN: 0-1, "
 				+ "ContextRegion--> JSON_OBJECT_KEY: 1-8, "
@@ -53,7 +62,7 @@ public class JSONTokenizerTest {
 
 	@Test
 	public void notValidEndObject() {
-		assertRegions("}", "[ContextRegion--> JSON_UNKNOWN: 0-1]");
+		assertRegions("}", "[ContextRegion--> JSON_OBJECT_CLOSE: 0-1]");
 	}
 
 	@Test
@@ -88,7 +97,7 @@ public class JSONTokenizerTest {
 		assertRegions("{\"config\"}",
 				"[ContextRegion--> JSON_OBJECT_OPEN: 0-1, "
 						+ "ContextRegion--> JSON_OBJECT_KEY: 1-9, "
-						+ "ContextRegion--> JSON_UNKNOWN: 9-10]");
+						+ "ContextRegion--> JSON_OBJECT_CLOSE: 9-10]");
 	}
 
 	@Test

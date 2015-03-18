@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015-present Angelo ZERR.
+ *  Copyright (c) 2015 Angelo ZERR.
  *  
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
@@ -19,7 +19,7 @@ import org.eclipse.wst.sse.core.internal.text.rules.StructuredTextPartitioner;
 import org.eclipse.wst.sse.core.text.IStructuredPartitions;
 
 /**
- * Structured text partionner for JSON.
+ * Structured text partitioner for JSON.
  * 
  */
 public class StructuredTextPartitionerForJSON extends StructuredTextPartitioner {
@@ -51,6 +51,7 @@ public class StructuredTextPartitionerForJSON extends StructuredTextPartitioner 
 		return legalTypes;
 	}
 
+	@Override
 	public IDocumentPartitioner newInstance() {
 		return new StructuredTextPartitionerForJSON();
 	}

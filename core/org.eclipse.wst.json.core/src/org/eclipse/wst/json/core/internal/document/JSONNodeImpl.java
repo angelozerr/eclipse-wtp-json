@@ -300,6 +300,9 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 		IJSONNode parent = this;
 		IJSONNode child = (IJSONNode) getFirstChild();
 		while (child != null) {
+			if (child.getEndOffset() == offset) {
+				return child;
+			}
 			if (child.getEndOffset() <= offset) {
 				child = (IJSONNode) child.getNextSibling();
 				continue;

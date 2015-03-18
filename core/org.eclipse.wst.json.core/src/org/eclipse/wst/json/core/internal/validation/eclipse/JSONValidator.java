@@ -27,7 +27,7 @@ public class JSONValidator extends
 	 */
 	protected JSONValidator() {
 		setURIResolver(URIResolverPlugin.createResolver());
-		//new ErrorCustomizationPluginRegistryReader().readRegistry();
+		// new ErrorCustomizationPluginRegistryReader().readRegistry();
 	}
 
 }

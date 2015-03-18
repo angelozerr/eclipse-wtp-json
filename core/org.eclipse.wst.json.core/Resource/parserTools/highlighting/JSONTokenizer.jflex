@@ -291,6 +291,8 @@ comma = \,
 \/\*[^*]*\*+([^/*][^*]*\*+)*\/ { return JSON_COMMENT; }
 \/\/.* { return JSON_COMMENT; }
 
+{endObject} {return endElement(false); }
+
 /* white space within a tag */
 <ST_JSON_OBJECT, ST_JSON_OBJECT_COLON, ST_JSON_ARRAY, ST_JSON_VALUE> {S}* {
  return WHITE_SPACE;

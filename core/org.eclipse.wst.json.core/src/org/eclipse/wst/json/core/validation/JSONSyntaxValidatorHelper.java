@@ -63,9 +63,10 @@ public class JSONSyntaxValidatorHelper {
 					tokenizer.getOffset(), tokenizer.yylength(),
 					tokenizer.getLine());
 			isClosed = false;
-			checkExpectedRegion(token, previousRegion, reporter, validator,
-					provider);
-			if (type == JSONRegionContexts.JSON_OBJECT_OPEN) {
+			boolean hasError = checkExpectedRegion(token, previousRegion,
+					tagStack, reporter, validator, provider);
+			if (type == JSONRegionContexts.JSON_OBJECT_OPEN
+					|| type == JSONRegionContexts.JSON_ARRAY_OPEN) {
 				tagStack.push(token);
 			} else if (type == JSONRegionContexts.JSON_OBJECT_CLOSE) {
 				if (tagStack.isEmpty()) {
@@ -77,7 +78,54 @@ public class JSONSyntaxValidatorHelper {
 						tagStack.pop();
 					}
 				}
+			} else if (type == JSONRegionContexts.JSON_ARRAY_CLOSE) {
+				if (tagStack.isEmpty()) {
+					createMissingTagError(token, false, reporter,
+							tagErrorCount, tagStack, validator, provider);
+				} else {
+					Token lastToken = tagStack.peek();
+					if (lastToken.type == JSONRegionContexts.JSON_ARRAY_OPEN) {
+						if (!tagStack.isEmpty())
+							tagStack.pop();
+					}
+				}
+			} else if (type.equalsIgnoreCase(JSONRegionContexts.UNDEFINED)) {
+				if ("{".equals(token.text)) {
+					tagStack.push(token);
+				} else if ("}".equals(token.text)) {
+					if (!tagStack.isEmpty()) {
+						tagStack.pop();
+					}
+				} else if ("[".equals(token.text)) {
+					tagStack.push(token);
+				} else if ("]".equals(token.text)) {
+					if (!tagStack.isEmpty()) {
+						tagStack.pop();
+					}
+				} else {
+					if (!hasError) {
+						String messageText = "Unexpected token";
+						LocalizedMessage message = createMessage(token,
+								messageText,
+								JSONCorePreferenceNames.MISSING_BRACKET,
+								provider);
+						getAnnotationMsg(reporter,
+								ProblemIDsJSON.MissingEndBracket, message,
+								null, token.length, validator);
+					}
+				}
 			}
+			/*
+			 * else if (check &&
+			 * type.equalsIgnoreCase(JSONRegionContexts.UNDEFINED)) { String
+			 * messageText = "Unexpected token"; LocalizedMessage message =
+			 * createMessage(token, messageText,
+			 * JSONCorePreferenceNames.MISSING_BRACKET, provider);
+			 * getAnnotationMsg(reporter, ProblemIDsJSON.MissingEndBracket,
+			 * message, null, token.length, validator);
+			 * 
+			 * }
+			 */
 			if (!isIgnoreRegion(type)) {
 				previousRegion = token;
 			}
@@ -93,13 +141,15 @@ public class JSONSyntaxValidatorHelper {
 
 	private static boolean isIgnoreRegion(String type) {
 		return type == JSONRegionContexts.JSON_COMMENT
-				|| type == JSONRegionContexts.WHITE_SPACE;
+				|| type == JSONRegionContexts.WHITE_SPACE
+				|| type.equalsIgnoreCase(JSONRegionContexts.UNDEFINED);
 	}
 
-	private static void checkExpectedRegion(Token current, Token previous,
-			IReporter reporter, IValidator validator, ISeverityProvider provider) {
+	private static boolean checkExpectedRegion(Token current, Token previous,
+			Stack<Token> tagStack, IReporter reporter, IValidator validator,
+			ISeverityProvider provider) {
 		if (previous == null || isIgnoreRegion(current.type)) {
-			return;
+			return false;
 		}
 		if (previous.type == JSONRegionContexts.JSON_OBJECT_OPEN) {
 			if (current.type != JSONRegionContexts.JSON_OBJECT_CLOSE
@@ -110,6 +160,7 @@ public class JSONSyntaxValidatorHelper {
 						JSONCorePreferenceNames.MISSING_BRACKET, provider);
 				getAnnotationMsg(reporter, ProblemIDsJSON.MissingEndBracket,
 						message, null, current.length, validator);
+				return true;
 			}
 		} else if (previous.type == JSONRegionContexts.JSON_OBJECT_KEY) {
 			if (current.type != JSONRegionContexts.JSON_COLON) {
@@ -118,6 +169,7 @@ public class JSONSyntaxValidatorHelper {
 						JSONCorePreferenceNames.MISSING_BRACKET, provider);
 				getAnnotationMsg(reporter, ProblemIDsJSON.MissingEndBracket,
 						message, null, current.length, validator);
+				return true;
 			}
 		} else if (previous.type == JSONRegionContexts.JSON_COLON) {
 			if (!JSONUtil.isJSONSimpleValue(current.type)
@@ -128,8 +180,51 @@ public class JSONSyntaxValidatorHelper {
 						JSONCorePreferenceNames.MISSING_BRACKET, provider);
 				getAnnotationMsg(reporter, ProblemIDsJSON.MissingEndBracket,
 						message, null, current.length, validator);
+				return true;
+			}
+		} else if (previous.type == JSONRegionContexts.JSON_COMMA) {
+			if (tagStack.isEmpty()) {
+				String messageText = "Unexpected comma";
+				LocalizedMessage message = createMessage(current, messageText,
+						JSONCorePreferenceNames.MISSING_BRACKET, provider);
+				getAnnotationMsg(reporter, ProblemIDsJSON.MissingEndBracket,
+						message, null, current.length, validator);
+				return true;
+			} else {
+				if (tagStack.peek().type == JSONRegionContexts.JSON_ARRAY_OPEN) {
+					// inside array, previous token must be a JSON value
+					if (!JSONUtil.isJSONSimpleValue(current.type)
+							&& current.type != JSONRegionContexts.JSON_ARRAY_OPEN
+							&& current.type != JSONRegionContexts.JSON_OBJECT_OPEN) {
+						String messageText = "Expected JSON value but found "
+								+ current.type;
+						LocalizedMessage message = createMessage(current,
+								messageText,
+								JSONCorePreferenceNames.MISSING_BRACKET,
+								provider);
+						getAnnotationMsg(reporter,
+								ProblemIDsJSON.MissingEndBracket, message,
+								null, current.length, validator);
+						return true;
+					}
+				} else {
+					// inside object, previous token must be a JSON key
+					if (current.type != JSONRegionContexts.JSON_OBJECT_KEY) {
+						String messageText = "Expected JSON key but found "
+								+ current.type;
+						LocalizedMessage message = createMessage(current,
+								messageText,
+								JSONCorePreferenceNames.MISSING_BRACKET,
+								provider);
+						getAnnotationMsg(reporter,
+								ProblemIDsJSON.MissingEndBracket, message,
+								null, current.length, validator);
+						return true;
+					}
+				}
 			}
 		}
+		return false;
 	}
 
 	private static void createMissingTagError(Token token, boolean isStartTag,

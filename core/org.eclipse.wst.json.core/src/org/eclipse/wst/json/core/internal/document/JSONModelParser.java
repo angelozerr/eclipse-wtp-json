@@ -120,17 +120,14 @@ public class JSONModelParser {
 		}
 
 		JSONObjectImpl element = (JSONObjectImpl) node;
-		/*List<IJSONPair> attributes = element.getPairs();
-		if (attributes == null)
-			return;
-		for (IJSONPair attr : attributes) {
-			if (((JSONPairImpl) attr).getNameRegion() != region)
-				continue;
-
-			String name = flatNode.getText(region);
-			((JSONPairImpl) attr).setName(name);
-			break;
-		}*/
+		/*
+		 * List<IJSONPair> attributes = element.getPairs(); if (attributes ==
+		 * null) return; for (IJSONPair attr : attributes) { if (((JSONPairImpl)
+		 * attr).getNameRegion() != region) continue;
+		 * 
+		 * String name = flatNode.getText(region); ((JSONPairImpl)
+		 * attr).setName(name); break; }
+		 */
 	}
 
 	/**
@@ -1268,22 +1265,6 @@ public class JSONModelParser {
 	// insertStartObject(element);
 	// }
 
-	protected boolean isNestedTagClose(String regionType) {
-		boolean result = false;
-		return result;
-	}
-
-	protected boolean isNestedTagOpen(String regionType) {
-		boolean result = false;
-		return result;
-	}
-
-	protected String computeNestedTag(String regionType, String tagName,
-			IStructuredDocumentRegion structuredDocumentRegion,
-			ITextRegion region) {
-		return tagName;
-	}
-
 	/**
 	 * insertNode method
 	 * 
@@ -2389,7 +2370,8 @@ public class JSONModelParser {
 		JSONNodeImpl next = (JSONNodeImpl) this.context.getNextNode();
 		if (next != null) {
 			short nodeType = next.getNodeType();
-			if (nodeType != IJSONNode.OBJECT_NODE) {
+			if (nodeType == IJSONNode.OBJECT_NODE
+					|| nodeType == IJSONNode.ARRAY_NODE) {
 				IStructuredDocumentRegion flatNode = next
 						.getStructuredDocumentRegion();
 				if (flatNode == oldStructuredDocumentRegion) {
@@ -2530,6 +2512,20 @@ public class JSONModelParser {
 			return;
 		this.context = new JSONModelContext(this.model.getDocument());
 
+		boolean isWhiteSpaces = false;
+		if (newRegions != null
+				&& (oldRegions == null || oldRegions.size() == 0)) {
+			isWhiteSpaces = true;
+			Iterator e = newRegions.iterator();
+			while (e.hasNext() && isWhiteSpaces) {
+				ITextRegion region = (ITextRegion) e.next();
+				String regionType = region.getType();
+				isWhiteSpaces = (regionType == JSONRegionContexts.WHITE_SPACE);
+			}
+			if (isWhiteSpaces) {
+				return;
+			}
+		}
 		// optimize typical cases
 		String regionType = StructuredDocumentRegionUtil
 				.getFirstRegionType(flatNode);

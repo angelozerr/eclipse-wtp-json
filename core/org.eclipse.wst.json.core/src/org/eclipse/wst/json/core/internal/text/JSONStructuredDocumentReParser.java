@@ -1,13 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+/**
+ *  Copyright (c) 2015 Angelo ZERR.
+ *  
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ *  Contributors:
+ *  Angelo Zerr <angelo.zerr@gmail.com> - initial API and implementation
+ */
 package org.eclipse.wst.json.core.internal.text;
 
 import org.eclipse.jface.text.BadLocationException;
@@ -24,7 +25,7 @@ import org.eclipse.wst.sse.core.internal.text.StructuredDocumentReParser;
 /**
  * This class provides a centralized place to put "reparsing" logic. This is the
  * logic that reparses the text incrementally, as a user types in new
- * characters, or DOM nodes are inserted or deleted. Note: it is not a thread
+ * characters, or JSON nodes are inserted or deleted. Note: it is not a thread
  * safe class.
  */
 public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
@@ -118,8 +119,10 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 		range.expand(getUpdateRangeForUnknownRegion(range.getStart(),
 				range.getEnd()));
 
-		//range.expand(getUpdateRangeForQuotes(range.getStart(), range.getEnd()));
-		//range.expand(getUpdateRangeForComments(range.getStart(), range.getEnd()));
+		// range.expand(getUpdateRangeForQuotes(range.getStart(),
+		// range.getEnd()));
+		// range.expand(getUpdateRangeForComments(range.getStart(),
+		// range.getEnd()));
 		range.expand(getUpdateRangeForBraces(range.getStart(), range.getEnd()));
 
 		StructuredDocumentEvent result;
@@ -264,14 +267,14 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 						.getType() != JSONRegionContexts.JSON_ARRAY_OPEN)) {
 			region = region.getPrevious();
 		}
-//		if (region == startRegion) {
-//			return null;
-//		} else 
+		// if (region == startRegion) {
+		// return null;
+		// } else
 		if (region != null) { // '{' is found
-//			region = region.getPrevious();
-//			if (isLeadingDeclarationType(region.getType())) {
-//				return region;
-//			}
+		// region = region.getPrevious();
+		// if (isLeadingDeclarationType(region.getType())) {
+		// return region;
+		// }
 			return region;
 		}
 		return null;
@@ -428,6 +431,7 @@ public class JSONStructuredDocumentReParser extends StructuredDocumentReParser {
 		}
 	}
 
+	@Override
 	public IStructuredTextReParser newInstance() {
 		return new JSONStructuredDocumentReParser();
 	}

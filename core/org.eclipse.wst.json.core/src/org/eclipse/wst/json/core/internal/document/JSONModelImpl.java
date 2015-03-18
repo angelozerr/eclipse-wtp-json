@@ -40,6 +40,7 @@ import org.w3c.dom.Document;
  */
 public class JSONModelImpl extends AbstractStructuredModel implements
 		IStructuredDocumentListener, IJSONModel {
+
 	private static String TRACE_PARSER_MANAGEMENT_EXCEPTION = "parserManagement"; //$NON-NLS-1$
 	private Object active = null;
 	private JSONDocumentImpl document = null;
@@ -178,18 +179,6 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 			setActive(null);
 		}
 		getModelNotifier().childReplaced(parentNode, newChild, oldChild);
-	}
-
-	public IJSONDocument createDocument() {
-		final JSONDocumentImpl document = new JSONDocumentImpl();
-		final JSONModelImpl model = (JSONModelImpl) StructuredModelManager
-				.getModelManager().createUnManagedStructuredModelFor(
-						ContentTypeIdForJSON.ContentTypeID_JSON);
-		if (model != null) {
-			document.setModel(model);
-			model.document = document;
-		}
-		return document;
 	}
 
 	/**
@@ -414,25 +403,6 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 		return (active != null);
 	}
 
-	/**
-	 * nameChanged method
-	 * 
-	 * @param node
-	 *            org.w3c.dom.Node
-	 */
-	// protected void nameChanged(Node node) {
-	// if (node == null)
-	// return;
-	// if (getActiveParser() == null) {
-	// JSONModelUpdater updater = getModelUpdater();
-	// setActive(updater);
-	// updater.initialize();
-	// updater.changeName(node);
-	// setActive(null);
-	// }
-	// // notification is already sent
-	// }
-
 	@Override
 	public void newModel(NewDocumentEvent structuredDocumentEvent) {
 		if (structuredDocumentEvent == null)
@@ -459,19 +429,6 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 		}
 		if (this.document == null)
 			return; // being constructed
-
-		// IJSONObject root = document.createJSONObject();
-		// document.insertBefore(root, null);
-		//
-		// IJSONPair pair1 = document.createJSONPair("'A'");
-		// root.insertBefore(pair1, null);
-		//
-		// IJSONPair pair2 = document.createJSONPair("'B'");
-		// root.insertBefore(pair2, pair1);
-		//
-		// if (true) {
-		// return;
-		// }
 
 		JSONModelUpdater updater = getActiveUpdater();
 		if (updater != null) { // being updated
@@ -512,8 +469,15 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 		}
 	}
 
-	/**
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.wst.sse.core.internal.provisional.events.
+	 * IStructuredDocumentListener
+	 * #noChange(org.eclipse.wst.sse.core.internal.provisional
+	 * .events.NoChangeEvent)
 	 */
+	@Override
 	public void noChange(NoChangeEvent event) {
 		JSONModelUpdater updater = getActiveUpdater();
 		if (updater != null) { // being updated
@@ -533,6 +497,14 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.wst.sse.core.internal.provisional.events.
+	 * IStructuredDocumentListener
+	 * #nodesReplaced(org.eclipse.wst.sse.core.internal
+	 * .provisional.events.StructuredDocumentRegionsReplacedEvent)
+	 */
 	@Override
 	public void nodesReplaced(StructuredDocumentRegionsReplacedEvent event) {
 		if (event == null)
@@ -585,6 +557,14 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.wst.sse.core.internal.provisional.events.
+	 * IStructuredDocumentListener
+	 * #regionChanged(org.eclipse.wst.sse.core.internal
+	 * .provisional.events.RegionChangedEvent)
+	 */
 	@Override
 	public void regionChanged(RegionChangedEvent event) {
 		if (event == null)
@@ -632,11 +612,15 @@ public class JSONModelImpl extends AbstractStructuredModel implements
 		// checkForReinit();
 	}
 
-	/**
-	 * regionsReplaced method
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param event
+	 * @see org.eclipse.wst.sse.core.internal.provisional.events.
+	 * IStructuredDocumentListener
+	 * #regionsReplaced(org.eclipse.wst.sse.core.internal
+	 * .provisional.events.RegionsReplacedEvent)
 	 */
+	@Override
 	public void regionsReplaced(RegionsReplacedEvent event) {
 		if (event == null)
 			return;

@@ -7,14 +7,15 @@ import java.io.InputStreamReader;
 
 import org.eclipse.wst.json.core.contenttype.ContentTypeIdForJSON;
 import org.eclipse.wst.json.core.document.IJSONDocument;
+import org.eclipse.wst.json.core.document.IJSONModel;
 import org.eclipse.wst.json.core.document.IJSONNode;
-import org.eclipse.wst.json.core.document.IJSONObject;
 import org.eclipse.wst.json.core.document.IJSONPair;
 import org.eclipse.wst.json.core.document.IJSONStructure;
 import org.eclipse.wst.json.core.document.IJSONValue;
 import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 
 public class TestUtil {
 
@@ -105,6 +106,14 @@ public class TestUtil {
 
 		return sb.toString();
 
+	}
+
+	public static IJSONModel loadModel(String json) {
+		IJSONModel model = (IJSONModel) TestUtil.createModel();
+		IStructuredDocument structuredDocument = model.getStructuredDocument();
+		// Load JSON Object
+		structuredDocument.set(json);
+		return model;
 	}
 
 	public static IStructuredModel createModel() {
