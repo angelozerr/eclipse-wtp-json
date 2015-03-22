@@ -11,9 +11,6 @@
  */
 package org.eclipse.wst.json.ui.contentassist;
 
-import java.util.List;
-
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 
 public class DefaultJSONCompletionProposalComputer extends
@@ -25,10 +22,10 @@ public class DefaultJSONCompletionProposalComputer extends
 	}
 
 	@Override
-	public List computeContextInformation(
-			CompletionProposalInvocationContext context,
-			IProgressMonitor monitor) {
-		return null;
+	protected void addObjectKeyProposals(
+			ContentAssistRequest contentAssistRequest,
+			CompletionProposalInvocationContext context) {
+
 	}
 
 	@Override
@@ -40,5 +37,4 @@ public class DefaultJSONCompletionProposalComputer extends
 	public void sessionEnded() {
 		// default is to do nothing
 	}
-
 }

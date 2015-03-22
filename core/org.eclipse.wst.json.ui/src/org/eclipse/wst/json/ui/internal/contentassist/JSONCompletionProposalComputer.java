@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2015-present Angelo ZERR.
+ *  Copyright (c) 2015-spresent Angelo ZERR.
  *  
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
@@ -11,10 +11,15 @@
  */
 package org.eclipse.wst.json.ui.internal.contentassist;
 
-import java.util.List;
+import java.io.IOException;
 
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.wst.json.core.JSONCorePlugin;
+import org.eclipse.wst.json.core.document.IJSONNode;
+import org.eclipse.wst.json.core.schema.IJSONSchemaProperty;
+import org.eclipse.wst.json.core.schema.IJSONSchemaDocument;
 import org.eclipse.wst.json.ui.contentassist.AbstractJSONCompletionProposalComputer;
+import org.eclipse.wst.json.ui.contentassist.ContentAssistRequest;
+import org.eclipse.wst.json.ui.contentassist.JSONCompletionProposal;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 
 public class JSONCompletionProposalComputer extends
@@ -26,10 +31,31 @@ public class JSONCompletionProposalComputer extends
 	}
 
 	@Override
-	public List computeContextInformation(
-			CompletionProposalInvocationContext context,
-			IProgressMonitor monitor) {
-		return null;
+	protected void addObjectKeyProposals(
+			ContentAssistRequest contentAssistRequest,
+			CompletionProposalInvocationContext context) {
+
+		try {
+			IJSONNode node = contentAssistRequest.getNode();
+			IJSONSchemaDocument schemaDocument = JSONCorePlugin.getDefault()
+					.getSchemaDocument(node);
+			if (schemaDocument != null) {
+
+				IJSONSchemaProperty[] properties = schemaDocument
+						.getProperties(node);
+				for (IJSONSchemaProperty property : properties) {
+					JSONCompletionProposal proposal = new JSONCompletionProposal(
+							property.getName(), 0, 1, 1, null,
+							property.getName(), null, null, 1);
+
+					contentAssistRequest.addProposal(proposal);
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override

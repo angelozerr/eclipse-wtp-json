@@ -31,6 +31,11 @@ public class JSONCoreMessages extends NLS {
 	public static String Missing_start_object;
 	public static String Missing_end_object;
 
+	public static String Catalog_entry_uri_not_set;
+	public static String Catalog_resolution_null_catalog;
+	public static String Catalog_resolution_malformed_url;
+	public static String Catalog_resolution_io_exception;
+
 	static {
 		// load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, JSONCoreMessages.class);

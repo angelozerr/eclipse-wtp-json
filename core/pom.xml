@@ -13,6 +13,7 @@
 	<modules>
 		<module>org.eclipse.wst.json.core</module>
 		<module>org.eclipse.wst.json.ui</module>
+		<module>org.eclipse.wst.json.schemaprocessor</module>		
 		<module>org.eclipse.wst.json.core.tests</module>
 	</modules>
 </project>
