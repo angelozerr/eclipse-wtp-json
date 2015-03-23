@@ -11,8 +11,9 @@ Require-Bundle: org.eclipse.core.runtime,
  com.ibm.icu,
  org.eclipse.core.resources,
  org.eclipse.wst.json.core,
- org.eclipse.wst.common.uriresolver
+ org.eclipse.wst.common.uriresolver,
+ org.eclipse.json,
+ org.eclipse.json.impl
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Import-Package: com.eclipsesource.json;version="[0.9.2,0.9.3)"
 

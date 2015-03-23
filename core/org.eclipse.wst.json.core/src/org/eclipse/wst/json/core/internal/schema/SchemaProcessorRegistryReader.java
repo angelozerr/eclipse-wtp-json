@@ -7,14 +7,14 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.json.schema.IJSONSchemaDocument;
+import org.eclipse.json.schema.IJSONSchemaProcessor;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.json.core.JSONCorePlugin;
 import org.eclipse.wst.json.core.document.IJSONModel;
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.internal.Logger;
-import org.eclipse.wst.json.core.schema.IJSONSchemaDocument;
-import org.eclipse.wst.json.core.schema.IJSONSchemaProcessor;
 
 public class SchemaProcessorRegistryReader {
 
@@ -37,7 +37,8 @@ public class SchemaProcessorRegistryReader {
 		return defaultProcessor;
 	}
 
-	public IJSONSchemaDocument getSchemaDocument(IJSONNode node) throws IOException {
+	public IJSONSchemaDocument getSchemaDocument(IJSONNode node)
+			throws IOException {
 		return getSchemaDocument(node.getModel());
 	}
 

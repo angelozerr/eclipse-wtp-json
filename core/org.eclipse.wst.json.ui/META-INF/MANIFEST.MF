@@ -15,7 +15,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.wst.json.core,
- org.eclipse.wst.validation
+ org.eclipse.wst.validation,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.json
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.wst.json.ui,

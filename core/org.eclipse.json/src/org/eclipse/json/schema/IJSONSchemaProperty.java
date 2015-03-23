@@ -1,4 +1,4 @@
-package org.eclipse.wst.json.core.schema;
+package org.eclipse.json.schema;
 
 public interface IJSONSchemaProperty extends IJSONSchemaNode {
 
@@ -8,6 +8,6 @@ public interface IJSONSchemaProperty extends IJSONSchemaNode {
 
 	String getDescription();
 
-	String getType();
+	JSONSchemaType[] getType();
 
 }

@@ -25,6 +25,7 @@ import org.eclipse.wst.json.ui.internal.JSONUIMessages;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
+import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegionContainer;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 import org.eclipse.wst.sse.ui.contentassist.ICompletionProposalComputer;
 import org.eclipse.wst.sse.ui.internal.contentassist.ContentAssistUtils;
@@ -137,7 +138,14 @@ public abstract class AbstractJSONCompletionProposalComputer implements
 
 		// Handle the most common and best supported cases
 		if ((xmlnode.getNodeType() == IJSONNode.OBJECT_NODE)) {
-			if (regionType == JSONRegionContexts.JSON_OBJECT_CLOSE) {
+			if (regionType == JSONRegionContexts.JSON_OBJECT_OPEN
+					|| regionType == JSONRegionContexts.JSON_OBJECT_CLOSE
+					|| regionType == JSONRegionContexts.JSON_COMMA) {
+				contentAssistRequest = computeObjectKeyProposals(matchString,
+						completionRegion, treeNode, xmlnode, context);
+			}
+		} else if ((xmlnode.getNodeType() == IJSONNode.PAIR_NODE)) {
+			if (regionType == JSONRegionContexts.JSON_OBJECT_KEY) {
 				contentAssistRequest = computeObjectKeyProposals(matchString,
 						completionRegion, treeNode, xmlnode, context);
 			}
@@ -152,10 +160,27 @@ public abstract class AbstractJSONCompletionProposalComputer implements
 		ContentAssistRequest contentAssistRequest = null;
 		IStructuredDocumentRegion sdRegion = getStructuredDocumentRegion(documentPosition);
 
-		// at the start of an existing tag, right before the '<'
+		int replaceLength = 0;
+		int begin = documentPosition;
+		if (completionRegion.getType() == JSONRegionContexts.JSON_OBJECT_KEY) {
+			replaceLength = completionRegion.getTextLength();
+			// if container region, be sure replace length is only the attribute
+			// value region not the entire container
+			if (completionRegion instanceof ITextRegionContainer) {
+				ITextRegion openRegion = ((ITextRegionContainer) completionRegion)
+						.getFirstRegion();
+				ITextRegion closeRegion = ((ITextRegionContainer) completionRegion)
+						.getLastRegion();
+				if (openRegion.getType() != closeRegion.getType()) {
+					replaceLength = openRegion.getTextLength();
+				}
+			}
+			begin = sdRegion.getStartOffset(completionRegion);
+		}
+
 		contentAssistRequest = new ContentAssistRequest(nodeAtOffset,
-				node.getParentNode(), sdRegion, completionRegion,
-				documentPosition, 0, matchString);
+				node.getParentNode(), sdRegion, completionRegion, begin,
+				replaceLength, matchString);
 		addObjectKeyProposals(contentAssistRequest, context);
 		return contentAssistRequest;
 	}
@@ -324,7 +349,18 @@ public abstract class AbstractJSONCompletionProposalComputer implements
 
 	private String getMatchString(IStructuredDocumentRegion parent,
 			ITextRegion aRegion, int offset) {
-
+		if (aRegion == null) {
+			return "";
+		}
+		String regionType = aRegion.getType();
+		if (regionType != JSONRegionContexts.JSON_OBJECT_KEY) {
+			return "";
+		}
+		if ((parent.getText(aRegion).length() > 0)
+				&& (parent.getStartOffset(aRegion) < offset)) {
+			return parent.getText(aRegion).substring(0,
+					offset - parent.getStartOffset(aRegion));
+		}
 		return "";
 	}
 
@@ -352,5 +388,27 @@ public abstract class AbstractJSONCompletionProposalComputer implements
 
 		// no default context info
 		return Collections.EMPTY_LIST;
+	}
+
+	/**
+	 * <p>
+	 * helpful utility method for determining if one string starts with another
+	 * one. This is case insensitive. If either are null then result is
+	 * <code>true</code>
+	 * </p>
+	 * 
+	 * @param aString
+	 *            the string to check to see if it starts with the given prefix
+	 * @param prefix
+	 *            check that the given string starts with this prefix
+	 * 
+	 * @return <code>true</code> if the given string starts with the given
+	 *         prefix, <code>false</code> otherwise
+	 */
+	protected static boolean beginsWith(String aString, String prefix) {
+		if ((aString == null) || (prefix == null)) {
+			return true;
+		}
+		return aString.toLowerCase().startsWith(prefix.toLowerCase());
 	}
 }

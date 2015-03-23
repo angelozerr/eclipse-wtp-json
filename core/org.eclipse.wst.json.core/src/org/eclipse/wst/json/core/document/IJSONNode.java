@@ -11,6 +11,7 @@
  */
 package org.eclipse.wst.json.core.document;
 
+import org.eclipse.json.schema.IJSONPath;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
@@ -117,4 +118,6 @@ public interface IJSONNode extends IndexedRegion, INodeNotifier {
 	IJSONPair getOwnerPairNode();
 
 	IJSONNode getParentOrPairNode();
+
+	IJSONPath getPath();
 }

@@ -102,7 +102,12 @@
          			description="JSHint configuration file"
          			fileMatch=".jshintrc"
          			url="http://json.schemastore.org/jshintrc"
-         			uri="schemastore/jshintrc" />         			
+         			uri="schemastore/jshintrc" />
+			<schema name="package.json"
+         			description="NPM configuration file"
+         			fileMatch="package.json"
+         			url="http://json.schemastore.org/package"
+         			uri="schemastore/package" />          			         			
          </schemaCatalogContribution>
    </extension>
    

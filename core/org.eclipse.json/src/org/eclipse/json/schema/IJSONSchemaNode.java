@@ -1,4 +1,4 @@
-package org.eclipse.wst.json.core.schema;
+package org.eclipse.json.schema;
 
 public interface IJSONSchemaNode {
 

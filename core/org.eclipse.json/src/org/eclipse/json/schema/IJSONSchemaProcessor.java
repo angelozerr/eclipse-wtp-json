@@ -1,4 +1,4 @@
-package org.eclipse.wst.json.core.schema;
+package org.eclipse.json.schema;
 
 import java.io.IOException;
 
@@ -6,5 +6,4 @@ public interface IJSONSchemaProcessor {
 
 	IJSONSchemaDocument getSchema(String uri) throws IOException;
 
-	// IJSONProperty findProperty(IJSONPath path, IJSONSchema schema);
 }

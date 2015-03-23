@@ -3,11 +3,11 @@ package org.eclipse.wst.json.core;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.json.schema.IJSONSchemaDocument;
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.core.internal.schema.SchemaProcessorRegistryReader;
 import org.eclipse.wst.json.core.internal.schema.catalog.Catalog;
 import org.eclipse.wst.json.core.internal.schema.catalog.CatalogSet;
-import org.eclipse.wst.json.core.schema.IJSONSchemaDocument;
 import org.eclipse.wst.json.core.schema.catalog.ICatalog;
 import org.osgi.framework.BundleContext;
 
@@ -77,7 +77,8 @@ public class JSONCorePlugin extends Plugin {
 		return location;
 	}
 
-	public IJSONSchemaDocument getSchemaDocument(IJSONNode node) throws IOException {
+	public IJSONSchemaDocument getSchemaDocument(IJSONNode node)
+			throws IOException {
 		return SchemaProcessorRegistryReader.getInstance().getSchemaDocument(
 				node.getModel());
 	}

@@ -1,11 +1,11 @@
-package org.eclipse.wst.json.schemaprocessor.internal;
+package org.eclipse.json.impl.schema;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.wst.json.core.schema.IJSONSchemaNode;
-import org.eclipse.wst.json.core.schema.IJSONSchemaProperty;
+import org.eclipse.json.schema.IJSONSchemaNode;
+import org.eclipse.json.schema.IJSONSchemaProperty;
 
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;

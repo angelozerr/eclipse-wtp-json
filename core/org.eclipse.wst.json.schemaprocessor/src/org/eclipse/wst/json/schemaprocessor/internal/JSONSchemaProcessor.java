@@ -1,17 +1,13 @@
 package org.eclipse.wst.json.schemaprocessor.internal;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import org.eclipse.json.impl.schema.JSONSchemaDocument;
+import org.eclipse.json.schema.IJSONSchemaDocument;
+import org.eclipse.json.schema.IJSONSchemaProcessor;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
-import org.eclipse.wst.json.core.schema.IJSONSchemaDocument;
-import org.eclipse.wst.json.core.schema.IJSONSchemaProcessor;
-
-import com.eclipsesource.json.JsonObject;
 
 public class JSONSchemaProcessor implements IJSONSchemaProcessor {
 

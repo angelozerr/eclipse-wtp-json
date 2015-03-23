@@ -185,6 +185,23 @@ public class JSONTokenizerTest {
 	}
 
 	@Test
+	public void threeFields() {
+		assertRegions("{\"a\": 1,}",
+				"[ContextRegion--> JSON_OBJECT_OPEN: 0-1, "
+						+ "ContextRegion--> JSON_OBJECT_KEY: 1-4, "
+						+ "ContextRegion--> JSON_COLON: 4-5, "
+						+ "ContextRegion--> WHITE_SPACE: 5-6, "
+						+ "ContextRegion--> JSON_VALUE_NUMBER: 6-7, "
+						+ "ContextRegion--> JSON_COMMA: 7-8, "
+						+ "ContextRegion--> WHITE_SPACE: 8-9, "
+						+ "ContextRegion--> JSON_OBJECT_KEY: 9-12, "
+						+ "ContextRegion--> JSON_COLON: 12-13, "
+						+ "ContextRegion--> WHITE_SPACE: 13-14, "
+						+ "ContextRegion--> JSON_VALUE_NUMBER: 14-15, "
+						+ "ContextRegion--> JSON_OBJECT_CLOSE: 15-16]");
+	}
+	
+	@Test
 	public void sample() {
 		InputStream json = JSONTokenizerTest.class
 				.getResourceAsStream("sample.json");

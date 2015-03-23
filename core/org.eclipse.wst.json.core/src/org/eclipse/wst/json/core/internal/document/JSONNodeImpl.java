@@ -2,6 +2,7 @@ package org.eclipse.wst.json.core.internal.document;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.json.schema.IJSONPath;
 import org.eclipse.wst.json.core.document.IJSONDocument;
 import org.eclipse.wst.json.core.document.IJSONModel;
 import org.eclipse.wst.json.core.document.IJSONNode;
@@ -24,7 +25,7 @@ import org.w3c.dom.Text;
 public abstract class JSONNodeImpl extends AbstractNotifier implements
 		IJSONNode, IAdaptable {
 	// define one empty nodelist, for repeated use
-	//private final static NodeList EMPTY_NODE_LIST = new NodeListImpl();
+	// private final static NodeList EMPTY_NODE_LIST = new NodeListImpl();
 	// DocumentPosition
 	// private final static short DOCUMENT_POSITION_DISCONNECTED = 0x01;
 	private final static short DOCUMENT_POSITION_PRECEDING = 0x02;
@@ -116,14 +117,14 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 	 * 
 	 * @return org.w3c.dom.NodeList
 	 */
-//	public NodeList getChildNodes() {
-//		// As per JSON spec, correct behavior for getChildNodes is to return a
-//		// zero length NodeList, not null, when there are no children.
-//		// We'll use a common instance of an empty node list, just to prevent
-//		// creating a trival object many many times.
-//
-//		return EMPTY_NODE_LIST;
-//	}
+	// public NodeList getChildNodes() {
+	// // As per JSON spec, correct behavior for getChildNodes is to return a
+	// // zero length NodeList, not null, when there are no children.
+	// // We'll use a common instance of an empty node list, just to prevent
+	// // creating a trival object many many times.
+	//
+	// return EMPTY_NODE_LIST;
+	// }
 
 	/**
 	 * getContainerDocument method
@@ -410,7 +411,7 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 	}
 
 	/**
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
 	public String getValueSource() throws JSONException {
 		return getNodeValue();
@@ -452,9 +453,10 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 	 * @param refChild
 	 *            org.w3c.dom.Node
 	 */
-	public IJSONNode insertBefore(IJSONNode newChild, IJSONNode refChild) throws JSONException {
-//		throw new JSONException(JSONException.HIERARCHY_REQUEST_ERR,
-//				JSONMessages.HIERARCHY_REQUEST_ERR);
+	public IJSONNode insertBefore(IJSONNode newChild, IJSONNode refChild)
+			throws JSONException {
+		// throw new JSONException(JSONException.HIERARCHY_REQUEST_ERR,
+		// JSONMessages.HIERARCHY_REQUEST_ERR);
 		throw new JSONException();
 	}
 
@@ -496,57 +498,57 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 		// TODO: make localized version
 		String result = null;
 		switch (s) {
-//		case JSONException.JSONSTRING_SIZE_ERR:
-//			result = JSONMessages.JSONSTRING_SIZE_ERR;
-//			break;
-//		case JSONException.HIERARCHY_REQUEST_ERR:
-//			result = JSONMessages.HIERARCHY_REQUEST_ERR;
-//			break;
-//		case JSONException.INDEX_SIZE_ERR:
-//			result = JSONMessages.INDEX_SIZE_ERR;
-//			break;
-//		case JSONException.INUSE_ATTRIBUTE_ERR:
-//			result = JSONMessages.INUSE_ATTRIBUTE_ERR;
-//			break;
-//		case JSONException.INVALID_ACCESS_ERR:
-//			result = JSONMessages.INVALID_ACCESS_ERR;
-//			break;
-//		case JSONException.INVALID_CHARACTER_ERR:
-//			result = JSONMessages.INVALID_CHARACTER_ERR;
-//			break;
-//		case JSONException.INVALID_MODIFICATION_ERR:
-//			result = JSONMessages.INVALID_MODIFICATION_ERR;
-//			break;
-//		case JSONException.INVALID_STATE_ERR:
-//			result = JSONMessages.INVALID_STATE_ERR;
-//			break;
-//		case JSONException.NAMESPACE_ERR:
-//			result = JSONMessages.NAMESPACE_ERR;
-//			break;
-//		case JSONException.NO_DATA_ALLOWED_ERR:
-//			result = JSONMessages.NO_DATA_ALLOWED_ERR;
-//			break;
-//		case JSONException.NO_MODIFICATION_ALLOWED_ERR:
-//			result = JSONMessages.NO_MODIFICATION_ALLOWED_ERR;
-//			break;
-//		case JSONException.NOT_FOUND_ERR:
-//			result = JSONMessages.NOT_FOUND_ERR;
-//			break;
-//		case JSONException.NOT_SUPPORTED_ERR:
-//			result = JSONMessages.NOT_SUPPORTED_ERR;
-//			break;
-//		case JSONException.SYNTAX_ERR:
-//			result = JSONMessages.SYNTAX_ERR;
-//			break;
-//		case 17:// JSONException.TYPE_MISMATCH_ERR :
-//			result = JSONMessages.TYPE_MISMATCH_ERR;
-//			break;
-//		case 16:// JSONException.VALIDATION_ERR :
-//			result = JSONMessages.VALIDATION_ERR;
-//			break;
-//		case JSONException.WRONG_DOCUMENT_ERR:
-//			result = JSONMessages.WRONG_DOCUMENT_ERR;
-//			break;
+		// case JSONException.JSONSTRING_SIZE_ERR:
+		// result = JSONMessages.JSONSTRING_SIZE_ERR;
+		// break;
+		// case JSONException.HIERARCHY_REQUEST_ERR:
+		// result = JSONMessages.HIERARCHY_REQUEST_ERR;
+		// break;
+		// case JSONException.INDEX_SIZE_ERR:
+		// result = JSONMessages.INDEX_SIZE_ERR;
+		// break;
+		// case JSONException.INUSE_ATTRIBUTE_ERR:
+		// result = JSONMessages.INUSE_ATTRIBUTE_ERR;
+		// break;
+		// case JSONException.INVALID_ACCESS_ERR:
+		// result = JSONMessages.INVALID_ACCESS_ERR;
+		// break;
+		// case JSONException.INVALID_CHARACTER_ERR:
+		// result = JSONMessages.INVALID_CHARACTER_ERR;
+		// break;
+		// case JSONException.INVALID_MODIFICATION_ERR:
+		// result = JSONMessages.INVALID_MODIFICATION_ERR;
+		// break;
+		// case JSONException.INVALID_STATE_ERR:
+		// result = JSONMessages.INVALID_STATE_ERR;
+		// break;
+		// case JSONException.NAMESPACE_ERR:
+		// result = JSONMessages.NAMESPACE_ERR;
+		// break;
+		// case JSONException.NO_DATA_ALLOWED_ERR:
+		// result = JSONMessages.NO_DATA_ALLOWED_ERR;
+		// break;
+		// case JSONException.NO_MODIFICATION_ALLOWED_ERR:
+		// result = JSONMessages.NO_MODIFICATION_ALLOWED_ERR;
+		// break;
+		// case JSONException.NOT_FOUND_ERR:
+		// result = JSONMessages.NOT_FOUND_ERR;
+		// break;
+		// case JSONException.NOT_SUPPORTED_ERR:
+		// result = JSONMessages.NOT_SUPPORTED_ERR;
+		// break;
+		// case JSONException.SYNTAX_ERR:
+		// result = JSONMessages.SYNTAX_ERR;
+		// break;
+		// case 17:// JSONException.TYPE_MISMATCH_ERR :
+		// result = JSONMessages.TYPE_MISMATCH_ERR;
+		// break;
+		// case 16:// JSONException.VALIDATION_ERR :
+		// result = JSONMessages.VALIDATION_ERR;
+		// break;
+		// case JSONException.WRONG_DOCUMENT_ERR:
+		// result = JSONMessages.WRONG_DOCUMENT_ERR;
+		// break;
 		default:
 			result = JSONNodeImpl.EMPTY_STRING;
 			break;
@@ -554,15 +556,15 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 		return result;
 	}
 
-//	protected void notifyEditableChanged() {
-//		JSONDocumentImpl document = (JSONDocumentImpl) getContainerDocument();
-//		if (document == null)
-//			return;
-//		JSONModelImpl model = (JSONModelImpl) document.getModel();
-//		if (model == null)
-//			return;
-//		model.editableChanged(this);
-//	}
+	// protected void notifyEditableChanged() {
+	// JSONDocumentImpl document = (JSONDocumentImpl) getContainerDocument();
+	// if (document == null)
+	// return;
+	// JSONModelImpl model = (JSONModelImpl) document.getModel();
+	// if (model == null)
+	// return;
+	// model.editableChanged(this);
+	// }
 
 	/**
 	 * notifyValueChanged method
@@ -572,7 +574,7 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 		if (document == null)
 			return;
 
-		//syncDataEditableState();
+		// syncDataEditableState();
 
 		JSONModelImpl model = (JSONModelImpl) document.getModel();
 		if (model == null)
@@ -589,8 +591,8 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 	 */
 	public IJSONNode removeChild(IJSONNode oldChild) throws JSONException {
 		throw new JSONException();
-//		throw new JSONException(JSONException.NOT_FOUND_ERR,
-//				JSONMessages.NOT_FOUND_ERR);
+		// throw new JSONException(JSONException.NOT_FOUND_ERR,
+		// JSONMessages.NOT_FOUND_ERR);
 	}
 
 	/**
@@ -608,9 +610,10 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 	 * @param lastChild
 	 *            org.w3c.dom.Node
 	 */
-//	public DocumentFragment removeChildNodes(Node firstChild, Node lastChild) {
-//		return null;
-//	}
+	// public DocumentFragment removeChildNodes(Node firstChild, Node lastChild)
+	// {
+	// return null;
+	// }
 
 	/**
 	 * replaceChild method
@@ -621,9 +624,10 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 	 * @param oldChild
 	 *            org.w3c.dom.Node
 	 */
-	public IJSONNode replaceChild(IJSONNode newChild, IJSONNode oldChild) throws JSONException {
-//		throw new JSONException(JSONException.HIERARCHY_REQUEST_ERR,
-//				JSONMessages.HIERARCHY_REQUEST_ERR);
+	public IJSONNode replaceChild(IJSONNode newChild, IJSONNode oldChild)
+			throws JSONException {
+		// throw new JSONException(JSONException.HIERARCHY_REQUEST_ERR,
+		// JSONMessages.HIERARCHY_REQUEST_ERR);
 		return null;
 	}
 
@@ -642,34 +646,34 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 		// nop
 	}
 
-//	public void setDataEditable(boolean editable) {
-//		if (fDataEditable == editable) {
-//			return;
-//		}
-//
-//		ReadOnlyController roc = ReadOnlyController.getInstance();
-//		if (editable) {
-//			roc.unlockData(this);
-//		} else {
-//			roc.lockData(this);
-//		}
-//
-//		fDataEditable = editable;
-//
-//		notifyEditableChanged();
-//	}
+	// public void setDataEditable(boolean editable) {
+	// if (fDataEditable == editable) {
+	// return;
+	// }
+	//
+	// ReadOnlyController roc = ReadOnlyController.getInstance();
+	// if (editable) {
+	// roc.unlockData(this);
+	// } else {
+	// roc.lockData(this);
+	// }
+	//
+	// fDataEditable = editable;
+	//
+	// notifyEditableChanged();
+	// }
 
-//	public void setEditable(boolean editable, boolean deep) {
-//		if (deep) {
-//			IJSONNode node = (IJSONNode) getFirstChild();
-//			while (node != null) {
-//				node.setEditable(editable, deep);
-//				node = (IJSONNode) node.getNextSibling();
-//			}
-//		}
-//		setChildEditable(editable);
-//		setDataEditable(editable);
-//	}
+	// public void setEditable(boolean editable, boolean deep) {
+	// if (deep) {
+	// IJSONNode node = (IJSONNode) getFirstChild();
+	// while (node != null) {
+	// node.setEditable(editable, deep);
+	// node = (IJSONNode) node.getNextSibling();
+	// }
+	// }
+	// setChildEditable(editable);
+	// setDataEditable(editable);
+	// }
 
 	/**
 	 * setNextSibling method
@@ -687,7 +691,7 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 	 * @param nodeValue
 	 *            java.lang.String
 	 */
-	public void setNodeValue(String nodeValue)  {
+	public void setNodeValue(String nodeValue) {
 	}
 
 	protected void setOwnerDocument(IJSONDocument ownerDocument) {
@@ -745,14 +749,14 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 		setNodeValue(source);
 	}
 
-//	protected void syncDataEditableState() {
-//		ReadOnlyController roc = ReadOnlyController.getInstance();
-//		if (fDataEditable) {
-//			roc.unlockData(this);
-//		} else {
-//			roc.lockData(this);
-//		}
-//	}
+	// protected void syncDataEditableState() {
+	// ReadOnlyController roc = ReadOnlyController.getInstance();
+	// if (fDataEditable) {
+	// roc.unlockData(this);
+	// } else {
+	// roc.lockData(this);
+	// }
+	// }
 
 	/**
 	 * toString method
@@ -778,4 +782,8 @@ public abstract class JSONNodeImpl extends AbstractNotifier implements
 		return result;
 	}
 
+	@Override
+	public IJSONPath getPath() {
+		return null;
+	}
 }
