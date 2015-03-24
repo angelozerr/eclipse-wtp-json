@@ -115,11 +115,13 @@ public class JSONModelParser {
 		IJSONNode node = root.getNodeAt(offset);
 		if (node == null)
 			return;
-		if (node.getNodeType() != IJSONNode.OBJECT_NODE) {
+		if (node.getNodeType() != IJSONNode.PAIR_NODE) {
 			return;
 		}
 
-		JSONObjectImpl element = (JSONObjectImpl) node;
+		JSONPairImpl pair = (JSONPairImpl) node;
+		String name = flatNode.getText(region); 
+		pair.setName(name);
 		/*
 		 * List<IJSONPair> attributes = element.getPairs(); if (attributes ==
 		 * null) return; for (IJSONPair attr : attributes) { if (((JSONPairImpl)
@@ -1280,6 +1282,12 @@ public class JSONModelParser {
 			return;
 		}
 
+		if (parent.getNodeType() == IJSONNode.PAIR_NODE) {
+			IJSONPair pair = (IJSONPair) parent;
+			((JSONPairImpl) pair).setValue((IJSONValue) node);
+			return;
+		}
+		
 		if (parent.getLastChild() != null
 				&& parent.getLastChild().getNodeType() == IJSONNode.PAIR_NODE) {
 			IJSONPair pair = (IJSONPair) parent.getLastChild();
@@ -2371,7 +2379,8 @@ public class JSONModelParser {
 		if (next != null) {
 			short nodeType = next.getNodeType();
 			if (nodeType == IJSONNode.OBJECT_NODE
-					|| nodeType == IJSONNode.ARRAY_NODE) {
+					|| nodeType == IJSONNode.ARRAY_NODE
+					|| nodeType == IJSONNode.PAIR_NODE) {
 				IStructuredDocumentRegion flatNode = next
 						.getStructuredDocumentRegion();
 				if (flatNode == oldStructuredDocumentRegion) {
@@ -2420,21 +2429,25 @@ public class JSONModelParser {
 				return;
 			}
 
-			JSONObjectImpl element = (JSONObjectImpl) next;
-			if (element.hasStartTag()) {
-				IStructuredDocumentRegion flatNode = element
-						.getStartStructuredDocumentRegion();
-				if (flatNode != oldStructuredDocumentRegion) {
-					throw new StructuredDocumentRegionManagementException();
-				}
+			if (next instanceof JSONPairImpl) {
+				next = (JSONNodeImpl)((JSONPairImpl) next).getValue();
+			}
+			
+			//JSONObjectImpl element = (JSONObjectImpl) next;
+			//if (element.hasStartTag()) {
+//				IStructuredDocumentRegion flatNode = element
+//						.getStartStructuredDocumentRegion();
+//				if (flatNode != oldStructuredDocumentRegion) {
+//					throw new StructuredDocumentRegionManagementException();
+//				}
 				/*
 				 * if (element.hasEndTag() || element.hasChildNodes()) {
 				 * element.setStartStructuredDocumentRegion(null);
 				 * removeStartObject(element); } else {
 				 */
-				removeNode(element);
+				removeNode(next);
 				// }
-			} else {
+			/*} else {
 				IJSONNode child = element.getFirstChild();
 				if (child != null) {
 					this.context.setNextNode(child);
@@ -2455,15 +2468,22 @@ public class JSONModelParser {
 					throw new StructuredDocumentRegionManagementException();
 				}
 				removeNode(element);
-			}
+			}*/
 			return;
 		}
 
 		IJSONNode parent = this.context.getParentNode();
-		if (parent == null || parent.getNodeType() != IJSONNode.OBJECT_NODE) {
+		if (parent == null ||  (parent.getNodeType() != IJSONNode.OBJECT_NODE && parent.getNodeType() != IJSONNode.PAIR_NODE)) {
 			throw new StructuredDocumentRegionManagementException();
 		}
 
+//		if (parent instanceof IJSONPair) {
+//			this.context.setNextNode(parent);
+//			removeNode(parent);
+//			return;
+//		}
+		
+		
 		JSONObjectImpl end = (JSONObjectImpl) parent;
 		if (end.hasEndTag()) {
 			IStructuredDocumentRegion flatNode = end

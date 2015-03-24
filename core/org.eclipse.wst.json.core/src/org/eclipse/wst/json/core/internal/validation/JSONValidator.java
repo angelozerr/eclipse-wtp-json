@@ -11,11 +11,8 @@
  */
 package org.eclipse.wst.json.core.internal.validation;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.ArrayList;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -24,20 +21,17 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.json.ValidatorHelper;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolver;
 import org.eclipse.wst.common.uriresolver.internal.util.URIHelper;
 import org.eclipse.wst.json.core.JSONCorePlugin;
-import org.eclipse.wst.json.core.internal.Logger;
 import org.eclipse.wst.json.core.internal.validation.core.NestedValidatorContext;
 import org.eclipse.wst.json.core.preferences.JSONCorePreferenceNames;
 import org.eclipse.wst.json.core.validation.AnnotationMsg;
 import org.eclipse.wst.validation.ValidationResult;
 import org.eclipse.wst.validation.internal.ValOperation;
-import org.eclipse.wst.validation.internal.model.ValidatorHelper;
 import org.eclipse.wst.validation.internal.operations.LocalizedMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXParseException;
 
 public class JSONValidator {
 	  
@@ -119,6 +113,12 @@ public class JSONValidator {
 		}*/
 
 		JSONValidationInfo valinfo = new JSONValidationInfo(uri);
+		if (inputStream != null) {
+			ValidatorHelper.validate(new InputStreamReader(inputStream),
+					valinfo);
+		}
+		//JsonValidatorHelper.validate(text, reporter);
+		
 		/*MyEntityResolver entityResolver = new MyEntityResolver(uriResolver,
 				context);
 		ValidatorHelper helper = new ValidatorHelper();
@@ -226,8 +226,9 @@ public class JSONValidator {
 			}
 		}*/
 
-		if (JSONCorePlugin.getDefault().getPluginPreferences()
-				.getBoolean(JSONCorePreferenceNames.SYNTAX_VALIDATION)) {
+		//if (JSONCorePlugin.getDefault().getPluginPreferences()
+		//		.getBoolean(JSONCorePreferenceNames.SYNTAX_VALIDATION)) {
+		if (false) {
 			IReporter reporter = executeMarkupValidator(uri);
 			if (reporter != null) {
 				List msgList = reporter.getMessages();

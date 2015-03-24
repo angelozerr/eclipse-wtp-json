@@ -10,7 +10,7 @@ import org.eclipse.json.schema.IJSONSchemaProperty;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
 
-public class JSONSchemaNode implements IJSONSchemaNode {
+public class JSONSchemaNode extends JsonObject implements IJSONSchemaNode {
 
 	private final IJSONSchemaNode parent;
 	private final Map<String, IJSONSchemaProperty> properties;

@@ -20,14 +20,7 @@
    </license>
 
    <plugin
-         id="org.eclipse.jsonschema"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jsonschema.impl"
+         id="org.eclipse.json"
          download-size="0"
          install-size="0"
          version="0.0.0"

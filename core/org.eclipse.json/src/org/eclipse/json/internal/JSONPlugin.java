@@ -1,6 +1,4 @@
-package org.eclipse.json.impl.internal;
-
-import java.io.IOException;
+package org.eclipse.json.internal;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
@@ -8,18 +6,15 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class JSONImplPlugin extends Plugin {
-
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.json.impl"; //$NON-NLS-1$
+public class JSONPlugin extends Plugin {
 
 	// The shared instance
-	private static JSONImplPlugin plugin;
+	private static JSONPlugin plugin;
 
 	/**
 	 * The constructor
 	 */
-	public JSONImplPlugin() {
+	public JSONPlugin() {
 	}
 
 	/*
@@ -44,6 +39,15 @@ public class JSONImplPlugin extends Plugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
+	}
+
+	/**
+	 * Returns the shared instance
+	 *
+	 * @return the shared instance
+	 */
+	public static JSONPlugin getDefault() {
+		return plugin;
 	}
 
 }

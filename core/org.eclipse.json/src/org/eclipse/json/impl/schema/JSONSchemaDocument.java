@@ -3,12 +3,14 @@ package org.eclipse.json.impl.schema;
 import java.io.IOException;
 import java.io.Reader;
 
+import org.eclipse.json.IValidationReporter;
 import org.eclipse.json.schema.IJSONPath;
 import org.eclipse.json.schema.IJSONSchemaDocument;
 import org.eclipse.json.schema.IJSONSchemaProperty;
 import org.eclipse.json.schema.JSONSchemaType;
 
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 
 public class JSONSchemaDocument extends JSONSchemaNode implements
 		IJSONSchemaDocument {
@@ -35,6 +37,11 @@ public class JSONSchemaDocument extends JSONSchemaNode implements
 	@Override
 	public JSONSchemaType[] getType() {
 		return null;
+	}
+
+	public void validate(JsonValue value, IValidationReporter reporter) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -30,7 +30,7 @@ public class JSONCorePreferenceInitializer extends
 				.getDefault().getBundle().getSymbolicName());
 
 		// Validation preferences
-		node.putBoolean(JSONCorePreferenceNames.SYNTAX_VALIDATION, true);
+		node.putBoolean(JSONCorePreferenceNames.SYNTAX_VALIDATION, false);
 		node.putInt(JSONCorePreferenceNames.MISSING_BRACKET, 2);
 		
 		// formatting preferences

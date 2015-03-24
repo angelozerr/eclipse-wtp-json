@@ -12,7 +12,6 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>org.eclipse.json</module>
-		<module>org.eclipse.json.impl</module>
 		<module>org.eclipse.wst.json.core</module>
 		<module>org.eclipse.wst.json.ui</module>
 		<module>org.eclipse.wst.json.schemaprocessor</module>		
