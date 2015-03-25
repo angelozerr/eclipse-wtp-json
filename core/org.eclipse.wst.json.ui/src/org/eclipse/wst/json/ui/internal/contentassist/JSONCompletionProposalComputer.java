@@ -13,7 +13,6 @@ package org.eclipse.wst.json.ui.internal.contentassist;
 
 import java.io.IOException;
 
-import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.json.schema.IJSONSchemaDocument;
 import org.eclipse.json.schema.IJSONSchemaProperty;
 import org.eclipse.json.schema.JSONSchemaType;
@@ -21,6 +20,7 @@ import org.eclipse.wst.json.core.JSONCorePlugin;
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.ui.contentassist.AbstractJSONCompletionProposalComputer;
 import org.eclipse.wst.json.ui.contentassist.ContentAssistRequest;
+import org.eclipse.wst.json.ui.contentassist.ICompletionProposalCollector.TargetType;
 import org.eclipse.wst.json.ui.contentassist.JSONKeyCompletionProposal;
 import org.eclipse.wst.json.ui.contentassist.JSONRelevanceConstants;
 import org.eclipse.wst.json.ui.internal.Logger;
@@ -38,9 +38,35 @@ public class JSONCompletionProposalComputer extends
 	protected void addObjectKeyProposals(
 			ContentAssistRequest contentAssistRequest,
 			CompletionProposalInvocationContext context) {
+		collectProposalsFromSchema(contentAssistRequest, context);
+		collectProposalsFromExtensionPoint(contentAssistRequest, context);
+	}
+
+	/**
+	 * Collect completion proposals from
+	 * "org.eclipse.wst.json.ui.completionProposalCollectors" extension point.
+	 * 
+	 * @param contentAssistRequest
+	 * @param context
+	 */
+	private void collectProposalsFromExtensionPoint(
+			ContentAssistRequest contentAssistRequest,
+			CompletionProposalInvocationContext context) {
+		CompletionProposalCollectorsRegistryReader.getInstance().addProposals(
+				contentAssistRequest, context, TargetType.key);
+	}
+
+	/**
+	 * Collect completion proposals from JSON Schema.
+	 * 
+	 * @param contentAssistRequest
+	 * @param context
+	 */
+	private void collectProposalsFromSchema(
+			ContentAssistRequest contentAssistRequest,
+			CompletionProposalInvocationContext context) {
 		try {
 			IJSONNode node = contentAssistRequest.getNode();
-			// Get the schema
 			IJSONSchemaDocument schemaDocument = JSONCorePlugin.getDefault()
 					.getSchemaDocument(node);
 			if (schemaDocument != null) {
@@ -82,7 +108,6 @@ public class JSONCompletionProposalComputer extends
 		} catch (IOException e) {
 			Logger.logException(e);
 		}
-
 	}
 
 	private String getRequiredName(IJSONNode parent,

@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.wst.json.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.wst.json.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.wst.json.core" id="schemaProcessors" name="JSON Schema processors"/>
+         <meta.schema plugin="org.eclipse.wst.json.ui" id="completionProposalCollectors" name="Completion proposal collectors extension"/>
       </appInfo>
       <documentation>
-         Extension point for provide Tern Server types.
+         Extension point for extend JSON completion for some JSON node.
       </documentation>
    </annotation>
 
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="schemaProcessor" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="completionProposalCollector" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -44,18 +44,18 @@
       </complexType>
    </element>
 
-   <element name="schemaProcessor">
+   <element name="completionProposalCollector">
       <complexType>
          <sequence>
          </sequence>
-         <attribute name="id" type="string" use="required">
+         <attribute name="paths" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="name" type="string" use="required">
+         <attribute name="targets" type="string" use="required">
             <annotation>
                <documentation>
                   
@@ -68,8 +68,15 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.wst.json.core.schema.IJSONSchemaProcessor"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.wst.json.ui.contentassist.ICompletionProposalCollector"/>
                </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="contentTypeId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

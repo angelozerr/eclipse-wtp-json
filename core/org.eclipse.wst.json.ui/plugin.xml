@@ -2,8 +2,9 @@
 <?eclipse version="3.0"?>
 <plugin>
 
-	<extension-point id="proposalInfo" name="%proposalInfo.name" schema="schema/proposalInfo.exsd"/>
-
+	<extension-point id="completionProposalCollectors" name="%completionProposalCollectors.name"
+		schema="schema/completionProposalCollectors.exsd" />
+		
 	<extension point="org.eclipse.ui.editors">
 		<editor
 			name="%JSON_Editor.name"
@@ -11,7 +12,7 @@
 			contributorClass="org.eclipse.wst.json.ui.internal.editor.ActionContributorJSON"
 			class="org.eclipse.wst.sse.ui.StructuredTextEditor"
 			symbolicFontName="org.eclipse.wst.sse.ui.textfont"
-			id="org.eclipse.wst.json.core.jsonsource.source">
+			id="org.eclipse.wst.json.ui.JSONEditor">
 			<contentTypeBinding
 				contentTypeId="org.eclipse.wst.json.core.jsonsource" />
 		</editor>
@@ -196,11 +197,11 @@
 	<extension point="org.eclipse.ui.actionSetPartAssociations">
 		<actionSetPartAssociation
 			targetID="org.eclipse.ui.edit.text.actionSet.annotationNavigation">
-			<part id="org.eclipse.wst.json.core.jsonsource.source"></part>
+			<part id="org.eclipse.wst.json.ui.JSONEditor"></part>
 		</actionSetPartAssociation>
 		<actionSetPartAssociation
 			targetID="org.eclipse.ui.NavigateActionSet">
-			<part id="org.eclipse.wst.json.core.jsonsource.source"></part>
+			<part id="org.eclipse.wst.json.ui.JSONEditor"></part>
 		</actionSetPartAssociation>
 	</extension>
 
@@ -244,7 +245,7 @@
 
 	<extension point="org.eclipse.ui.popupMenus">
 		<viewerContribution
-			targetID="org.eclipse.wst.json.core.jsonsource.source.RulerContext"
+			targetID="org.eclipse.wst.json.ui.JSONEditor.RulerContext"
 			id="org.eclipse.ui.texteditor.ruler.context.actions">
 			<action
 				label="%AddTask.label"
@@ -344,8 +345,8 @@
 	<!-- JSON editor actions -->
 	<extension point="org.eclipse.ui.editorActions">
 		<!--<editorContribution
-			id="org.eclipse.wst.json.core.jsonsource.source.editorActions"
-			targetID="org.eclipse.wst.json.core.jsonsource.source">
+			id="org.eclipse.wst.json.ui.JSONEditor.editorActions"
+			targetID="org.eclipse.wst.json.ui.JSONEditor">
 			<action
 				id="CleanupDocument"
 				label="%CleanupDocument_label"
@@ -388,7 +389,7 @@
 			</action>
 		</editorContribution>-->
         <editorContribution
-            targetID="org.eclipse.wst.json.core.jsonsource.source"
+            targetID="org.eclipse.wst.json.ui.JSONEditor"
             id="org.eclipse.wst.json.core.jsonsource.ruler.actions">
          <action
                label="%AddBookmark.label"
