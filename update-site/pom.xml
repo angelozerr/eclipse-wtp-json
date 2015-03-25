@@ -10,8 +10,10 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>org.eclipse.wst.json.feature</module>
-		<module>org.eclipse.wst.jshint.feature</module>
-		<module>org.eclipse.wst.eslint.feature</module>
+		<module>org.eclipse.wst.json.bower.feature</module>
+		<module>org.eclipse.wst.json.npm.feature</module>
+		<module>org.eclipse.wst.json.jshint.feature</module>
+		<module>org.eclipse.wst.json.eslint.feature</module>
 		<module>org.eclipse.wst.json.repository</module>
 	</modules>
 </project>

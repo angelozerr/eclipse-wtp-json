@@ -18,6 +18,8 @@
 	</licenses>
 	<modules>
 		<module>core</module>
+		<module>bower</module>
+		<module>npm</module>
 		<module>eslint</module>
 		<module>jshint</module>
 		<module>update-site</module>

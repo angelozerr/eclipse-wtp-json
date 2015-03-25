@@ -3,10 +3,16 @@
    <feature url="features/org.eclipse.wst.json.feature_0.9.0.qualifier.jar" id="org.eclipse.wst.json.feature" version="0.9.0.qualifier">
       <category name="JSON Editors"/>
    </feature>
-   <feature url="features/org.eclipse.wst.jshint.feature_0.9.0.qualifier.jar" id="org.eclipse.wst.jshint.feature" version="0.9.0.qualifier">
+   <feature url="features/org.eclipse.wst.json.jshint.feature_0.9.0.qualifier.jar" id="org.eclipse.wst.json.jshint.feature" version="0.9.0.qualifier">
       <category name="JSON Editors"/>
    </feature>
-   <feature url="features/org.eclipse.wst.eslint.feature_0.9.0.qualifier.jar" id="org.eclipse.wst.eslint.feature" version="0.9.0.qualifier">
+   <feature url="features/org.eclipse.wst.json.eslint.feature_0.9.0.qualifier.jar" id="org.eclipse.wst.json.eslint.feature" version="0.9.0.qualifier">
+      <category name="JSON Editors"/>
+   </feature>
+   <feature url="features/org.eclipse.wst.json.bower.feature_0.9.0.qualifier.jar" id="org.eclipse.wst.json.bower.feature" version="0.9.0.qualifier">
+      <category name="JSON Editors"/>
+   </feature>
+   <feature url="features/org.eclipse.wst.json.npm.feature_0.9.0.qualifier.jar" id="org.eclipse.wst.json.npm.feature" version="0.9.0.qualifier">
       <category name="JSON Editors"/>
    </feature>
    <category-def name="JSON Editors" label="JSON Editors">

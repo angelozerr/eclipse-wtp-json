@@ -11,7 +11,7 @@
 	<version>0.9.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>org.eclipse.wst.eslint.core</module>
-		<module>org.eclipse.wst.eslint.ui</module>
+		<module>org.eclipse.wst.json.eslint.core</module>
+		<module>org.eclipse.wst.json.eslint.ui</module>
 	</modules>
 </project>
