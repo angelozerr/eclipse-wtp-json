@@ -15,15 +15,17 @@ import java.io.IOException;
 
 import org.eclipse.json.schema.IJSONSchemaDocument;
 import org.eclipse.json.schema.IJSONSchemaProperty;
-import org.eclipse.json.schema.JSONSchemaType;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.json.core.JSONCorePlugin;
 import org.eclipse.wst.json.core.document.IJSONNode;
 import org.eclipse.wst.json.ui.contentassist.AbstractJSONCompletionProposalComputer;
+import org.eclipse.wst.json.ui.contentassist.ContentAssistHelper;
 import org.eclipse.wst.json.ui.contentassist.ContentAssistRequest;
 import org.eclipse.wst.json.ui.contentassist.ICompletionProposalCollector.TargetType;
 import org.eclipse.wst.json.ui.contentassist.JSONKeyCompletionProposal;
 import org.eclipse.wst.json.ui.contentassist.JSONRelevanceConstants;
 import org.eclipse.wst.json.ui.internal.Logger;
+import org.eclipse.wst.json.ui.internal.editor.JSONEditorPluginImageHelper;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 
 public class JSONCompletionProposalComputer extends
@@ -87,16 +89,19 @@ public class JSONCompletionProposalComputer extends
 						boolean showProperty = beginsWith(property.getName(),
 								matchString.trim());
 						if (showProperty) {
-							String replacementString = getRequiredName(node,
-									property);
+							String replacementString = ContentAssistHelper
+									.getRequiredName(node, property);
 							String additionalProposalInfo = property
 									.getDescription();
+							Image icon = JSONEditorPluginImageHelper
+									.getInstance().getImage(
+											property.getFirstType());
 							JSONKeyCompletionProposal proposal = new JSONKeyCompletionProposal(
 									replacementString,
 									contentAssistRequest
 											.getReplacementBeginPosition(),
 									contentAssistRequest.getReplacementLength(),
-									replacementString.length() - 2, null,
+									replacementString.length() - 2, icon,
 									property.getName(), null,
 									additionalProposalInfo,
 									JSONRelevanceConstants.R_OBJECT_KEY);
@@ -108,39 +113,6 @@ public class JSONCompletionProposalComputer extends
 		} catch (IOException e) {
 			Logger.logException(e);
 		}
-	}
-
-	private String getRequiredName(IJSONNode parent,
-			IJSONSchemaProperty property) {
-		StringBuilder name = new StringBuilder("\"");
-		name.append(property.getName());
-		name.append("\"");
-		if (property.getType() != null && property.getType().length > 0) {
-			JSONSchemaType type = property.getType()[0];
-			name.append(":");
-			switch (type) {
-			case Array:
-				name.append("[");
-				name.append("]");
-				break;
-			case Boolean:
-				name.append("false");
-				break;
-			case Null:
-				name.append("null");
-				break;
-			case Object:
-				name.append("{");
-				name.append("}");
-				break;
-			case String:
-				name.append("\"\"");
-				break;
-			default:
-				break;
-			}
-		}
-		return name.toString();
 	}
 
 	@Override

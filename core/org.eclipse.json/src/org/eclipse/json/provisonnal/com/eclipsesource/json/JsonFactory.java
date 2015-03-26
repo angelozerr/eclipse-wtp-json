@@ -1,4 +1,4 @@
-package com.eclipsesource.json;
+package org.eclipse.json.provisonnal.com.eclipsesource.json;
 
 public interface JsonFactory {
 

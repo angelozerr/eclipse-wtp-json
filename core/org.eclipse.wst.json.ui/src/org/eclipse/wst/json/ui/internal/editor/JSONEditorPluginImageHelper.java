@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.json.schema.JSONSchemaType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -122,6 +123,38 @@ public class JSONEditorPluginImageHelper {
 		case IJSONNode.VALUE_NUMBER_NODE:
 			return JSONEditorPluginImages.IMG_OBJ_VALUE_NUMBER;
 		case IJSONNode.VALUE_STRING_NODE:
+			return JSONEditorPluginImages.IMG_OBJ_VALUE_STRING;
+		default:
+			return null;
+		}
+	}
+
+	public ImageDescriptor getImageDescriptor(JSONSchemaType type) {
+		String imageName = getImageName(type);
+		return imageName != null ? getImageDescriptor(imageName) : null;
+	}
+
+	public Image getImage(JSONSchemaType type) {
+		String imageName = getImageName(type);
+		return imageName != null ? getImage(imageName) : null;
+	}
+
+	private String getImageName(JSONSchemaType type) {
+		if (type == null) {
+			return null;
+		}
+		switch (type) {
+		case Object:
+			return JSONEditorPluginImages.IMG_OBJ_OBJECT;
+		case Array:
+			return JSONEditorPluginImages.IMG_OBJ_ARRAY;
+		case Boolean:
+			return JSONEditorPluginImages.IMG_OBJ_VALUE_BOOLEAN;
+		case Null:
+			return JSONEditorPluginImages.IMG_OBJ_VALUE_NULL;
+		case Number:
+			return JSONEditorPluginImages.IMG_OBJ_VALUE_NUMBER;
+		case String:
 			return JSONEditorPluginImages.IMG_OBJ_VALUE_STRING;
 		default:
 			return null;

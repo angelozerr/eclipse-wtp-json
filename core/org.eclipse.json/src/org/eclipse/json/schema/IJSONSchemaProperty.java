@@ -10,4 +10,6 @@ public interface IJSONSchemaProperty extends IJSONSchemaNode {
 
 	JSONSchemaType[] getType();
 
+	JSONSchemaType getFirstType();
+
 }

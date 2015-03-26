@@ -19,72 +19,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package com.eclipsesource.json;
+package org.eclipse.json.provisonnal.com.eclipsesource.json;
 
-import java.io.IOException;
 import java.io.Writer;
 
 
-class PrettyPrinter extends JsonWriter {
+/**
+ * Controls the formatting of the JSON output. Use one of the available constants.
+ */
+public abstract class WriterConfig {
 
-  private final char[] indentChars = { ' ', ' ' };
-  private int indent;
-
-  PrettyPrinter( Writer writer ) {
-    super( writer );
-  }
-
-  @Override
-  protected void writeArrayOpen() throws IOException {
-    indent++;
-    writer.write( '[' );
-    writeNewLine();
-  }
-
-  @Override
-  protected void writeArrayClose() throws IOException {
-    indent--;
-    writeNewLine();
-    writer.write( ']' );
-  }
-
-  @Override
-  protected void writeArraySeparator() throws IOException {
-    writer.write( ',' );
-    writeNewLine();
-  }
-
-  @Override
-  protected void writeObjectOpen() throws IOException {
-    indent++;
-    writer.write( '{' );
-    writeNewLine();
-  }
-
-  @Override
-  protected void writeObjectClose() throws IOException {
-    indent--;
-    writeNewLine();
-    writer.write( '}' );
-  }
-
-  @Override
-  protected void writeMemberSeparator() throws IOException {
-    writer.write( ':' );
-    writer.write( ' ' );
-  }
-
-  @Override
-  protected void writeObjectSeparator() throws IOException {
-    writer.write( ',' );
-    writeNewLine();
-  }
-
-  private void writeNewLine() throws IOException {
-    writer.write( '\n' );
-    for( int i = 0; i < indent; i++ ) {
-      writer.write( indentChars );
+  /**
+   * Write JSON in its minimal form, without any additional whitespace. This is the default.
+   */
+  public static WriterConfig MINIMAL = new WriterConfig() {
+    @Override
+    JsonWriter createWriter( Writer writer ) {
+      return new JsonWriter( writer );
     }
-  }
+  };
+
+  /**
+   * Write JSON in pretty-print, with each value on a separate line and an indentation of two
+   * spaces.
+   */
+  public static WriterConfig PRETTY_PRINT = new WriterConfig() {
+    @Override
+    JsonWriter createWriter( Writer writer ) {
+      return new PrettyPrinter( writer );
+    }
+  };
+
+  abstract JsonWriter createWriter( Writer writer );
 
 }

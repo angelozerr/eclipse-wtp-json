@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package com.eclipsesource.json;
+package org.eclipse.json.provisonnal.com.eclipsesource.json;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import com.eclipsesource.json.JsonObject.Member;
+import org.eclipse.json.provisonnal.com.eclipsesource.json.JsonObject.Member;
 
 
 /**

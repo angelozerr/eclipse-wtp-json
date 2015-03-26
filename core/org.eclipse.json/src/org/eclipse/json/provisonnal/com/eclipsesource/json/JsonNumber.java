@@ -19,17 +19,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package com.eclipsesource.json;
+package org.eclipse.json.provisonnal.com.eclipsesource.json;
 
 import java.io.IOException;
 
 
 @SuppressWarnings( "serial" ) // use default serial UID
-class JsonString extends JsonValue {
+class JsonNumber extends JsonValue {
 
   private final String string;
 
-  JsonString( String string ) {
+  JsonNumber( String string ) {
     if( string == null ) {
       throw new NullPointerException( "string is null" );
     }
@@ -37,18 +37,38 @@ class JsonString extends JsonValue {
   }
 
   @Override
-  void write( JsonWriter writer ) throws IOException {
-    writer.writeString( string );
+  public String toString() {
+    return string;
   }
 
   @Override
-  public boolean isString() {
+  void write( JsonWriter writer ) throws IOException {
+    writer.writeNumber( string );
+  }
+
+  @Override
+  public boolean isNumber() {
     return true;
   }
 
   @Override
-  public String asString() {
-    return string;
+  public int asInt() {
+    return Integer.parseInt( string, 10 );
+  }
+
+  @Override
+  public long asLong() {
+    return Long.parseLong( string, 10 );
+  }
+
+  @Override
+  public float asFloat() {
+    return Float.parseFloat( string );
+  }
+
+  @Override
+  public double asDouble() {
+    return Double.parseDouble( string );
   }
 
   @Override
@@ -67,7 +87,7 @@ class JsonString extends JsonValue {
     if( getClass() != object.getClass() ) {
       return false;
     }
-    JsonString other = (JsonString)object;
+    JsonNumber other = (JsonNumber)object;
     return string.equals( other.string );
   }
 

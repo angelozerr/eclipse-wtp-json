@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.io.Reader;
 
 import org.eclipse.json.impl.schema.JSONSchemaDocument;
-
-import com.eclipsesource.json.JsonValue;
-import com.eclipsesource.json.ParseException;
+import org.eclipse.json.provisonnal.com.eclipsesource.json.JsonValue;
+import org.eclipse.json.provisonnal.com.eclipsesource.json.ParseException;
 
 public class ValidatorHelper {
 

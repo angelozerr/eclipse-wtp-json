@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.json.provisonnal.com.eclipsesource.json.JsonObject;
+import org.eclipse.json.provisonnal.com.eclipsesource.json.JsonObject.Member;
 import org.eclipse.json.schema.IJSONSchemaNode;
 import org.eclipse.json.schema.IJSONSchemaProperty;
-
-import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonObject.Member;
 
 public class JSONSchemaNode extends JsonObject implements IJSONSchemaNode {
 

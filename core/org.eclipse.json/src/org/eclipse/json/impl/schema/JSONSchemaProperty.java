@@ -3,13 +3,12 @@ package org.eclipse.json.impl.schema;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.json.provisonnal.com.eclipsesource.json.JsonArray;
+import org.eclipse.json.provisonnal.com.eclipsesource.json.JsonObject;
+import org.eclipse.json.provisonnal.com.eclipsesource.json.JsonValue;
 import org.eclipse.json.schema.IJSONSchemaNode;
 import org.eclipse.json.schema.IJSONSchemaProperty;
 import org.eclipse.json.schema.JSONSchemaType;
-
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
 
 public class JSONSchemaProperty extends JSONSchemaNode implements
 		IJSONSchemaProperty {
@@ -64,4 +63,14 @@ public class JSONSchemaProperty extends JSONSchemaNode implements
 		return type;
 	}
 
+	@Override
+	public JSONSchemaType getFirstType() {
+		if (type == null) {
+			return null;
+		}
+		if (type.length == 0) {
+			return null;
+		}
+		return type[0];
+	}
 }

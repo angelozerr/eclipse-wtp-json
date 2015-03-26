@@ -10,5 +10,13 @@ Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.json,
+ org.eclipse.json.http,
  org.eclipse.json.impl.schema,
+ org.eclipse.json.provisonnal.com.eclipsesource.json,
  org.eclipse.json.schema
+Import-Package: org.apache.http,
+ org.apache.http.client,
+ org.apache.http.client.methods,
+ org.apache.http.conn,
+ org.apache.http.entity,
+ org.apache.http.impl.client

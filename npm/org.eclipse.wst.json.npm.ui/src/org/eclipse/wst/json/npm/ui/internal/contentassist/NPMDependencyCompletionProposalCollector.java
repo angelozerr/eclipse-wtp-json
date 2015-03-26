@@ -1,16 +1,61 @@
 package org.eclipse.wst.json.npm.ui.internal.contentassist;
 
-import org.eclipse.wst.json.ui.contentassist.ContentAssistRequest;
-import org.eclipse.wst.json.ui.contentassist.ICompletionProposalCollector;
-import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
+import java.text.MessageFormat;
 
-public class NPMDependencyCompletionProposalCollector implements
-		ICompletionProposalCollector {
+import org.eclipse.json.provisonnal.com.eclipsesource.json.JsonArray;
+import org.eclipse.json.provisonnal.com.eclipsesource.json.JsonObject;
+import org.eclipse.json.provisonnal.com.eclipsesource.json.JsonValue;
+import org.eclipse.json.schema.JSONSchemaType;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.wst.json.npm.ui.internal.editor.NPMEditorPluginImageHelper;
+import org.eclipse.wst.json.npm.ui.internal.editor.NPMEditorPluginImages;
+import org.eclipse.wst.json.ui.contentassist.ContentAssistHelper;
+import org.eclipse.wst.json.ui.contentassist.ContentAssistRequest;
+import org.eclipse.wst.json.ui.contentassist.HttpCompletionProposalCollector;
+import org.eclipse.wst.json.ui.contentassist.JSONKeyCompletionProposal;
+import org.eclipse.wst.json.ui.contentassist.JSONRelevanceConstants;
+import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
+import org.eclipse.wst.sse.ui.internal.extension.ImageUtil;
+
+public class NPMDependencyCompletionProposalCollector extends
+		HttpCompletionProposalCollector {
+
+	public final String searchUrl = "https://typeahead.npmjs.com/search?q={0}";
+	public final String packageUrl = "http://registry.npmjs.org/{0}/latest";
 
 	@Override
-	public void addProposals(ContentAssistRequest contentAssistRequest,
-			CompletionProposalInvocationContext context, TargetType target) {
-		System.err.println(target);
+	protected String getUrl(ContentAssistRequest contentAssistRequest,
+			TargetType target) {
+		String keyword = contentAssistRequest.getMatchString();
+		return MessageFormat.format(searchUrl, keyword);
 	}
 
+	protected void addProposals(JsonValue json,
+			ContentAssistRequest contentAssistRequest,
+			CompletionProposalInvocationContext context, TargetType target) {
+		if (json.isArray()) {
+			// Ex :
+			// [{"value":"express"},{"value":"lodash"},{"value":"gulp"}]
+			String dependency = null;
+			String replacementString = null;
+			JsonArray values = (JsonArray) json;
+			for (JsonValue value : values) {
+				if (value.isObject()) {
+					dependency = ((JsonObject) value).get("value").asString();
+					replacementString = ContentAssistHelper.getRequiredName(
+							dependency, JSONSchemaType.String);
+					Image icon = NPMEditorPluginImageHelper.getInstance()
+							.getImage(NPMEditorPluginImages.IMG_OBJ_NPM);
+					JSONKeyCompletionProposal proposal = new JSONKeyCompletionProposal(
+							replacementString,
+							contentAssistRequest.getReplacementBeginPosition(),
+							contentAssistRequest.getReplacementLength(),
+							replacementString.length() - 2, icon, dependency,
+							null, null, JSONRelevanceConstants.R_OBJECT_KEY);
+					contentAssistRequest.addProposal(proposal);
+				}
+			}
+		}
+		System.err.println(json);
+	}
 }

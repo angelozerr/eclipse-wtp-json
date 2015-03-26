@@ -18,7 +18,7 @@ public class JSONPathMatcher {
 			if (!(segment.equals(name))) {
 				return false;
 			}
-			node = node.getParentOrPairNode();
+			node = node.getParentNode();
 		}
 		return true;
 	}

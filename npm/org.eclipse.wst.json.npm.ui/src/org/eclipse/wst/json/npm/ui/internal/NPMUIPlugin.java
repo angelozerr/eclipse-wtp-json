@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class NPMUIPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.wst.npm.ui"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.wst.json.npm.ui"; //$NON-NLS-1$
 
 	// The shared instance
 	private static NPMUIPlugin plugin;
