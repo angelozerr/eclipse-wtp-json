@@ -43,6 +43,14 @@
 				<extensions>true</extensions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
@@ -103,7 +111,7 @@
 	<profiles>
 		<profile>
 			<!-- release profile skip version check between pom.xml and manifest.mf  -->
-			<id>release</id>
+			<id>lax</id>
 			<build>
 				<plugins>
 					<plugin>
