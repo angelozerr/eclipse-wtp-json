@@ -3,11 +3,11 @@
 	<parent>
 		<groupId>fr.opensagres.eclipse.wtp</groupId>
 		<artifactId>core</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.10.0-SNAPSHOT</version>
 	</parent>
 	<groupId>fr.opensagres.eclipse.wtp</groupId>
 	<artifactId>org.eclipse.wst.json.schemaprocessor</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>0.10.0-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 	
 </project>
