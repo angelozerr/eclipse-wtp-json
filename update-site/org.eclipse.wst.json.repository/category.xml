@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.eclipse.wst.json.feature_0.10.0.qualifier.jar" id="org.eclipse.wst.json.feature" version="0.10.0.qualifier">
+   <feature url="features/org.eclipse.wst.json.feature_1.0.0.qualifier.jar" id="org.eclipse.wst.json.feature" version="1.0.0.qualifier">
       <category name="JSON Editors"/>
    </feature>
-   <feature url="features/org.eclipse.wst.json.jshint.feature_0.10.0.qualifier.jar" id="org.eclipse.wst.json.jshint.feature" version="0.10.0.qualifier">
+   <feature url="features/org.eclipse.wst.json.jshint.feature_1.0.0.qualifier.jar" id="org.eclipse.wst.json.jshint.feature" version="1.0.0.qualifier">
       <category name="JSON Editors"/>
    </feature>
-   <feature url="features/org.eclipse.wst.json.eslint.feature_0.10.0.qualifier.jar" id="org.eclipse.wst.json.eslint.feature" version="0.10.0.qualifier">
+   <feature url="features/org.eclipse.wst.json.eslint.feature_1.0.0.qualifier.jar" id="org.eclipse.wst.json.eslint.feature" version="1.0.0.qualifier">
       <category name="JSON Editors"/>
    </feature>
-   <feature url="features/org.eclipse.wst.json.bower.feature_0.10.0.qualifier.jar" id="org.eclipse.wst.json.bower.feature" version="0.10.0.qualifier">
+   <feature url="features/org.eclipse.wst.json.bower.feature_1.0.0.qualifier.jar" id="org.eclipse.wst.json.bower.feature" version="1.0.0.qualifier">
       <category name="JSON Editors"/>
    </feature>
-   <feature url="features/org.eclipse.wst.json.npm.feature_0.10.0.qualifier.jar" id="org.eclipse.wst.json.npm.feature" version="0.10.0.qualifier">
+   <feature url="features/org.eclipse.wst.json.npm.feature_1.0.0.qualifier.jar" id="org.eclipse.wst.json.npm.feature" version="1.0.0.qualifier">
       <category name="JSON Editors"/>
    </feature>
    <category-def name="JSON Editors" label="JSON Editors">
