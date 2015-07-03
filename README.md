@@ -1,5 +1,7 @@
 # Eclipse WTP/JSON
 
+This project tries to move to Eclipse WTP. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=471820
+
 [![Build Status](https://secure.travis-ci.org/angelozerr/eclipse-wtp-json.png)](http://travis-ci.org/angelozerr/eclipse-wtp-json)
 
 Goal of Eclipse WTP JSON is to create an advanced JSON Editor based on WTP, which is extensible and contribute if WTP Team are interested. WTP JSON Editor will provide extension points to customize the editor with custom, completion, validation, hyperlink and text hover to provide same features than [Working with composer.json in PhpStorm](http://blog.jetbrains.com/phpstorm/2015/01/working-with-composer-json-in-phpstorm/) for instance.
