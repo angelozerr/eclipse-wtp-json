@@ -3,11 +3,11 @@
 	<parent>
 		<groupId>fr.opensagres.eclipse.wtp</groupId>
 		<artifactId>eclipse-wtp-json</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>fr.opensagres.eclipse.wtp</groupId>
 	<artifactId>bower</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>org.eclipse.wst.json.bower.core</module>
