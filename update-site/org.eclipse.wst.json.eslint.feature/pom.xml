@@ -3,11 +3,11 @@
 	<parent>
 		<groupId>fr.opensagres.eclipse.wtp</groupId>
 		<artifactId>update-site</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>fr.opensagres.eclipse.wtp</groupId>
 	<artifactId>org.eclipse.wst.json.eslint.feature</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 	
 </project>
